@@ -1,0 +1,7 @@
+arago-tmp-default-glibc/
+buildhistory/
+cache/
+workspace/
+
+bitbake-cookerdaemon.log
+bitbake.lock
