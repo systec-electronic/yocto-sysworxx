@@ -1,0 +1,40 @@
+[submodule "sources/meta-virtualization"]
+	path = sources/meta-virtualization
+	url = https://git.yoctoproject.org/meta-virtualization
+	branch = kirkstone
+[submodule "sources/meta-arm"]
+	path = sources/meta-arm
+	url = https://git.yoctoproject.org/meta-arm
+	branch = kirkstone
+[submodule "sources/meta-ti"]
+	path = sources/meta-ti
+	url = https://git.yoctoproject.org/meta-ti
+	branch = kirkstone
+[submodule "sources/meta-arago"]
+	path = sources/meta-arago
+	url = https://git.yoctoproject.org/meta-arago
+	branch = kirkstone
+[submodule "sources/meta-qt5"]
+	path = sources/meta-qt5
+	url = https://github.com/meta-qt5/meta-qt5.git
+	branch = kirkstone
+[submodule "sources/bitbake"]
+	path = sources/bitbake
+	url = https://git.openembedded.org/bitbake
+	branch = 2.0
+[submodule "sources/meta-openembedded"]
+	path = sources/meta-openembedded
+	url = https://git.openembedded.org/meta-openembedded
+	branch = kirkstone
+[submodule "sources/oe-core"]
+	path = sources/oe-core
+	url = https://git.openembedded.org/openembedded-core
+	branch = kirkstone
+[submodule "sources/meta-processor-sdk"]
+	path = sources/meta-processor-sdk
+	url = https://git.ti.com/cgit/processor-sdk/meta-processor-sdk
+	branch = kirkstone
+[submodule "sources/meta-edgeai"]
+	path = sources/meta-edgeai
+	url = https://git.ti.com/git/edgeai/meta-edgeai.git
+	branch = kirkstone
