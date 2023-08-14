@@ -30,11 +30,3 @@
 	path = sources/oe-core
 	url = https://git.openembedded.org/openembedded-core
 	branch = kirkstone
-[submodule "sources/meta-processor-sdk"]
-	path = sources/meta-processor-sdk
-	url = https://git.ti.com/cgit/processor-sdk/meta-processor-sdk
-	branch = kirkstone
-[submodule "sources/meta-edgeai"]
-	path = sources/meta-edgeai
-	url = https://git.ti.com/git/edgeai/meta-edgeai.git
-	branch = kirkstone
