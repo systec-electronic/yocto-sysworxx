@@ -6,6 +6,24 @@
  */
 
 /**
+ * Import the modules used in this configuration.
+ */
+const powerDomains = scripting.addModule("/ti/corePinmux/powerDomains");
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+powerDomains.VDDSHV0                      = "3.3 V";
+powerDomains.VDDSHV2                      = "3.3 V";
+powerDomains.VDDSHV3                      = "3.3 V";
+powerDomains.VDDSHV_MCU                   = "3.3 V";
+powerDomains.VDDSHV_CANUART               = "3.3 V";
+powerDomains["VDDA_1P8_USB-VDDA_3P3_USB"] = "3.3 V";
+powerDomains.VDDSHV1                      = "3.3 V";
+powerDomains.VDDSHV5                      = "3.3 V";
+powerDomains.VDDSHV6                      = "3.3 V";
+
+/**
  * These are the peripherals and settings in this configuration
  */
 const iDDRSS1                     = scripting.addPeripheral("DDRSS");
