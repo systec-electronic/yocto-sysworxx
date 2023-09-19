@@ -30,3 +30,6 @@
 	path = sources/oe-core
 	url = https://git.openembedded.org/openembedded-core
 	branch = kirkstone
+[submodule "pin-muxing"]
+	path = pin-muxing
+	url = git@srv-gitlab.intern.systec-electronic.com:132335/hw/pin-muxing.git
