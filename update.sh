@@ -9,6 +9,12 @@ update() {
 
    sysconfig_cli.sh --script "$dir/$syscfg" -o "$dir"
    mv "$dir/devicetree.dtsi" "$dtsi_name"
+
+   # If 'Name' in syscfg contains a '-' the generated device tree will contain
+   # invalid labels containing '-'. Since only [0-9a-zA-Z_] is allowed for
+   # labels the following command will replace these '-' to '_'.
+   # (this only replaces the first occurrence)
+   sed -i '/^\t.*-.*:/ s/-/_/' "$dtsi_name"
 }
 
 mkdir -p ./devicetree
