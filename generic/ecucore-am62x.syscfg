@@ -449,12 +449,14 @@ iUART1.$assignVoltage             = "3.3 V";
 iUART1.RXD.$assign                = "UART0_RXD";
 iUART1.TXD.$assign                = "UART0_TXD";
 const iUART2                      = scripting.addPeripheral("UART");
-iUART2.$useCase                   = "UART_5";
-iUART2.$name                      = "UART1-SERIAL0";
+iUART2.$useCase                   = "UART_2";
+iUART2.$name                      = "UART1-RESERVED";
 iUART2.$assign                    = "USART1";
 iUART2.$assignVoltage             = "3.3 V";
 iUART2.RXD.$assign                = "MCASP0_AFSR";
 iUART2.TXD.$assign                = "MCASP0_ACLKR";
+iUART2.CTSn.$assign               = "MCASP0_AXR3";
+iUART2.RTSn.$assign               = "MCASP0_AXR2";
 const iUART3                      = scripting.addPeripheral("UART");
 iUART3.$useCase                   = "UART_2";
 iUART3.$name                      = "UART5-SERIAL1";
@@ -491,6 +493,14 @@ iUSB2.DP.$assign                  = "USB1_DP";
 iUSB2.DRVVBUS.$assign             = "USB1_DRVVBUS";
 iUSB2.RCALIB.$assign              = "USB1_RCALIB";
 iUSB2.VBUS.$assign                = "USB1_VBUS";
+const iWKUP_UART1                 = scripting.addPeripheral("WKUP_UART");
+iWKUP_UART1.$name                 = "WKUP_UART1-RESERVED";
+iWKUP_UART1.$assign               = "WKUP_USART0";
+iWKUP_UART1.$assignVoltage        = "3.3 V";
+iWKUP_UART1.CTSn.$assign          = "WKUP_UART0_CTSn";
+iWKUP_UART1.RTSn.$assign          = "WKUP_UART0_RTSn";
+iWKUP_UART1.RXD.$assign           = "WKUP_UART0_RXD";
+iWKUP_UART1.TXD.$assign           = "WKUP_UART0_TXD";
 
 /**
  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
