@@ -88,23 +88,10 @@ iDDRSS1.RESET0_n.$assign          = "DDR0_RESET0_n";
 iDDRSS1.WE_n.$assign              = "DDR0_WE_n";
 iDDRSS1.CAL0.$assign              = "DDR0_CAL0";
 const iECAP1                      = scripting.addPeripheral("ECAP");
-iECAP1.$useCase                   = "ECAP_1";
-iECAP1.$name                      = "ECAP0_DI14";
-iECAP1.$assign                    = "ECAP0";
+iECAP1.$name                      = "ECAP1";
+iECAP1.$assign                    = "ECAP1";
 iECAP1.$assignVoltage             = "3.3 V";
-iECAP1.IN_APWM_OUT.$assign        = "SPI0_CS1";
-const iECAP2                      = scripting.addPeripheral("ECAP");
-iECAP2.$useCase                   = "ECAP_1";
-iECAP2.$name                      = "ECAP1_DI15";
-iECAP2.$assign                    = "ECAP1";
-iECAP2.$assignVoltage             = "3.3 V";
-iECAP2.IN_APWM_OUT.$assign        = "MCASP0_AXR3";
-const iECAP3                      = scripting.addPeripheral("ECAP");
-iECAP3.$useCase                   = "ECAP_1";
-iECAP3.$name                      = "ECAP2";
-iECAP3.$assign                    = "ECAP2";
-iECAP3.$assignVoltage             = "3.3 V";
-iECAP3.IN_APWM_OUT.$assign        = "MCASP0_AXR2";
+iECAP1.IN_APWM_OUT.$assign        = "MCASP0_AXR1";
 const iEPWM1                      = scripting.addPeripheral("EPWM");
 iEPWM1.$useCase                   = "EPWM_1";
 iEPWM1.$name                      = "PWM1_DO14";
@@ -510,4 +497,5 @@ iUSB2.VBUS.$assign                = "USB1_VBUS";
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
+iEPWM1.A.$suggestSolution = "<error>";
 iSYSTEM1.$suggestSolution = "SYSTEM0";
