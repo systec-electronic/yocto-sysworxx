@@ -375,7 +375,8 @@ iSPI1.D1.$assign                  = "SPI0_D1";
 iSPI1.CS0.$assign                 = "SPI0_CS0";
 iSPI1.CS0.$used                   = false;
 const iSYSTEM1                    = scripting.addPeripheral("SYSTEM");
-iSYSTEM1.$name                    = "SYSTEM";
+iSYSTEM1.$name                    = "SYSTEM0";
+iSYSTEM1.$assign                  = "SYSTEM0";
 iSYSTEM1.$assignVoltage           = "3.3 V";
 iSYSTEM1.CLKOUT0.$assign          = "EXT_REFCLK1";
 iSYSTEM1.CLKOUT0.$used            = true;
@@ -427,10 +428,3 @@ iUSB1.DP.$assign                  = "USB0_DP";
 iUSB1.DRVVBUS.$assign             = "USB0_DRVVBUS";
 iUSB1.RCALIB.$assign              = "USB0_RCALIB";
 iUSB1.VBUS.$assign                = "USB0_VBUS";
-
-/**
- * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
- * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
- * re-solve from scratch.
- */
-iSYSTEM1.$suggestSolution = "SYSTEM0";

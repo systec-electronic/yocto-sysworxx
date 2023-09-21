@@ -434,7 +434,8 @@ iSPI2.D1.$assign                  = "OSPI0_D7";
 iSPI2.CS0.$assign                 = "OSPI0_D4";
 iSPI2.CS0.$used                   = false;
 const iSYSTEM1                    = scripting.addPeripheral("SYSTEM");
-iSYSTEM1.$name                    = "SYSTEM";
+iSYSTEM1.$name                    = "SYSTEM0";
+iSYSTEM1.$assign                  = "SYSTEM0";
 iSYSTEM1.$assignVoltage           = "3.3 V";
 iSYSTEM1.CLKOUT0.$assign          = "EXT_REFCLK1";
 iSYSTEM1.CLKOUT0.$used            = true;
@@ -517,4 +518,3 @@ iWKUP_UART1.TXD.$assign           = "WKUP_UART0_TXD";
  * re-solve from scratch.
  */
 iEPWM1.A.$suggestSolution = "<error>";
-iSYSTEM1.$suggestSolution = "SYSTEM0";
