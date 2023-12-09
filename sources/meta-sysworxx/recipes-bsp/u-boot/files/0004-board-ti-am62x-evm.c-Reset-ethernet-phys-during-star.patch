@@ -1,0 +1,103 @@
+From 9440bd5fd9ba81c98f7d96988cdef0c9ffdf431e Mon Sep 17 00:00:00 2001
+From: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Date: Wed, 21 Feb 2024 13:01:28 +0100
+Subject: [PATCH 4/5] board/ti/am62x/evm.c: Reset ethernet phys during startup
+
+Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+---
+ arch/arm/dts/k3-am625-sk.dts | 16 ++++++----------
+ board/ti/am62x/evm.c         | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
+index 43bf991654..1b2c36a79f 100644
+--- a/arch/arm/dts/k3-am625-sk.dts
++++ b/arch/arm/dts/k3-am625-sk.dts
+@@ -274,6 +274,8 @@
+ 		pinctrl-single,pins = <
+ 			AM62X_IOPAD(0x160, PIN_OUTPUT, 0) /* (AD24) MDIO0_MDC */
+ 			AM62X_IOPAD(0x15c, PIN_INPUT, 0) /* (AB22) MDIO0_MDIO */
++			AM62X_IOPAD(0x01b4, PIN_OUTPUT_PULLUP, 7) /* (A13) SPI0_CS0.GPIO1_15 */
++			AM62X_IOPAD(0x01ec, PIN_OUTPUT_PULLUP, 7) /* (A17) I2C1_SDA.GPIO1_29 */
+ 		>;
+ 	};
+ 
+@@ -459,18 +461,12 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_mdio1_pins_default>;
+ 
+-	cpsw3g_phy0: ethernet-phy@0 {
+-		reg = <0>;
+-		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
+-		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+-		ti,min-output-impedance;
++	cpsw3g_phy0: ethernet-phy@1 {
++		reg = <1>;
+ 	};
+ 
+-	cpsw3g_phy1: ethernet-phy@1 {
+-		reg = <1>;
+-		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
+-		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+-		ti,min-output-impedance;
++	cpsw3g_phy1: ethernet-phy@3 {
++		reg = <3>;
+ 	};
+ };
+ 
+diff --git a/board/ti/am62x/evm.c b/board/ti/am62x/evm.c
+index d84c85b122..df092ef36d 100644
+--- a/board/ti/am62x/evm.c
++++ b/board/ti/am62x/evm.c
+@@ -104,6 +104,39 @@ phys_size_t get_effective_memsize(void)
+ 	return gd->ram_size == SZ_512M ? SZ_512M - SZ_64M  : gd->ram_size;
+ }
+ 
++void reset_eth_phy(const char* phy_rst_name) {
++	int ret;
++	struct gpio_desc phy_rst_desc;
++
++	ret = dm_gpio_lookup_name(phy_rst_name, &phy_rst_desc);
++	if (ret) {
++		printf("gpio not found: %s\n", phy_rst_name);
++		goto err;
++	}
++
++	ret = dm_gpio_request(&phy_rst_desc, "phy reset");
++	if (ret /* && ret != -EBUSY */) {
++		printf("requesting gpio: %s failed\n", phy_rst_name);
++		goto err;
++	}
++
++	dm_gpio_set_dir_flags(&phy_rst_desc, GPIOD_IS_OUT);
++	udelay(10);
++	dm_gpio_set_value(&phy_rst_desc, 0);
++	udelay(10000);
++	dm_gpio_set_value(&phy_rst_desc, 1);
++
++err:
++	return;
++}
++
++void reset_eth_phys(void) {
++	printf("reset ethernet PHY0\n");
++	reset_eth_phy("gpio@601000_15");
++	printf("reset ethernet PHY1\n");
++	reset_eth_phy("gpio@601000_29");
++}
++
+ #if defined(CONFIG_SPL_BUILD)
+ static int video_setup(void)
+ {
+@@ -447,6 +480,8 @@ int board_late_init(void)
+ #endif
+ 	}
+ 
++	reset_eth_phys();
++
+ 	return 0;
+ }
+ #endif
+-- 
+2.43.0
+
