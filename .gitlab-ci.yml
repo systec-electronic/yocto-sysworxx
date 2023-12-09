@@ -1,0 +1,29 @@
+---
+default:
+  image: ${CI_REGISTRY}/132335/sw/yocto-builder:latest
+  tags: [docker, yocto]
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_DEPTH: 0
+  # don't clean Yocto build/tmp directory per default
+  GIT_CLEAN_FLAGS: -ffdx -e build/
+
+stages:
+  - build
+
+tisdk-base-image:
+  stage: build
+  script: |
+    cd build/
+    . conf/setenv
+    bitbake tisdk-base-image
+    IMGDIR=arago-tmp-default-glibc/deploy/images/ctr-700/
+    ls -la $IMGDIR
+    cp $IMGDIR/tisdk-base-image-ctr-700.wic.xz ..
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - "*.wic.xz"
