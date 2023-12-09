@@ -9,7 +9,7 @@ fi
 
 DEV=$1
 
-xzcat ./build/arago-tmp-default-glibc/deploy/images/am62xx-evm/tisdk-base-image-am62xx-evm.wic.xz > "${DEV}"
+xzcat ./build/arago-tmp-default-glibc/deploy/images/ctr-700/tisdk-base-image-ctr-700.wic.xz > "${DEV}"
 
 sync
 sleep 1
