@@ -20,7 +20,7 @@ update() {
 mkdir -p ./devicetree
 
 #      <SOURCE_DIR> <SYSCFG_NAME>      <DTSI_FILENAME>
-update ctr700       ctr700-rev2.syscfg ./devicetree/am62x-systec-ctr700-rev2-pinmux.dtsi
+update ctr700       ctr700-rev2.syscfg ./devicetree/k3-am623-systec-ctr700-rev2-pinmux.dtsi
 
 # remove unwanted files
 git clean -dfX
