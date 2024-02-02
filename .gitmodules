@@ -1,7 +1,3 @@
-[submodule "sources/meta-virtualization"]
-	path = sources/meta-virtualization
-	url = https://git.yoctoproject.org/meta-virtualization
-	branch = kirkstone
 [submodule "sources/meta-arm"]
 	path = sources/meta-arm
 	url = https://git.yoctoproject.org/meta-arm
@@ -13,10 +9,6 @@
 [submodule "sources/meta-arago"]
 	path = sources/meta-arago
 	url = https://git.yoctoproject.org/meta-arago
-	branch = kirkstone
-[submodule "sources/meta-qt5"]
-	path = sources/meta-qt5
-	url = https://github.com/meta-qt5/meta-qt5.git
 	branch = kirkstone
 [submodule "sources/bitbake"]
 	path = sources/bitbake
@@ -33,3 +25,7 @@
 [submodule "pin-muxing"]
 	path = pin-muxing
 	url = git@srv-gitlab.intern.systec-electronic.com:132335/hw/pin-muxing.git
+[submodule "sources/meta-yocto"]
+	path = sources/meta-yocto
+	url = https://git.yoctoproject.org/meta-yocto
+	branch = kirkstone
