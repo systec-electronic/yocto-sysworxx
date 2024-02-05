@@ -14,7 +14,7 @@ git submodule update --init --recursive --force --checkout
 ```sh
 cd build/
 . conf/setenv
-bitbake tisdk-base-image
+bitbake sysworxx-image-default
 ```
 
 ## Write wic image to SD card

@@ -12,15 +12,15 @@ variables:
 stages:
   - build
 
-tisdk-base-image:
+sysworxx-image-default-ctr-700:
   stage: build
   script: |
     cd build/
     . conf/setenv
-    bitbake tisdk-base-image
-    IMGDIR=arago-tmp-default-glibc/deploy/images/ctr-700/
+    bitbake sysworxx-image-default
+    IMGDIR=deploy-ti/images/ctr-700/
     ls -la $IMGDIR
-    cp $IMGDIR/tisdk-base-image-ctr-700.wic.xz ..
+    cp $IMGDIR/sysworxx-image-default-ctr-700.wic.xz ..
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     when: on_success
