@@ -29,3 +29,6 @@
 	path = sources/meta-yocto
 	url = https://git.yoctoproject.org/meta-yocto
 	branch = kirkstone
+[submodule "sources/meta-summit-radio"]
+	path = sources/meta-summit-radio
+	url = https://github.com/LairdCP/meta-summit-radio
