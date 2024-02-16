@@ -1,0 +1,230 @@
+/*
+ * Copyright (C) 2023 SYSTEC electronic AG, All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "k3-am625.dtsi"
+#include "k3-am623-systec-ctr700-rev2-pinmux.dtsi"
+#include "k3-am623-systec-ctr-common.dtsi"
+
+/ {
+	model = "SYSTEC sysWORXX CTR-700";
+	compatible = "systec,ctr700,rev2", "systec,ctr700", "ti,am625";
+
+	aliases {
+		// serial0 = &mcu_uart0;
+		// serial2 = &main_uart0;
+		serial4 = &main_uart4;
+		serial5 = &main_uart5;
+		serial6 = &main_uart6;
+		rtc0 = &rtc;
+		rtc1 = &wkup_rtc0;
+	};
+};
+
+// SERIAL0
+&main_uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart4_serial0_pins_default>;
+	status = "okay";
+	// uart-has-rtscts;
+	// rts-gpios = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
+	// sermode-gpio = <&gpio_exp2 0 GPIO_ACTIVE_HIGH>;
+};
+
+// SERIAL1
+&main_uart5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart5_serial1_pins_default>;
+	status = "okay";
+	// uart-has-rtscts;
+	// rts-gpios = <&main_gpio0 64 GPIO_ACTIVE_HIGH>;
+	// sermode-gpio = <&gpio_exp2 1 GPIO_ACTIVE_HIGH>;
+};
+
+// SERIAL2
+&main_uart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart6_serial2_pins_default>;
+	status = "okay";
+	// uart-has-rtscts;
+	// rts-gpios = <&main_gpio0 63 GPIO_ACTIVE_HIGH>;
+	// sermode-gpio = <&gpio_exp2 2 GPIO_ACTIVE_HIGH>;
+};
+
+// CAN0
+&main_mcan0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mcan0_pins_default>;
+	status = "okay";
+};
+
+// CAN1
+&mcu_mcan0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mcumcan0_pins_default>;
+	status = "okay";
+};
+
+// I2C3_BOARD
+&main_i2c3 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3board_pins_default>;
+	clock-frequency = <400000>;
+
+	/* RTC */
+	rtc: pcf8563@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+	};
+
+	/* Temperature sensor */
+	tsens: lm75b@48 {
+		compatible = "national,lm75";
+		reg = <0x48>;
+	};
+
+	/* I/O expander for current/voltage switch (ADC) */
+	gpio_exp1: pca9554@38 {
+		compatible = "nxp,pca9554";
+		reg = <0x38>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		gpio-line-names =
+			"EN_U0", "EN_U1", "EN_U2", "EN_U3",
+			"EN_I0", "EN_I1", "EN_I2", "EN_I3";
+	};
+
+	/* I/O expander for RS232/485 switching and DI filter configuration */
+	gpio_exp2: pca9554@39 {
+		compatible = "nxp,pca9554";
+		reg = <0x39>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		gpio-line-names =
+			"SER0_MODE", "SER1_MODE", "SER2_MODE", "DS0",
+			"DS1",       "",          "",          "";
+	};
+
+	/* I/O expander for diagnose */
+	gpio_exp3: pca9554@3a {
+		compatible = "nxp,pca9554";
+		reg = <0x3a>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		gpio-line-names =
+			"DO0_PF", "DO_DIAG", "/DI_ERR", "USB1_OC",
+			"",       "",        "",        "";
+		interrupt-controller;
+		interrupt-parent = <&main_gpio0>;
+		interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
+		// https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1262930/am625-request_irq-return--22
+	};
+};
+
+&main_spi0 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi0_pins_default>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	cs-gpios = <&main_gpio0 7 GPIO_ACTIVE_LOW>;
+
+	// spidev@0 {
+	// 	spi-max-frequency = <1000000>;
+	// 	reg = <0>;
+	// };
+};
+
+&epwm1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm1do14_pins_default>;
+	status = "okay";
+};
+
+&epwm2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm2do15_pins_default>;
+	status = "okay";
+};
+
+&eqep1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&eqep0di14di15_pins_default>;
+	status = "okay";
+};
+
+&main_gpio0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&gpio0_pins_default>;
+	gpio-line-names      =
+		"/COM_DIAG_INT", "DO_10",    "",        "RELAY0_EN",     // 0
+		"RELAY1_EN",     "LED_RUN",  "LED_ERR", "SPI2_SS",       // 4
+		"",              "",         "",        "RUN_SW",        // 8
+		"/BOOT",         "SER1_RX",  "SER1_TX", "",              // 12
+		"",              "DO_9",     "",        "DO_12",         // 16
+		"DO_13",         "",         "",        "",              // 20
+		"",              "",         "DO_11",   "",              // 24
+		"",              "",         "",        "DI0",           // 28
+		"DI1",           "DI2",      "DI3",     "DI4",           // 32
+		"DI5",           "DI6",      "DI7",     "DI8",           // 36
+		"DI9",           "DI10",     "DI11",    "/PF",           // 40
+		"",              "DI12",     "DI13",    "DI14",          // 44
+		"DI15",          "SER0_RX",  "SER0_TX", "DO_2",          // 48
+		"DO_3",          "SER2_RX",  "SER2_TX", "SER2_RTS",      // 52
+		"SER2_CTS",      "DO_4",     "DO_5",    "DO_6",          // 56
+		"DO_7",          "DO_8",     "/CONFIG", "SER2_DEN",      // 60
+		"SER1_DEN",      "",         "",        "",              // 64
+		"",              "",         "",        "WLAN_/DISABLE", // 68
+		"BT_REG_ON",     "",         "",        "",              // 72
+		"",              "",         "",        "",              // 76
+		"",              "",         "",        "",              // 80
+		"",              "ETH_MDIO", "ETH_MDC", "",              // 84
+		"",              "",         "",        "";              // 88
+};
+
+&main_gpio1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&gpio1_pins_default>;
+	gpio-line-names =
+		"",           "",           "",               "",               // 0
+		"",           "",           "",               "",               // 4
+		"",           "DO_14_PWM",  "eMMC_/RST",      "DI14_PHA_A",     // 8
+		"DI15_PHA_B", "",           "",               "ETH0_/RST",      // 12
+		"",           "SPI2_SCLK",  "SPI2_MOSI",      "SPI2_MISO",      // 16
+		"SERVICE_RX", "SERVICE_TX", "I2C3_BOARD_SCL", "I2C3_BOARD_SDA", // 20
+		"MCAN0_TX",   "MCAN0_RX",   "I2C0_SOM_SCL",   "I2C0_SOM_SDA",   // 24
+		"DO_15_PWM",  "ETH1_/RST",  "",               "",               // 28
+		"",           "",           "",               "",               // 32
+		"",           "",           "",               "",               // 36
+		"",           "",           "",               "",               // 40
+		"",           "",           "",               "",               // 44
+		"",           "",           "",               "SER0_DEN",       // 48
+		"",           "",           "",               "",               // 52
+		"",           "",           "",               "",               // 56
+		"",           "",           "",               "",               // 60
+		"",           "",           "",               "",               // 64
+		"",           "",           "",               "",               // 68
+		"",           "",           "",               "",               // 72
+		"",           "",           "",               "",               // 76
+		"",           "",           "",               "",               // 80
+		"",           "",           "",               "",               // 84
+		"",           "",           "",               "";               // 88
+};
+
+&mcu_gpio0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mcugpio0_pins_default>;
+	gpio-line-names =
+		"",       "",             "",             "",       // 0
+		"",       "BT_RX",        "BT_TX",        "BT_CTS", // 4
+		"BT_RTS", "",             "",             "",       // 8
+		"",       "MCU_MCAN0_TX", "MCU_MCAN0_RX", "",       // 12
+		"",       "",             "",             "DO_0",   // 16
+		"DO_1",   "",             "",             "";       // 20
+};
