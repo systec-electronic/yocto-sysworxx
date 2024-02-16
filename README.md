@@ -69,15 +69,10 @@ make ti/k3-am625-sk.dtb
 * [AM62x Starter Kit EVM Quick Start Guide](https://dev.ti.com/tirex/explore/node?node=A__AdoyIZ2jtLBUfHZNVmgFBQ__am62x-devtools__FUz-xrs__LATEST&search=am62x)
 * [SK-AM62 Starter Kit User's Guide (Rev. C)](https://www.ti.com/document-viewer/lit/html/spruj40)
 
-## Open questions
+## Issues & Open questions
 
 * U-Boot:
-  * We need a fallback device tree which can be used in all of out sysWORXX
-    modules. The can then be used for boards where production configuration has
-    not been applied.
-    * The detailed flow of loading device trees, revision and such has to be
-      specified later.
-  * k3-am625-sk.dts: uses a gpio of an expander to activate `sdhci1`. Do we need
-    to remove this?
   * am62x.env: Do we need to override the `default_device_tree`?
-* rename device trees to "k3-am62x-systec\*" and use this as the PREFIX
+* Linux:
+  * fallback pinmux and use it in fallback dts
+  * implement and test RS-232 with RTS/CTS and RS-485 support
