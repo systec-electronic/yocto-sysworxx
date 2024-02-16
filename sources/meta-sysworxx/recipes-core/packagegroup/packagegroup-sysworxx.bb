@@ -10,6 +10,7 @@ PACKAGES = "\
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-wifi \
 "
 
 RDEPENDS:packagegroup-sysworxx = "\
@@ -18,6 +19,7 @@ RDEPENDS:packagegroup-sysworxx = "\
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-wifi \
 "
 
 RDEPENDS:packagegroup-sysworxx-init = "\
@@ -93,4 +95,15 @@ RDEPENDS:packagegroup-sysworxx-debug = "\
     phytool \
     strace \
     tcpdump \
+"
+
+RDEPENDS:packagegroup-sysworxx-wifi = "\
+    ca-certificates \
+    iw \
+    kernel-module-lwb5p-backports-summit \
+    lwb5plus-sdio-sa-firmware \
+    summit-networkmanager-60 \
+    summit-supplicant-60 \
+    packagegroup-tools-bluetooth \
+    bluez5 \
 "

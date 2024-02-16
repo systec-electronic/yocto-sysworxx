@@ -5,6 +5,9 @@ MOVE = ";subdir=git/arch/arm64/boot/dts/ti"
 
 SRC_URI += " \
     file://dynamic_debug.cfg \
+    file://disable_wifi_bt.cfg \
+    file://cfg80211.cfg \
+    file://ecdh.cfg \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
     \
