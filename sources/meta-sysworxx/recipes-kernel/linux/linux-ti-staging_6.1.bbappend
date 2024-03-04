@@ -8,6 +8,7 @@ SRC_URI += " \
     file://disable_wifi_bt.cfg \
     file://cfg80211.cfg \
     file://ecdh.cfg \
+    file://rtc.cfg \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
     \
@@ -33,5 +34,6 @@ KERNEL_CONFIG_FRAGMENTS_WIFI += " \
 
 KERNEL_CONFIG_FRAGMENTS += " \
     ${FRAGMENTS_DIR}/dynamic_debug.cfg \
+    ${FRAGMENTS_DIR}/rtc.cfg \
     ${KERNEL_CONFIG_FRAGMENTS_WIFI} \
 "
