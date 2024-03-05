@@ -61,7 +61,7 @@ Enter development shell for Linux kernel and build a specific device tree:
 ```sh
 bitbake linux-ti-staging -c devshell
 make defconfig
-make ti/k3-am625-sk.dtb
+make ti/k3-am623-systec-ctr800-rev0.dtb
 ```
 
 ## Links

@@ -25,7 +25,7 @@ dd if=u-boot.img of=/dev/mmcblk0boot0 seek=5120
 
 ```sh
 mmc dev 0
-load mmc 0:2 ${fdtaddr}  /boot/dtb/ti/k3-am623-systec-ctr700-rev2.dtb
+load mmc 0:2 ${fdtaddr}  /boot/dtb/ti/k3-am623-systec-fallback.dtb
 load mmc 0:2 ${loadaddr} /boot/Image
 setenv bootargs console=${console} ${optargs} root=/dev/mmcblk0p2 rw rootfstype=ext4
 booti ${loadaddr} ${rd_spec} ${fdtaddr}

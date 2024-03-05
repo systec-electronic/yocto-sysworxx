@@ -1,7 +1,7 @@
-From ab7884ff5237a25b4aacf066e60c9845fbb09811 Mon Sep 17 00:00:00 2001
+From 301ff7df718955b8f58d3cda01614b8c99da8695 Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Mon, 5 Feb 2024 13:48:07 +0100
-Subject: [PATCH 5/5] [wip] board/ti/am62x: Add board detect for sysworxx ctr
+Subject: [PATCH 5/5] board/ti/am62x: Add board detect for sysworxx ctr
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
  2 files changed, 5 insertions(+)
 
 diff --git a/board/ti/am62x/am62x.env b/board/ti/am62x/am62x.env
-index e507ca276c..a9eff90cdc 100644
+index e507ca276c..857d558c30 100644
 --- a/board/ti/am62x/am62x.env
 +++ b/board/ti/am62x/am62x.env
 @@ -20,6 +20,8 @@ findfdt=
@@ -18,7 +18,7 @@ index e507ca276c..a9eff90cdc 100644
  	if test $board_name = am62x_beagleplay; then
  			setenv name_fdt ti/k3-am625-beagleplay.dtb; fi;
 +	if test $board_name = am62x_sysworxx_ctr; then
-+			setenv name_fdt ti/k3-am623-systec-ctr700-rev2.dtb; fi;
++			setenv name_fdt ti/k3-am623-systec-ctr800-rev0.dtb; fi;
  	setenv fdtfile ${name_fdt}
  name_kern=Image
  console=ttyS2,115200n8
@@ -44,5 +44,5 @@ index df092ef36d..f165186dd6 100644
  		printf("Unidentified board claims %s in eeprom header\n",
  		       board_ti_get_name());
 -- 
-2.43.0
+2.44.0
 

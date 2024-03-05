@@ -9,7 +9,7 @@ fi
 
 DEV=$1
 
-xzcat ./build/deploy-ti/images/ctr-700/sysworxx-image-default-ctr-700.wic.xz > "${DEV}"
+xzcat ./build/deploy-ti/images/sysworxx-ctr/sysworxx-image-default-sysworxx-ctr.wic.xz > "${DEV}"
 
 sync
 sleep 1

@@ -8,12 +8,12 @@
 /dts-v1/;
 
 #include "k3-am625.dtsi"
-#include "k3-am623-systec-ctr700-rev2-pinmux.dtsi"
+#include "k3-am623-systec-ctr800-pinmux-0.dtsi"
 #include "k3-am623-systec-ctr-common.dtsi"
 
 / {
-	model = "SYSTEC sysWORXX CTR-700";
-	compatible = "systec,ctr700,rev2", "systec,ctr700", "ti,am625";
+	model = "SYSTEC sysWORXX CTR-800";
+	compatible = "systec,ctr800,rev0", "systec,ctr800", "ti,am625";
 
 	aliases {
 		// serial0 = &mcu_uart0;
