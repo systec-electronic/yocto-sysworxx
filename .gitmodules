@@ -10,6 +10,14 @@
 	path = sources/meta-arago
 	url = https://git.yoctoproject.org/meta-arago
 	branch = kirkstone
+[submodule "sources/meta-qt5"]
+	path = sources/meta-qt5
+	url = https://github.com/meta-qt5/meta-qt5.git
+	branch = kirkstone
+[submodule "sources/meta-virtualization"]
+	path = sources/meta-virtualization
+	url = https://git.yoctoproject.org/meta-virtualization
+	branch = kirkstone
 [submodule "sources/bitbake"]
 	path = sources/bitbake
 	url = https://git.openembedded.org/bitbake
