@@ -32,11 +32,12 @@
 	branch = kirkstone
 [submodule "pin-muxing"]
 	path = pin-muxing
-	url = git@srv-gitlab.intern.systec-electronic.com:132335/hw/pin-muxing.git
+	url = ../hw/pin-muxing.git
+	branch = master
 [submodule "sources/meta-yocto"]
 	path = sources/meta-yocto
 	url = https://git.yoctoproject.org/meta-yocto
 	branch = kirkstone
 [submodule "sources/meta-summit-radio"]
 	path = sources/meta-summit-radio
-	url = https://github.com/LairdCP/meta-summit-radio
+	url = https://github.com/LairdCP/meta-summit-radio.git
