@@ -32,7 +32,7 @@
 	branch = kirkstone
 [submodule "pin-muxing"]
 	path = pin-muxing
-	url = ../hw/pin-muxing.git
+	url = ../../hw/pin-muxing.git
 	branch = master
 [submodule "sources/meta-yocto"]
 	path = sources/meta-yocto
