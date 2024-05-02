@@ -12,15 +12,13 @@ variables:
 stages:
   - build
 
-sysworxx-image-default-ctr-700:
+sysworxx-image-default-ctr:
   stage: build
   script: |
     cd build/
     . conf/setenv
     bitbake sysworxx-image-default
-    IMGDIR=deploy-ti/images/ctr-700/
-    ls -la $IMGDIR
-    cp $IMGDIR/sysworxx-image-default-ctr-700.wic.xz ..
+    cp deploy-ti/images/sysworxx-ctr/sysworxx-image-default-sysworxx-ctr.wic.xz ..
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     when: on_success
