@@ -1,0 +1,27 @@
+/*
+ * Copyright (C) 2023 SYSTEC electronic AG, All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "k3-am625.dtsi"
+#include "k3-am625-systec-pi-pinmux-0.dtsi"
+#include "k3-am625-systec-pi-common.dtsi"
+
+/ {
+	model = "SYSTEC sysWORXX Pi";
+	compatible = "systec,pi,rev0", "systec,pi", "ti,am625";
+
+	aliases {
+		// serial0 = &mcu_uart0;
+		serial2 = &main_uart0;
+		// serial4 = &main_uart4;
+		// serial5 = &main_uart5;
+		// serial6 = &main_uart6;
+		// rtc0 = &rtc;
+		rtc0 = &wkup_rtc0;
+	};
+};
