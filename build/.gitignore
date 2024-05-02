@@ -1,6 +1,8 @@
-arago-tmp-default-glibc/
 buildhistory/
 cache/
+tmp/
+tmp-k3r5/
+deploy-ti/
 workspace/
 
 bitbake-cookerdaemon.log

@@ -1,0 +1,51 @@
+From 60e6f6779eabadd69d49bb9fdc38bf0004ac5492 Mon Sep 17 00:00:00 2001
+From: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Date: Tue, 6 Feb 2024 11:54:06 +0100
+Subject: [PATCH 3/5] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
+ network phy's (EXT_REFCLK1.CLKOUT0)
+
+Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+---
+ arch/arm/dts/k3-am625-sk.dts | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
+index 28ce62356c..43bf991654 100644
+--- a/arch/arm/dts/k3-am625-sk.dts
++++ b/arch/arm/dts/k3-am625-sk.dts
+@@ -291,6 +291,7 @@
+ 			AM62X_IOPAD(0x140, PIN_OUTPUT, 0) /* (AD18) RGMII1_TD3 */
+ 			AM62X_IOPAD(0x130, PIN_OUTPUT, 0) /* (AE19) RGMII1_TXC */
+ 			AM62X_IOPAD(0x12c, PIN_OUTPUT, 0) /* (AD19) RGMII1_TX_CTL */
++			AM62X_IOPAD(0x01f0, PIN_OUTPUT, 5) /* (A18) EXT_REFCLK1.CLKOUT0 */
+ 		>;
+ 	};
+ 
+@@ -311,6 +312,12 @@
+ 		>;
+ 	};
+ 
++	ext_refclk0_clkout0: ext-refclk0-clkout0 {
++		pinctrl-single,pins = <
++			AM62X_IOPAD(0x01f0, PIN_OUTPUT, 5) /* (A18) EXT_REFCLK1.CLKOUT0 */
++		>;
++	};
++
+ 	ospi0_pins_default: ospi0-pins-default {
+ 		pinctrl-single,pins = <
+ 			AM62X_IOPAD(0x000, PIN_OUTPUT, 0) /* (H24) OSPI0_CLK */
+@@ -431,7 +438,10 @@
+ &cpsw3g {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_rgmii1_pins_default
+-		     &main_rgmii2_pins_default>;
++		     &main_rgmii2_pins_default
++			 &ext_refclk0_clkout0>;
++	assigned-clocks = <&k3_clks 157 20>;
++	assigned-clock-parents = <&k3_clks 157 22>;
+ };
+ 
+ &cpsw_port1 {
+-- 
+2.43.0
+

@@ -1,7 +1,3 @@
-[submodule "sources/meta-virtualization"]
-	path = sources/meta-virtualization
-	url = https://git.yoctoproject.org/meta-virtualization
-	branch = kirkstone
 [submodule "sources/meta-arm"]
 	path = sources/meta-arm
 	url = https://git.yoctoproject.org/meta-arm
@@ -18,6 +14,10 @@
 	path = sources/meta-qt5
 	url = https://github.com/meta-qt5/meta-qt5.git
 	branch = kirkstone
+[submodule "sources/meta-virtualization"]
+	path = sources/meta-virtualization
+	url = https://git.yoctoproject.org/meta-virtualization
+	branch = kirkstone
 [submodule "sources/bitbake"]
 	path = sources/bitbake
 	url = https://git.openembedded.org/bitbake
@@ -30,11 +30,14 @@
 	path = sources/oe-core
 	url = https://git.openembedded.org/openembedded-core
 	branch = kirkstone
-[submodule "sources/meta-processor-sdk"]
-	path = sources/meta-processor-sdk
-	url = https://git.ti.com/cgit/processor-sdk/meta-processor-sdk
+[submodule "pin-muxing"]
+	path = pin-muxing
+	url = ../../hw/pin-muxing.git
+	branch = master
+[submodule "sources/meta-yocto"]
+	path = sources/meta-yocto
+	url = https://git.yoctoproject.org/meta-yocto
 	branch = kirkstone
-[submodule "sources/meta-edgeai"]
-	path = sources/meta-edgeai
-	url = https://git.ti.com/git/edgeai/meta-edgeai.git
-	branch = kirkstone
+[submodule "sources/meta-summit-radio"]
+	path = sources/meta-summit-radio
+	url = https://github.com/LairdCP/meta-summit-radio.git
