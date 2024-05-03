@@ -1,4 +1,5 @@
 DESCRIPTION = "Image with sensible deefaults for SYSTEC sysWORXX modules."
+LICENSE = "MIT"
 
 # orig: debug-tweaks package-management splash
 IMAGE_FEATURES += "ssh-server-openssh"
