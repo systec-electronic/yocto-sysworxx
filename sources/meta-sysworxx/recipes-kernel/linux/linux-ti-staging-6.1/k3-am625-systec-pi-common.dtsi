@@ -213,7 +213,7 @@
 &main_i2c0 {
 	status = "okay";
 	pinctrl-names = "default";
-	pinctrl-0 = <&i2c0som_pins_default>;
+	pinctrl-0 = <&i2c0board_pins_default>;
 	clock-frequency = <400000>;
 
 	tps65219: pmic@30 {
@@ -295,6 +295,20 @@
 		compatible = "atmel,24c16";
 		reg = <0x50>;
 		pagesize = <16>;
+	};
+
+	typec@3d {
+		compatible = "nxp,ptn5150";
+		reg = <0x3d>;
+		interrupt-parent = <&main_gpio1>;
+		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
+		status ="okay";
+
+		port {
+			typec_dr_sw: endpoint {
+				remote-endpoint = <&usb1_drd_sw>;
+			};
+		};
 	};
 };
 
@@ -384,10 +398,30 @@
 &usbss0 {
 	ti,vbus-divider;
 	status = "okay";
+	/* usb0-drvvbus-hog ensures the supply of this USB */
 };
 
 &usb0 {
 	dr_mode = "host";
-	pinctrl-names = "default";
-	pinctrl-0 = <&usb0_pins_default>;
+};
+
+&usbss1 {
+	ti,vbus-divider;
+	status = "okay";
+	/* usb1-drvvbus-hog ensures the supply of this USB */
+};
+
+&usb1 {
+	dr_mode = "otg";
+	hnp-disable;
+	srp-disable;
+	adp-disable;
+	usb-role-switch;
+	role-switch-default-mode = "host";
+
+	port@0 {
+		usb1_drd_sw: endpoint {
+			remote-endpoint = <&typec_dr_sw>;
+		};
+	};
 };
