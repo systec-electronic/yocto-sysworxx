@@ -1,3 +1,4 @@
+PACKAGE_ARCH = "${MACHINE_ARCH}"
 SUMMARY = "Package groups for SYSTEC sysWORXX modules."
 PR = "r1"
 
