@@ -50,6 +50,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     libgpiod \
     libgpiod-tools \
     makedevs \
+    nano \
     ncurses \
     net-tools \
     openssh-sftp \
