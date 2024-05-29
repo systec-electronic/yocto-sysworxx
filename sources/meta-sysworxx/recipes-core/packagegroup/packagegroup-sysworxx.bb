@@ -79,6 +79,7 @@ RDEPENDS:packagegroup-sysworxx-benchmark = "\
 RDEPENDS:packagegroup-sysworxx-extended = "\
     bash-completion \
     htop \
+    mosquitto \
     openssl \
     vim \
 "
