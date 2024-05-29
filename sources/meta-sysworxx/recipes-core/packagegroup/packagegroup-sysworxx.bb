@@ -76,8 +76,13 @@ RDEPENDS:packagegroup-sysworxx-benchmark = "\
     memtester \
 "
 
+# python3-distutils is required by python3-docker-compose
+
 RDEPENDS:packagegroup-sysworxx-extended = "\
     bash-completion \
+    docker-ce \
+    python3-docker-compose \
+    python3-distutils \
     htop \
     mosquitto \
     openssl \
