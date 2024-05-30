@@ -12,6 +12,9 @@ variables:
 stages:
   - build
 
+before_script:
+  - sudo chown -R $(id -u):$(id -g) $PWD
+
 sysworxx-image-default-ctr:
   stage: build
   script: |
