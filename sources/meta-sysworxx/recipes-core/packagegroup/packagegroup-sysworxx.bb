@@ -1,3 +1,4 @@
+PACKAGE_ARCH = "${MACHINE_ARCH}"
 SUMMARY = "Package groups for SYSTEC sysWORXX modules."
 PR = "r1"
 
@@ -50,6 +51,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     libgpiod \
     libgpiod-tools \
     makedevs \
+    nano \
     ncurses \
     net-tools \
     openssh-sftp \
@@ -75,9 +77,15 @@ RDEPENDS:packagegroup-sysworxx-benchmark = "\
     memtester \
 "
 
+# python3-distutils is required by python3-docker-compose
+
 RDEPENDS:packagegroup-sysworxx-extended = "\
     bash-completion \
+    docker-ce \
+    python3-docker-compose \
+    python3-distutils \
     htop \
+    mosquitto \
     openssl \
     vim \
 "
