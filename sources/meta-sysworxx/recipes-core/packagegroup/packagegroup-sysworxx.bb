@@ -86,6 +86,7 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     python3-distutils \
     htop \
     mosquitto \
+    node-red \
     openssl \
     vim \
 "

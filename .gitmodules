@@ -41,3 +41,6 @@
 [submodule "sources/meta-summit-radio"]
 	path = sources/meta-summit-radio
 	url = https://github.com/LairdCP/meta-summit-radio.git
+[submodule "sources/meta-node-red"]
+	path = sources/meta-node-red
+	url = https://github.com/ChristophHandschuh/meta-node-red/
