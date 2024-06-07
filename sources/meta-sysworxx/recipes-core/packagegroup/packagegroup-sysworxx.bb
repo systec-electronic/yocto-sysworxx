@@ -11,6 +11,7 @@ PACKAGES = "\
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-graphical \
     packagegroup-sysworxx-wifi \
 "
 
@@ -20,6 +21,7 @@ RDEPENDS:packagegroup-sysworxx = "\
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-graphical \
     packagegroup-sysworxx-wifi \
 "
 
@@ -100,6 +102,12 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     node-red \
     openssl \
     vim \
+"
+
+RDEPENDS:packagegroup-sysworxx-graphical = "\
+    kms++ \
+    fb-test \
+    fbv \
 "
 
 # TODO: we should probably not install the full vim experience, since this
