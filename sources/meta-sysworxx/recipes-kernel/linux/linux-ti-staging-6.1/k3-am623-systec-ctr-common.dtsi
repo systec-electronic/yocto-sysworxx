@@ -172,12 +172,12 @@
 };
 // gpu
 &gpu {
-	status = "disable";
+	status = "disabled";
 };
 
 // gpu watchdog
 &main_rti15 {
-	status = "isabled";
+	status = "disabled";
 };
 
 &a53_opp_table {
