@@ -60,6 +60,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     procps \
     psmisc \
     rng-tools \
+    rs485 \
     sed \
     tar \
     time \
