@@ -14,7 +14,53 @@
 / {
 	model = "SYSTEC sysWORXX production test";
 	compatible = "systec,sysworxx,prodtest", "systec,sysworxx", "ti,am625";
+
+	display {
+		compatible = "riverdi,rvt50hqlfwn00", "panel-lvds";
+
+		width-mm = <108>;
+		height-mm = <65>;
+
+		data-mapping = "jeida-18";
+
+		port@0 {
+			lcd_in0: endpoint {
+				remote-endpoint = <&oldi_out0>;
+			};
+		};
+
+		panel-timing {
+			clock-frequency = <25000000>;
+			hactive = <800>;
+			vactive = <480>;
+			hfront-porch = <8>;
+			hback-porch = <8>;
+			hsync-len = <4>;
+			vback-porch = <8>;
+			vfront-porch = <8>;
+			vsync-len = <4>;
+
+			// hsync-active = <0>;
+			// vsync-active = <0>;
+			// de-active = <1>;
+			// pixelclk-active = <1>;
+		};
+	};
 };
+
+&dss_ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	/* VP1: LVDS Output (OLDI TX 0) */
+	port@0 {
+		reg = <0>;
+		oldi_out0: endpoint {
+			remote-endpoint = <&lcd_in0>;
+		};
+	};
+};
+
 
 &main_pmx0 {
 	usb1_pins_default: usb1-default-pins {
