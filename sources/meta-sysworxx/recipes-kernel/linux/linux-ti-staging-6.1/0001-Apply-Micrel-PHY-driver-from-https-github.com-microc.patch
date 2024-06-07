@@ -1,7 +1,7 @@
-From d5a6475921abc796311decb5c9c47a16d9e28a93 Mon Sep 17 00:00:00 2001
+From 175209e69bbd8ab38be3ff511eb8e054c7687c0d Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
-Date: Mon, 21 Aug 2023 09:31:28 +0200
-Subject: [PATCH] Apply Micrel PHY driver from
+Date: Fri, 7 Jun 2024 09:09:34 +0200
+Subject: [PATCH] [PATCH] Apply Micrel PHY driver from
  https://github.com/microchip-ung/lan883x_lan884x_linux
 
 Branch: master
@@ -17,7 +17,7 @@ Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
  4 files changed, 1954 insertions(+), 238 deletions(-)
 
 diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 50eeecba1f18..f8ab5b2fa12d 100644
+index e804613faa1f..fea1d0e02ba8 100644
 --- a/drivers/net/ethernet/microchip/lan743x_main.c
 +++ b/drivers/net/ethernet/microchip/lan743x_main.c
 @@ -6,6 +6,7 @@
@@ -28,7 +28,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  #include <linux/microchipphy.h>
  #include <linux/net_tstamp.h>
  #include <linux/of_mdio.h>
-@@ -331,6 +332,10 @@ static void lan743x_intr_shared_isr(void *context, u32 int_sts, u32 flags)
+@@ -343,6 +344,10 @@ static void lan743x_intr_shared_isr(void *context, u32 int_sts, u32 flags)
  			lan743x_ptp_isr(adapter);
  			int_sts &= ~INT_BIT_1588_;
  		}
@@ -39,7 +39,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  	}
  	if (int_sts)
  		lan743x_csr_write(adapter, INT_EN_CLR, int_sts);
-@@ -792,7 +797,7 @@ static int lan743x_mac_mii_wait_till_not_busy(struct lan743x_adapter *adapter)
+@@ -805,7 +810,7 @@ static int lan743x_mac_mii_wait_till_not_busy(struct lan743x_adapter *adapter)
  				  !(data & MAC_MII_ACC_MII_BUSY_), 0, 1000000);
  }
  
@@ -48,7 +48,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  {
  	struct lan743x_adapter *adapter = bus->priv;
  	u32 val, mii_access;
-@@ -814,8 +819,8 @@ static int lan743x_mdiobus_read(struct mii_bus *bus, int phy_id, int index)
+@@ -827,8 +832,8 @@ static int lan743x_mdiobus_read(struct mii_bus *bus, int phy_id, int index)
  	return (int)(val & 0xFFFF);
  }
  
@@ -59,7 +59,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  {
  	struct lan743x_adapter *adapter = bus->priv;
  	u32 val, mii_access;
-@@ -835,12 +840,10 @@ static int lan743x_mdiobus_write(struct mii_bus *bus,
+@@ -848,12 +853,10 @@ static int lan743x_mdiobus_write(struct mii_bus *bus,
  	return ret;
  }
  
@@ -73,7 +73,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  	ret = (id << MAC_MII_ACC_PHY_ADDR_SHIFT_) &
  		MAC_MII_ACC_PHY_ADDR_MASK_;
  	ret |= (dev_addr << MAC_MII_ACC_MIIMMD_SHIFT_) &
-@@ -858,7 +861,8 @@ static u32 lan743x_mac_mmd_access(int id, int index, int op)
+@@ -871,7 +874,8 @@ static u32 lan743x_mac_mmd_access(int id, int index, int op)
  	return ret;
  }
  
@@ -83,7 +83,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  {
  	struct lan743x_adapter *adapter = bus->priv;
  	u32 mmd_access;
-@@ -868,32 +872,30 @@ static int lan743x_mdiobus_c45_read(struct mii_bus *bus, int phy_id, int index)
+@@ -881,32 +885,30 @@ static int lan743x_mdiobus_c45_read(struct mii_bus *bus, int phy_id, int index)
  	ret = lan743x_mac_mii_wait_till_not_busy(adapter);
  	if (ret < 0)
  		return ret;
@@ -137,7 +137,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  {
  	struct lan743x_adapter *adapter = bus->priv;
  	u32 mmd_access;
-@@ -903,26 +905,23 @@ static int lan743x_mdiobus_c45_write(struct mii_bus *bus,
+@@ -916,26 +918,23 @@ static int lan743x_mdiobus_c45_write(struct mii_bus *bus,
  	ret = lan743x_mac_mii_wait_till_not_busy(adapter);
  	if (ret < 0)
  		return ret;
@@ -180,7 +180,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  }
  
  static int lan743x_sgmii_wait_till_not_busy(struct lan743x_adapter *adapter)
-@@ -939,7 +938,7 @@ static int lan743x_sgmii_wait_till_not_busy(struct lan743x_adapter *adapter)
+@@ -952,7 +951,7 @@ static int lan743x_sgmii_wait_till_not_busy(struct lan743x_adapter *adapter)
  	return ret;
  }
  
@@ -189,7 +189,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  {
  	u32 mmd_access;
  	int ret;
-@@ -1326,8 +1325,8 @@ static void lan743x_mac_close(struct lan743x_adapter *adapter)
+@@ -1339,8 +1338,8 @@ static void lan743x_mac_close(struct lan743x_adapter *adapter)
  				 1, 1000, 20000, 100);
  }
  
@@ -200,7 +200,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  {
  	u32 flow_setting = 0;
  
-@@ -1424,14 +1423,6 @@ static void lan743x_phy_link_status_change(struct net_device *netdev)
+@@ -1437,14 +1436,6 @@ static void lan743x_phy_link_status_change(struct net_device *netdev)
  
  		data = lan743x_csr_read(adapter, MAC_CR);
  
@@ -215,7 +215,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  		/* set duplex mode */
  		if (phydev->duplex)
  			data |= MAC_CR_DPX_;
-@@ -1483,6 +1474,62 @@ static void lan743x_phy_close(struct lan743x_adapter *adapter)
+@@ -1496,6 +1487,62 @@ static void lan743x_phy_close(struct lan743x_adapter *adapter)
  	netdev->phydev = NULL;
  }
  
@@ -278,7 +278,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  static int lan743x_phy_open(struct lan743x_adapter *adapter)
  {
  	struct net_device *netdev = adapter->netdev;
-@@ -1490,6 +1537,9 @@ static int lan743x_phy_open(struct lan743x_adapter *adapter)
+@@ -1503,6 +1550,9 @@ static int lan743x_phy_open(struct lan743x_adapter *adapter)
  	struct phy_device *phydev;
  	int ret = -EIO;
  
@@ -288,7 +288,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  	/* try devicetree phy, or fixed link */
  	phydev = of_phy_get_and_connect(netdev, adapter->pdev->dev.of_node,
  					lan743x_phy_link_status_change);
-@@ -1500,18 +1550,25 @@ static int lan743x_phy_open(struct lan743x_adapter *adapter)
+@@ -1513,18 +1563,25 @@ static int lan743x_phy_open(struct lan743x_adapter *adapter)
  		if (!phydev)
  			goto return_error;
  
@@ -322,7 +322,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  	/* MAC doesn't support 1000T Half */
  	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
  
-@@ -2117,6 +2174,7 @@ static netdev_tx_t lan743x_tx_xmit_frame(struct lan743x_tx *tx,
+@@ -2130,6 +2187,7 @@ static netdev_tx_t lan743x_tx_xmit_frame(struct lan743x_tx *tx,
  					 (unsigned short)8);
  	}
  
@@ -330,7 +330,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  	if (lan743x_tx_frame_start(tx,
  				   skb->data, head_length,
  				   start_frame_length,
-@@ -3088,7 +3146,7 @@ static int lan743x_netdev_ioctl(struct net_device *netdev,
+@@ -3101,7 +3159,7 @@ static int lan743x_netdev_ioctl(struct net_device *netdev,
  {
  	if (!netif_running(netdev))
  		return -EINVAL;
@@ -339,7 +339,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  		return lan743x_ptp_ioctl(netdev, ifr, cmd);
  	return phy_mii_ioctl(netdev->phydev, ifr, cmd);
  }
-@@ -3199,6 +3257,7 @@ static void lan743x_full_cleanup(struct lan743x_adapter *adapter)
+@@ -3212,6 +3270,7 @@ static void lan743x_full_cleanup(struct lan743x_adapter *adapter)
  {
  	unregister_netdev(adapter->netdev);
  
@@ -347,7 +347,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  	lan743x_mdiobus_cleanup(adapter);
  	lan743x_hardware_cleanup(adapter);
  	lan743x_pci_cleanup(adapter);
-@@ -3285,9 +3344,10 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+@@ -3298,9 +3357,10 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
  			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
  			netif_dbg(adapter, drv, adapter->netdev,
  				  "SGMII operation\n");
@@ -361,7 +361,7 @@ index 50eeecba1f18..f8ab5b2fa12d 100644
  			adapter->mdiobus->name = "lan743x-mdiobus-c45";
  			netif_dbg(adapter, drv, adapter->netdev,
  				  "lan743x-mdiobus-c45\n");
-@@ -3299,16 +3359,15 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+@@ -3312,16 +3372,15 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
  			netif_dbg(adapter, drv, adapter->netdev,
  				  "RGMII operation\n");
  			// Only C22 support when RGMII I/F
@@ -428,7 +428,7 @@ index 67877d3b6dd9..9ed9dcd702de 100644
  
  #endif /* _LAN743X_H */
 diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 54a17b576eac..eb34ee9f93f0 100644
+index 9481f172830f..226b03da55d3 100644
 --- a/drivers/net/phy/micrel.c
 +++ b/drivers/net/phy/micrel.c
 @@ -26,6 +26,7 @@
@@ -446,9 +446,9 @@ index 54a17b576eac..eb34ee9f93f0 100644
 -#define LAN8814_1PPM_FORMAT			17179
 +#define LAN8814_1PPM_FORMAT			34360
  
- #define PTP_RX_MOD				0x024F
- #define PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_ BIT(3)
-@@ -268,6 +269,9 @@ struct kszphy_type {
+ #define PTP_RX_VERSION				0x0248
+ #define PTP_TX_VERSION				0x0288
+@@ -273,6 +274,9 @@ struct kszphy_type {
  	u16 interrupt_level_mask;
  	u16 cable_diag_reg;
  	unsigned long pair_mask;
@@ -458,7 +458,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	bool has_broadcast_disable;
  	bool has_nand_tree_disable;
  	bool has_rmii_ref_clk_sel;
-@@ -310,6 +314,12 @@ struct kszphy_ptp_priv {
+@@ -315,6 +319,12 @@ struct kszphy_ptp_priv {
  	enum hwtstamp_rx_filters rx_filter;
  	int layer;
  	int version;
@@ -471,7 +471,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  };
  
  struct kszphy_priv {
-@@ -320,6 +330,7 @@ struct kszphy_priv {
+@@ -325,6 +335,7 @@ struct kszphy_priv {
  	bool rmii_ref_clk_sel;
  	bool rmii_ref_clk_sel_val;
  	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
@@ -479,7 +479,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  };
  
  static const struct kszphy_type lan8814_type = {
-@@ -364,6 +375,21 @@ static const struct kszphy_type ksz9021_type = {
+@@ -369,6 +380,21 @@ static const struct kszphy_type ksz9021_type = {
  	.interrupt_level_mask	= BIT(14),
  };
  
@@ -501,7 +501,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  static int kszphy_extended_write(struct phy_device *phydev,
  				u32 regnum, u16 val)
  {
-@@ -1172,19 +1198,18 @@ static int ksz9131_of_load_skew_values(struct phy_device *phydev,
+@@ -1177,19 +1203,18 @@ static int ksz9131_of_load_skew_values(struct phy_device *phydev,
  #define KSZ9131RN_MMD_COMMON_CTRL_REG	2
  #define KSZ9131RN_RXC_DLL_CTRL		76
  #define KSZ9131RN_TXC_DLL_CTRL		77
@@ -524,7 +524,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  		break;
  	case PHY_INTERFACE_MODE_RGMII_ID:
  		rxcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
-@@ -1192,10 +1217,10 @@ static int ksz9131_config_rgmii_delay(struct phy_device *phydev)
+@@ -1197,10 +1222,10 @@ static int ksz9131_config_rgmii_delay(struct phy_device *phydev)
  		break;
  	case PHY_INTERFACE_MODE_RGMII_RXID:
  		rxcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
@@ -537,7 +537,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  		txcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
  		break;
  	default:
-@@ -1203,13 +1228,13 @@ static int ksz9131_config_rgmii_delay(struct phy_device *phydev)
+@@ -1208,13 +1233,13 @@ static int ksz9131_config_rgmii_delay(struct phy_device *phydev)
  	}
  
  	ret = phy_modify_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
@@ -553,7 +553,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  			      txcdll_val);
  }
  
-@@ -1295,6 +1320,81 @@ static int ksz9131_config_init(struct phy_device *phydev)
+@@ -1300,6 +1325,81 @@ static int ksz9131_config_init(struct phy_device *phydev)
  	return 0;
  }
  
@@ -635,7 +635,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  #define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
  #define KSZ8873MLL_GLOBAL_CONTROL_4_DUPLEX	BIT(6)
  #define KSZ8873MLL_GLOBAL_CONTROL_4_SPEED	BIT(4)
-@@ -2013,7 +2113,8 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
+@@ -2018,7 +2118,8 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
  	const struct kszphy_type *type = phydev->drv->driver_data;
  	unsigned long pair_mask = type->pair_mask;
  	int retries = 20;
@@ -645,7 +645,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  
  	*finished = false;
  
-@@ -2305,8 +2406,8 @@ static void lan8814_get_sig_rx(struct sk_buff *skb, u16 *sig)
+@@ -2310,8 +2411,8 @@ static void lan8814_get_sig_rx(struct sk_buff *skb, u16 *sig)
  	*sig = (__force u16)(ntohs(ptp_header->sequence_id));
  }
  
@@ -656,7 +656,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  {
  	struct skb_shared_hwtstamps *shhwtstamps;
  	struct lan8814_ptp_rx_ts *rx_ts, *tmp;
-@@ -2355,7 +2456,7 @@ static bool lan8814_rxtstamp(struct mii_timestamper *mii_ts, struct sk_buff *skb
+@@ -2360,7 +2461,7 @@ static bool lan8814_rxtstamp(struct mii_timestamper *mii_ts, struct sk_buff *skb
  	/* If we failed to match then add it to the queue for when the timestamp
  	 * will come
  	 */
@@ -665,7 +665,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  		skb_queue_tail(&ptp_priv->rx_queue, skb);
  
  	return true;
-@@ -2605,18 +2706,14 @@ static void lan8814_get_sig_tx(struct sk_buff *skb, u16 *sig)
+@@ -2610,18 +2711,14 @@ static void lan8814_get_sig_tx(struct sk_buff *skb, u16 *sig)
  	*sig = (__force u16)(ntohs(ptp_header->sequence_id));
  }
  
@@ -686,7 +686,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  
  	spin_lock_irqsave(&ptp_priv->tx_queue.lock, flags);
  	skb_queue_walk_safe(&ptp_priv->tx_queue, skb, skb_tmp) {
-@@ -2638,6 +2735,16 @@ static void lan8814_dequeue_tx_skb(struct kszphy_ptp_priv *ptp_priv)
+@@ -2643,6 +2740,16 @@ static void lan8814_dequeue_tx_skb(struct kszphy_ptp_priv *ptp_priv)
  	}
  }
  
@@ -703,7 +703,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  static void lan8814_get_tx_ts(struct kszphy_ptp_priv *ptp_priv)
  {
  	struct phy_device *phydev = ptp_priv->phydev;
-@@ -2686,11 +2793,27 @@ static bool lan8814_match_skb(struct kszphy_ptp_priv *ptp_priv,
+@@ -2691,11 +2798,27 @@ static bool lan8814_match_skb(struct kszphy_ptp_priv *ptp_priv,
  	return ret;
  }
  
@@ -732,7 +732,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	u32 reg;
  
  	do {
-@@ -2700,17 +2823,7 @@ static void lan8814_get_rx_ts(struct kszphy_ptp_priv *ptp_priv)
+@@ -2705,17 +2828,7 @@ static void lan8814_get_rx_ts(struct kszphy_ptp_priv *ptp_priv)
  
  		lan8814_ptp_rx_ts_get(phydev, &rx_ts->seconds, &rx_ts->nsec,
  				      &rx_ts->seq_id);
@@ -751,7 +751,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  
  		/* If other timestamps are available in the FIFO,
  		 * process them.
-@@ -2719,13 +2832,11 @@ static void lan8814_get_rx_ts(struct kszphy_ptp_priv *ptp_priv)
+@@ -2724,13 +2837,11 @@ static void lan8814_get_rx_ts(struct kszphy_ptp_priv *ptp_priv)
  	} while (PTP_CAP_INFO_RX_TS_CNT_GET_(reg) > 0);
  }
  
@@ -766,7 +766,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	if (status & PTP_TSU_INT_STS_PTP_TX_TS_EN_)
  		lan8814_get_tx_ts(ptp_priv);
  
-@@ -2824,8 +2935,8 @@ static int lan8804_config_intr(struct phy_device *phydev)
+@@ -2829,8 +2940,8 @@ static int lan8804_config_intr(struct phy_device *phydev)
  
  static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
  {
@@ -776,7 +776,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  
  	irq_status = phy_read(phydev, LAN8814_INTS);
  	if (irq_status < 0) {
-@@ -2838,20 +2949,13 @@ static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
+@@ -2843,20 +2954,13 @@ static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
  		ret = IRQ_HANDLED;
  	}
  
@@ -803,7 +803,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	}
  
  	return ret;
-@@ -2941,10 +3045,6 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
+@@ -2952,10 +3056,6 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
  {
  	struct lan8814_shared_priv *shared = phydev->shared->priv;
  
@@ -814,7 +814,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	/* Initialise shared lock for clock*/
  	mutex_init(&shared->shared_lock);
  
-@@ -2964,12 +3064,16 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
+@@ -2975,12 +3075,16 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
  
  	shared->ptp_clock = ptp_clock_register(&shared->ptp_clock_info,
  					       &phydev->mdio.dev);
@@ -832,7 +832,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	phydev_dbg(phydev, "successfully registered ptp clock\n");
  
  	shared->phydev = phydev;
-@@ -2998,6 +3102,159 @@ static void lan8814_setup_led(struct phy_device *phydev, int val)
+@@ -3009,6 +3113,159 @@ static void lan8814_setup_led(struct phy_device *phydev, int val)
  	lanphy_write_page_reg(phydev, 5, LAN8814_LED_CTRL_1, temp);
  }
  
@@ -992,7 +992,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  static int lan8814_config_init(struct phy_device *phydev)
  {
  	struct kszphy_priv *lan8814 = phydev->priv;
-@@ -3013,16 +3270,10 @@ static int lan8814_config_init(struct phy_device *phydev)
+@@ -3024,16 +3281,10 @@ static int lan8814_config_init(struct phy_device *phydev)
  	val &= ~LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA;
  	lanphy_write_page_reg(phydev, 5, LAN8814_QSGMII_PCS1G_ANEG_CONFIG, val);
  
@@ -1010,7 +1010,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  }
  
  /* It is expected that there will not be any 'lan8814_take_coma_mode'
-@@ -3046,6 +3297,114 @@ static int lan8814_release_coma_mode(struct phy_device *phydev)
+@@ -3057,6 +3308,114 @@ static int lan8814_release_coma_mode(struct phy_device *phydev)
  	return 0;
  }
  
@@ -1125,7 +1125,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  static int lan8814_probe(struct phy_device *phydev)
  {
  	const struct kszphy_type *type = phydev->drv->driver_data;
-@@ -3060,6 +3419,7 @@ static int lan8814_probe(struct phy_device *phydev)
+@@ -3071,6 +3430,7 @@ static int lan8814_probe(struct phy_device *phydev)
  	phydev->priv = priv;
  
  	priv->type = type;
@@ -1133,7 +1133,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  
  	kszphy_parse_led_mode(phydev);
  
-@@ -3082,109 +3442,1370 @@ static int lan8814_probe(struct phy_device *phydev)
+@@ -3093,109 +3453,1370 @@ static int lan8814_probe(struct phy_device *phydev)
  
  	lan8814_ptp_init(phydev);
  
@@ -2603,7 +2603,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	.get_strings	= kszphy_get_strings,
  	.get_stats	= kszphy_get_stats,
  	.suspend	= kszphy_suspend,
-@@ -3294,16 +4915,36 @@ static struct phy_driver ksphy_driver[] = {
+@@ -3305,17 +4926,37 @@ static struct phy_driver ksphy_driver[] = {
  	.resume		= kszphy_resume,
  	.config_intr	= lan8804_config_intr,
  	.handle_interrupt = lan8804_handle_interrupt,
@@ -2634,6 +2634,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
 -	.driver_data	= &ksz9021_type,
 +	.driver_data	= &ksz9131_type,
  	.probe		= kszphy_probe,
+ 	.soft_reset	= genphy_soft_reset,
  	.config_init	= ksz9131_config_init,
  	.config_intr	= kszphy_config_intr,
 +	.config_aneg	= ksz9131_config_aneg,
@@ -2641,7 +2642,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  	.handle_interrupt = kszphy_handle_interrupt,
  	.get_sset_count = kszphy_get_sset_count,
  	.get_strings	= kszphy_get_strings,
-@@ -3377,6 +5018,7 @@ static struct mdio_device_id __maybe_unused micrel_tbl[] = {
+@@ -3389,6 +5030,7 @@ static struct mdio_device_id __maybe_unused micrel_tbl[] = {
  	{ PHY_ID_KSZ886X, MICREL_PHY_ID_MASK },
  	{ PHY_ID_LAN8814, MICREL_PHY_ID_MASK },
  	{ PHY_ID_LAN8804, MICREL_PHY_ID_MASK },
@@ -2650,7 +2651,7 @@ index 54a17b576eac..eb34ee9f93f0 100644
  };
  
 diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
-index 1f7c33b2f5a3..8bef1ab62bba 100644
+index e164facb0f36..322d87255984 100644
 --- a/include/linux/micrel_phy.h
 +++ b/include/linux/micrel_phy.h
 @@ -8,6 +8,8 @@
@@ -2671,5 +2672,5 @@ index 1f7c33b2f5a3..8bef1ab62bba 100644
  #define PHY_ID_KSZ886X		0x00221430
  #define PHY_ID_KSZ8863		0x00221435
 -- 
-2.41.0
+2.45.2
 
