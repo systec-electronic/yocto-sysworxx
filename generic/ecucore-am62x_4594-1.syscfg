@@ -2,7 +2,7 @@
  * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
  * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
  * @cliArgs --device "AM62x" --package "ALW" --part "Default"
- * @versions {"tool":"1.17.0+3128"}
+ * @versions {"tool":"1.20.0+3587"}
  */
 
 /**
@@ -180,7 +180,6 @@ iGPIO1["42"].$used                 = true;
 iGPIO1["43"].$assign               = "GPMC0_CSn2";
 iGPIO1["43"].$used                 = true;
 iGPIO1["44"].$assign               = "GPMC0_CSn3";
-iGPIO1["44"].$used                 = true;
 iGPIO1["45"].$assign               = "VOUT0_DATA0";
 iGPIO1["45"].$used                 = true;
 iGPIO1["46"].$assign               = "VOUT0_DATA1";
@@ -281,8 +280,6 @@ iMCAN1.$assignVoltage              = "3.3 V";
 iMCAN1.RX.$assign                  = "MCAN0_RX";
 iMCAN1.TX.$assign                  = "MCAN0_TX";
 const iMCU_GPIO1                   = scripting.addPeripheral("MCU_GPIO");
-iMCU_GPIO1["13"].$assign           = "MCU_MCAN0_TX";
-iMCU_GPIO1["14"].$assign           = "MCU_MCAN0_RX";
 iMCU_GPIO1["17"].$assign           = "MCU_I2C0_SCL";
 iMCU_GPIO1["17"].$used             = true;
 iMCU_GPIO1["18"].$assign           = "MCU_I2C0_SDA";
