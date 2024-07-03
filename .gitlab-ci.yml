@@ -4,6 +4,7 @@ default:
   tags: [docker, yocto]
 
 variables:
+  FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: true
   GIT_SUBMODULE_STRATEGY: recursive
   GIT_DEPTH: 0
   # don't clean Yocto build/tmp directory per default
@@ -13,7 +14,6 @@ stages:
   - build
 
 before_script:
-  - sudo chown -R $(id -u):$(id -g) $PWD
   - echo 'DL_DIR="/cache/downloads"' >> ./build/conf/local.conf
   - echo 'SSTATE_DIR="/cache/sstate-cache"' >> ./build/conf/local.conf
 
