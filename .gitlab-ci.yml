@@ -14,6 +14,8 @@ stages:
 
 before_script:
   - sudo chown -R $(id -u):$(id -g) $PWD
+  - echo 'DL_DIR="/cache/downloads"' >> ./build/conf/local.conf
+  - echo 'SSTATE_DIR="/cache/sstate-cache"' >> ./build/conf/local.conf
 
 sysworxx-image-default-ctr:
   stage: build
