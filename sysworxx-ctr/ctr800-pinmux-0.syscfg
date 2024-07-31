@@ -2,7 +2,7 @@
  * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
  * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
  * @cliArgs --device "AM62x" --package "ALW" --part "Default"
- * @versions {"tool":"1.17.0+3128"}
+ * @versions {"tool":"1.20.0+3587"}
  */
 
 /**
@@ -550,7 +550,6 @@ iUSB1.$assignVoltage               = "3.3 V";
 iUSB1.DM.$assign                   = "USB0_DM";
 iUSB1.DP.$assign                   = "USB0_DP";
 iUSB1.DRVVBUS.pu_pd                = "pd";
-iUSB1.DRVVBUS.rx                   = false;
 iUSB1.DRVVBUS.$assign              = "USB0_DRVVBUS";
 iUSB1.RCALIB.$assign               = "USB0_RCALIB";
 iUSB1.VBUS.$assign                 = "USB0_VBUS";
