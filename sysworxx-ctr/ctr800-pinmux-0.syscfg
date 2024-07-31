@@ -176,6 +176,7 @@ iGPIO1["26"].$assign               = "GPMC0_AD11";
 iGPIO1["26"].$used                 = true;
 iGPIO1["27"].$assign               = "GPMC0_AD12";
 iGPIO1["28"].$assign               = "GPMC0_AD13";
+iGPIO1["28"].$used                 = true;
 iGPIO1["29"].$assign               = "GPMC0_AD14";
 iGPIO1["30"].$assign               = "GPMC0_AD15";
 iGPIO1["31"].$assign               = "GPMC0_CLK";
