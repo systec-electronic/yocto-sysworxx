@@ -1,16 +1,18 @@
-From 60e6f6779eabadd69d49bb9fdc38bf0004ac5492 Mon Sep 17 00:00:00 2001
+From 1001df490b68f7c4f4287cd26318cbaa80d6335a Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Tue, 6 Feb 2024 11:54:06 +0100
-Subject: [PATCH 3/5] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
+Subject: [PATCH 3/9] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
  network phy's (EXT_REFCLK1.CLKOUT0)
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+
+%% original patch: 0003-arch-arm-dts-k3-am625-sk.dts-Enable-CLKOUT0-to-suppl.patch
 ---
  arch/arm/dts/k3-am625-sk.dts | 12 +++++++++++-
  1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
-index 28ce62356c..43bf991654 100644
+index ee734dde56f..4116f784a39 100644
 --- a/arch/arm/dts/k3-am625-sk.dts
 +++ b/arch/arm/dts/k3-am625-sk.dts
 @@ -291,6 +291,7 @@
@@ -34,7 +36,7 @@ index 28ce62356c..43bf991654 100644
  	ospi0_pins_default: ospi0-pins-default {
  		pinctrl-single,pins = <
  			AM62X_IOPAD(0x000, PIN_OUTPUT, 0) /* (H24) OSPI0_CLK */
-@@ -431,7 +438,10 @@
+@@ -429,7 +436,10 @@
  &cpsw3g {
  	pinctrl-names = "default";
  	pinctrl-0 = <&main_rgmii1_pins_default
@@ -47,5 +49,5 @@ index 28ce62356c..43bf991654 100644
  
  &cpsw_port1 {
 -- 
-2.43.0
+2.46.0
 

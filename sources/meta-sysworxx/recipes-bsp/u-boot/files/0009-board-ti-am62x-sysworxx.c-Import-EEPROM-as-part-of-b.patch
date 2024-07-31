@@ -1,0 +1,64 @@
+From 48292bd9c179ca75af395f958c1e7c212506cc37 Mon Sep 17 00:00:00 2001
+From: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Date: Mon, 5 Aug 2024 14:26:08 +0200
+Subject: [PATCH 9/9] board/ti/am62x/sysworxx.c: Import EEPROM as part of
+ board_late_init()
+
+This allows to perform board specific actions in u-boot itself and
+cleans up `bootcmd` which is most likely not intended for such
+operations.
+
+Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+---
+ board/ti/am62x/sysworxx.c   | 15 ++++++++++++++-
+ board/ti/am62x/sysworxx.env |  1 -
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/board/ti/am62x/sysworxx.c b/board/ti/am62x/sysworxx.c
+index 2ce54b38db2..da97dc4c792 100644
+--- a/board/ti/am62x/sysworxx.c
++++ b/board/ti/am62x/sysworxx.c
+@@ -23,6 +23,7 @@
+ #include <net.h>
+ #include <asm/gpio.h>
+ #include <cpu_func.h>
++#include <command.h>
+ 
+ #include <linux/sizes.h>
+ 
+@@ -165,7 +166,19 @@ void spl_perform_fixups(struct spl_image_info *spl_image)
+ #ifdef CONFIG_BOARD_LATE_INIT
+ int board_late_init(void)
+ {
+-	reset_eth_phys();
++	printf("EEPROM import\n");
++	int ret = run_command("run eeprom_import", CMD_FLAG_ENV);
++	if (ret == 0) {
++		char* fdt_prefix = env_get("fdt_prefix");
++		char* hw_iface_rev = env_get("hw_iface_rev");
++
++		if ((fdt_prefix != NULL) && (hw_iface_rev != NULL)) {
++			printf("fdt_prefix:   %s\n", fdt_prefix);
++			printf("hw_iface_rev: %s\n", hw_iface_rev);
++		}
++
++		reset_eth_phys();
++	}
+ 
+ 	return 0;
+ }
+diff --git a/board/ti/am62x/sysworxx.env b/board/ti/am62x/sysworxx.env
+index 5c8819ff8ae..a1d8de4f880 100644
+--- a/board/ti/am62x/sysworxx.env
++++ b/board/ti/am62x/sysworxx.env
+@@ -8,7 +8,6 @@
+ #endif
+ 
+ default_device_tree=ti/k3-am623-systec-fallback.dtb
+-bootcmd=run eeprom_import; run envboot; run distro_bootcmd;
+ findfdt=
+ 	setenv name_fdt ${default_device_tree};
+ 	if test -n "$fdt_prefix" -a -n "$hw_iface_rev"; then
+-- 
+2.46.0
+

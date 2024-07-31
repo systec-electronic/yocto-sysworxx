@@ -1,17 +1,19 @@
-From 49b7eebee7f05419582abbf2df56fcee187b6797 Mon Sep 17 00:00:00 2001
+From 64220aa41c0073d868cd6e1ff83dcefc276b8c1a Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Mon, 5 Feb 2024 14:32:33 +0100
-Subject: [PATCH 2/5] arch/arm/dts/k3-am625-sk.dts: Disable GPIO expander (for
+Subject: [PATCH 2/9] arch/arm/dts/k3-am625-sk.dts: Disable GPIO expander (for
  SD card voltage selection)
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+
+%% original patch: 0002-arch-arm-dts-k3-am625-sk.dts-Disable-GPIO-expander-f.patch
 ---
  arch/arm/dts/k3-am625-sk.dts                | 31 +--------------------
  arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi |  4 ---
  2 files changed, 1 insertion(+), 34 deletions(-)
 
 diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
-index d8e2144a7f..28ce62356c 100644
+index 5bdba4042da..ee734dde56f 100644
 --- a/arch/arm/dts/k3-am625-sk.dts
 +++ b/arch/arm/dts/k3-am625-sk.dts
 @@ -141,7 +141,6 @@
@@ -67,7 +69,7 @@ index d8e2144a7f..28ce62356c 100644
  
  &sdhci0 {
 diff --git a/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi b/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi
-index 4265b43416..cd62fe267d 100644
+index 4265b434168..cd62fe267d3 100644
 --- a/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi
 +++ b/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi
 @@ -228,10 +228,6 @@
@@ -82,5 +84,5 @@ index 4265b43416..cd62fe267d 100644
  	bootph-pre-ram;
  };
 -- 
-2.43.0
+2.46.0
 
