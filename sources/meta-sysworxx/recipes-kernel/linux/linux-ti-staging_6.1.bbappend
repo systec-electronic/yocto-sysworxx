@@ -17,6 +17,7 @@ SRC_URI += " \
     file://k3-am623-systec-fallback.dts${MOVE} \
     \
     file://k3-am623-systec-ctr-common.dtsi${MOVE} \
+    file://k3-am623-systec-ctr-prodtest.dts${MOVE} \
     file://k3-am623-systec-ctr800-rev0.dts${MOVE} \
 "
 

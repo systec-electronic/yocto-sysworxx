@@ -1,0 +1,111 @@
+/*
+ * Copyright (C) 2023 SYSTEC electronic AG, All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "k3-am625.dtsi"
+#include "k3-am623-systec-ctr800-pinmux-0.dtsi"
+#include "k3-am623-systec-ctr-common.dtsi"
+
+/ {
+	model = "SYSTEC sysWORXX production test";
+	compatible = "systec,sysworxx,prodtest", "systec,sysworxx", "ti,am625";
+};
+
+&main_pmx0 {
+	usb1_pins_default: usb1-default-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0258, PIN_OUTPUT, 0) /* (F18) USB1_DRVVBUS */
+		>;
+	};
+
+	gpio0_pins_prodtest: gpio0-prodtest-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0124, PIN_OUTPUT_PULLDOWN, 7) /* (A23) MMC2_SDCD.GPIO0_71 */
+			AM62X_IOPAD(0x0128, PIN_OUTPUT_PULLDOWN, 7) /* (B23) MMC2_SDWP.GPIO0_72 */
+			AM62X_IOPAD(0x015c, PIN_INPUT_PULLUP, 7) /* (AB22) MDIO0_MDIO.GPIO0_85 */
+			AM62X_IOPAD(0x0160, PIN_OUTPUT_PULLUP, 7) /* (AD24) MDIO0_MDC.GPIO0_86 */
+		>;
+	};
+
+	gpio1_pins_prodtest: gpio1-prodtest-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x01a0, PIN_OUTPUT_PULLUP, 7) /* (E18) MCASP0_AXR0.GPIO1_10 */
+			AM62X_IOPAD(0x01b4, PIN_OUTPUT_PULLUP, 7) /* (A13) SPI0_CS0.GPIO1_15 */
+			AM62X_IOPAD(0x01ec, PIN_OUTPUT_PULLUP, 7) /* (A17) I2C1_SDA.GPIO1_29 */
+		>;
+	};
+};
+
+&usbss1 {
+	ti,vbus-divider;
+	status = "okay";
+};
+
+&usb1 {
+	dr_mode = "host";
+	pinctrl-names = "default";
+	pinctrl-0 = <&usb1_pins_default>;
+};
+
+&main_gpio0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&gpio0_pins_prodtest>;
+	gpio-line-names =
+		"",          "",         "",        "",              // 0
+		"",          "",         "",        "",              // 4
+		"",          "",         "",        "",              // 8
+		"",          "",         "",        "",              // 12
+		"",          "",         "",        "",              // 16
+		"",          "",         "",        "",              // 20
+		"",          "",         "",        "",              // 24
+		"",          "",         "",        "",              // 28
+		"",          "",         "",        "",              // 32
+		"",          "",         "",        "",              // 36
+		"",          "",         "",        "",              // 40
+		"",          "",         "",        "",              // 44
+		"",          "",         "",        "",              // 48
+		"",          "",         "",        "",              // 52
+		"",          "",         "",        "",              // 56
+		"",          "",         "",        "",              // 60
+		"",          "",         "",        "",              // 64
+		"",          "",         "",        "WLAN_/DISABLE", // 68
+		"BT_REG_ON", "",         "",        "",              // 72
+		"",          "",         "",        "",              // 76
+		"",          "",         "",        "",              // 80
+		"",          "ETH_MDIO", "ETH_MDC", "",              // 84
+		"",          "",         "",        "";              // 88
+};
+
+&main_gpio1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&gpio1_pins_prodtest>;
+	gpio-line-names =
+		"", "",          "",          "",          // 0
+		"", "",          "",          "",          // 4
+		"", "",          "eMMC_/RST", "",          // 8
+		"", "",          "",          "ETH0_/RST", // 12
+		"", "",          "",          "",          // 16
+		"", "",          "",          "",          // 20
+		"", "",          "",          "",          // 24
+		"", "ETH1_/RST", "",          "",          // 28
+		"", "",          "",          "",          // 32
+		"", "",          "",          "",          // 36
+		"", "",          "",          "",          // 40
+		"", "",          "",          "",          // 44
+		"", "",          "",          "",          // 48
+		"", "",          "",          "",          // 52
+		"", "",          "",          "",          // 56
+		"", "",          "",          "",          // 60
+		"", "",          "",          "",          // 64
+		"", "",          "",          "",          // 68
+		"", "",          "",          "",          // 72
+		"", "",          "",          "",          // 76
+		"", "",          "",          "",          // 80
+		"", "",          "",          "",          // 84
+		"", "",          "",          "";          // 88
+};
