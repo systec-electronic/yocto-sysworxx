@@ -15,10 +15,3 @@
 	model = "SYSTEC sysWORXX fallback";
 	compatible = "systec,sysworxx", "ti,am625";
 };
-
-// SERIAL0
-&main_uart4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart4_serial0_pins_default>;
-	status = "okay";
-};
