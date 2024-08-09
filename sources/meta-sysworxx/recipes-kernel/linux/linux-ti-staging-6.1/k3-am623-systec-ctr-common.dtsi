@@ -422,14 +422,3 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&usb0_pins_default>;
 };
-
-// FIXME: CTR 750 Modem
-// &usbss1 {
-// 	ti,vbus-divider;
-// 	status = "okay";
-// };
-// &usb1 {
-// 	dr_mode = "host";
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&usb1_pins_default>;
-// };
