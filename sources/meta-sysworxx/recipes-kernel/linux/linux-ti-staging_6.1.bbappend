@@ -12,9 +12,11 @@ SRC_URI += " \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
     \
-    file://k3-am623-systec-ctr-common.dtsi${MOVE} \
-    file://k3-am623-systec-fallback.dts${MOVE} \
     file://k3-am623-systec-ctr800-pinmux-0.dtsi${MOVE} \
+    \
+    file://k3-am623-systec-fallback.dts${MOVE} \
+    \
+    file://k3-am623-systec-ctr-common.dtsi${MOVE} \
     file://k3-am623-systec-ctr800-rev0.dts${MOVE} \
 "
 
