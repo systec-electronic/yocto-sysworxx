@@ -60,7 +60,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     procps \
     psmisc \
     rng-tools \
-    rs485 \
+    rs485-setup \
     sed \
     systec-version \
     tar \
