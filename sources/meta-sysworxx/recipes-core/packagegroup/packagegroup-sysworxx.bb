@@ -38,6 +38,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     coreutils \
     cpio \
     cpufrequtils \
+    di-setup \
     e2fsprogs \
     e2fsprogs-resize2fs \
     file \
