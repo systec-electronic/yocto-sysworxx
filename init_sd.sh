@@ -3,13 +3,13 @@
 set -e
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <device>"
-    exit 1
+   echo "Usage: $0 <device>"
+   exit 1
 fi
 
 DEV=$1
 
-xzcat ./build/deploy-ti/images/sysworxx-ctr/sysworxx-image-default-sysworxx-ctr.wic.xz > "${DEV}"
+xzcat ./build/deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.wic.xz >"${DEV}"
 
 sync
 sleep 1
