@@ -1,0 +1,9 @@
+[Unit]
+Description=Set mode of all analog inputs
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/adc-setup.sh
+
+[Install]
+WantedBy=multi-user.target

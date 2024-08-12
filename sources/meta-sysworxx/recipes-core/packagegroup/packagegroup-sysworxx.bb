@@ -31,6 +31,7 @@ RDEPENDS:packagegroup-sysworxx-init = "\
 "
 
 RDEPENDS:packagegroup-sysworxx-base = "\
+    adc-setup \
     attr \
     bash \
     bzip2 \
