@@ -19,9 +19,19 @@ date > /dev/ttyS4
 - `ttyS5` is SERIAL1 on CTR-800
 - `ttyS6` is SERIAL2 on CTR-800
 
-### Hardware flow control
+### RS-2323 with hardware flow control
 
-WIP
+```sh
+# on PC
+stty -F /dev/ttyUSB0 115200 -echo raw crtscts
+date > /dev/ttyUSB0
+# on sysWORXX
+stty -F /dev/ttyS6 115200 -echo raw crtscts
+cat > /dev/ttyS6
+# expected behaviour:
+# - sending data will block until other side has `cat` running
+# - if `cat` is already running the send command will not block
+```
 
 ## RS-485
 
