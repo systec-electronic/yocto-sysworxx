@@ -323,6 +323,12 @@
 		};
 	};
 
+	/* ADC */
+	adc@48 {
+		compatible = "ti,ads1015";
+		reg = <0x48>;
+	};
+
 	eeprom: eeprom@50 {
 		compatible = "atmel,24c16";
 		reg = <0x50>;
