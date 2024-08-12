@@ -31,9 +31,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart4_serial0_pins_default>;
 	status = "okay";
-	// uart-has-rtscts;
 	rts-gpios = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
-	// sermode-gpio = <&gpio_exp2 0 GPIO_ACTIVE_HIGH>;
+	sermode-gpio = <&gpio_exp2 0 GPIO_ACTIVE_HIGH>;
 };
 
 // SERIAL1
@@ -41,9 +40,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart5_serial1_pins_default>;
 	status = "okay";
-	// uart-has-rtscts;
 	rts-gpios = <&main_gpio0 64 GPIO_ACTIVE_HIGH>;
-	// sermode-gpio = <&gpio_exp2 1 GPIO_ACTIVE_HIGH>;
+	sermode-gpio = <&gpio_exp2 1 GPIO_ACTIVE_HIGH>;
 };
 
 // SERIAL2
@@ -51,9 +49,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart6_serial2_pins_default>;
 	status = "okay";
-	// uart-has-rtscts;
 	rts-gpios = <&main_gpio0 63 GPIO_ACTIVE_HIGH>;
-	// sermode-gpio = <&gpio_exp2 2 GPIO_ACTIVE_HIGH>;
+	sermode-gpio = <&gpio_exp2 2 GPIO_ACTIVE_HIGH>;
 };
 
 // CAN0
