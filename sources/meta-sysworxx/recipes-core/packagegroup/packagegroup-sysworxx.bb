@@ -57,6 +57,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     openssh-sftp \
     openssh-sftp-server \
     parted \
+    phy-lan8830t-setup \
     procps \
     psmisc \
     rng-tools \
