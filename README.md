@@ -64,6 +64,17 @@ make defconfig
 make ti/k3-am623-systec-ctr800-rev0.dtb
 ```
 
+## Force a specific device tree
+
+Stop in u-boot shell and perform one of the following commands to boot with the
+specified device tree.
+
+```sh
+setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr-prodtest.dtb; boot
+setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr600-rev0.dtb; boot
+setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr800-rev0.dtb; boot
+```
+
 ## Links
 
 * [AM62x Starter Kit EVM Quick Start Guide](https://dev.ti.com/tirex/explore/node?node=A__AdoyIZ2jtLBUfHZNVmgFBQ__am62x-devtools__FUz-xrs__LATEST&search=am62x)
