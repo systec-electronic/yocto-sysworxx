@@ -62,6 +62,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     rng-tools \
     rs485 \
     sed \
+    systec-version \
     tar \
     time \
     tzdata \
