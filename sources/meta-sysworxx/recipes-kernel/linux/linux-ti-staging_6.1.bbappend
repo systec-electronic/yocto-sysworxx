@@ -11,6 +11,7 @@ SRC_URI += " \
     file://rtc.cfg \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
+    file://0001-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
     \
     file://k3-am623-systec-ctr600-pinmux-0.dtsi${MOVE} \
     file://k3-am623-systec-ctr800-pinmux-0.dtsi${MOVE} \
