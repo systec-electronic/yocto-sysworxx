@@ -1,0 +1,104 @@
+From 8e5c418308511ea3ef3e52f64cf436db70a1a10f Mon Sep 17 00:00:00 2001
+From: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Date: Wed, 14 Aug 2024 12:23:33 +0200
+Subject: [PATCH] tty: serial: 8250: Add quirk handling for some sysworxx
+ modules
+
+Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+---
+ drivers/tty/serial/8250/8250_omap.c | 65 +++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index 938bf47496a0..57883700e329 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -112,6 +112,10 @@
+ /* RX FIFO occupancy indicator */
+ #define UART_OMAP_RX_LVL		0x19
+ 
++/* Enhanced Control Register (0x90 >> 2) */
++#define UART_ECR 0x24
++#define UART_ECR_RX_EN (1 << 3)
++
+ /*
+  * Copy of the genpd flags for the console.
+  * Only used if console suspend is disabled
+@@ -1288,6 +1292,62 @@ static int omap8250_em485_config(struct uart_port *port, struct ktermios *termio
+ 	return ret;
+ }
+ 
++void omap8250_em485_start_tx_systec_quirk(struct uart_8250_port *up)
++{
++	unsigned char mcr = serial8250_in_MCR(up);
++
++	if (!(up->port.rs485.flags & SER_RS485_RX_DURING_TX)) {
++		// see serial8250_stop_rx in 8250_port.c
++		serial8250_rpm_get(up);
++
++		// disable UART receiver during tx to avoid local echo caused by
++		// ISL81387
++		int ecr = serial_in(up, UART_ECR);
++		ecr &= ~UART_ECR_RX_EN;
++		serial_out(up, UART_ECR, ecr);
++
++		up->ier &= ~(UART_IER_RLSI | UART_IER_RDI);
++		up->port.read_status_mask &= ~UART_LSR_DR;
++		serial_out(up, UART_IER, up->ier);
++
++		serial8250_rpm_put(up);
++	}
++
++	if (up->port.rs485.flags & SER_RS485_RTS_ON_SEND)
++		mcr |= UART_MCR_RTS;
++	else
++		mcr &= ~UART_MCR_RTS;
++	serial8250_out_MCR(up, mcr);
++}
++
++void omap8250_em485_stop_tx_systec_quirk(struct uart_8250_port *p)
++{
++	unsigned char mcr = serial8250_in_MCR(p);
++
++	if (p->port.rs485.flags & SER_RS485_RTS_AFTER_SEND)
++		mcr |= UART_MCR_RTS;
++	else
++		mcr &= ~UART_MCR_RTS;
++	serial8250_out_MCR(p, mcr);
++
++	/*
++	 * Empty the RX FIFO, we are not interested in anything
++	 * received during the half-duplex transmission.
++	 * Enable previously disabled RX interrupts.
++	 */
++	if (!(p->port.rs485.flags & SER_RS485_RX_DURING_TX)) {
++		serial8250_clear_and_reinit_fifos(p);
++
++		// re-enable UART receiver
++		int ecr = serial_in(p, UART_ECR);
++		ecr |= UART_ECR_RX_EN;
++		serial_out(p, UART_ECR, ecr);
++
++		p->ier |= UART_IER_RLSI | UART_IER_RDI;
++		serial_port_out(&p->port, UART_IER, p->ier);
++	}
++}
++
+ static void ti_sermode_worker(struct work_struct *work)
+ {
+ 	struct omap8250_priv *priv = container_of(work, struct omap8250_priv, sermode_worker);
+@@ -1452,6 +1512,11 @@ static int omap8250_probe(struct platform_device *pdev)
+ 			 DEFAULT_CLK_SPEED);
+ 	}
+ 
++	if (of_property_present(np, "systec,rs485-half-duplex-stop-rx")) {
++		up.rs485_start_tx = omap8250_em485_start_tx_systec_quirk;
++		up.rs485_stop_tx = omap8250_em485_stop_tx_systec_quirk;
++	}
++
+ 	priv->membase = membase;
+ 	priv->line = -ENODEV;
+ 	priv->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+-- 
+2.46.0
+

@@ -33,6 +33,7 @@
 	status = "okay";
 	rts-gpios = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
 	sermode-gpio = <&gpio_exp2 0 GPIO_ACTIVE_HIGH>;
+	systec,rs485-half-duplex-stop-rx;
 };
 
 // SERIAL1
@@ -42,6 +43,7 @@
 	status = "okay";
 	rts-gpios = <&main_gpio0 64 GPIO_ACTIVE_HIGH>;
 	sermode-gpio = <&gpio_exp2 1 GPIO_ACTIVE_HIGH>;
+	systec,rs485-half-duplex-stop-rx;
 };
 
 // SERIAL2
@@ -51,6 +53,7 @@
 	status = "okay";
 	rts-gpios = <&main_gpio0 63 GPIO_ACTIVE_HIGH>;
 	sermode-gpio = <&gpio_exp2 2 GPIO_ACTIVE_HIGH>;
+	systec,rs485-half-duplex-stop-rx;
 };
 
 // CAN0
