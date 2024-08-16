@@ -35,6 +35,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     attr \
     bash \
     bzip2 \
+    can-setup \
     coreutils \
     cpio \
     cpufrequtils \
