@@ -1,0 +1,12 @@
+[Unit]
+Description=Setup status of lan8830t leds
+DefaultDependencies=no
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=phytool write eth0/0x1/25 0x1F04
+ExecStart=phytool write eth1/0x3/25 0x1F04
+
+[Install]
+WantedBy=multi-user.target

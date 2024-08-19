@@ -1,0 +1,8 @@
+# input driver filter setting
+# possible values:
+#   "10ms"  (DS0=0, DS1=0)
+#   "3.2ms" (DS0=0, DS1=1)
+#   "1ms"   (DS0=1, DS1=0)
+#   "10us"  (DS0=1, DS1=1)
+
+DI_FILTER="10us"

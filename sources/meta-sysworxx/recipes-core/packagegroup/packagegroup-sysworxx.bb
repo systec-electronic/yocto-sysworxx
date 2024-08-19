@@ -31,12 +31,15 @@ RDEPENDS:packagegroup-sysworxx-init = "\
 "
 
 RDEPENDS:packagegroup-sysworxx-base = "\
+    adc-setup \
     attr \
     bash \
     bzip2 \
+    can-setup \
     coreutils \
     cpio \
     cpufrequtils \
+    di-setup \
     e2fsprogs \
     e2fsprogs-resize2fs \
     file \
@@ -57,11 +60,13 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     openssh-sftp \
     openssh-sftp-server \
     parted \
+    phy-lan8830t-setup \
     procps \
     psmisc \
     rng-tools \
-    rs485 \
+    rs485-setup \
     sed \
+    systec-version \
     tar \
     time \
     tzdata \

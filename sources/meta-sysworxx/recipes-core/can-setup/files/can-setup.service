@@ -1,0 +1,16 @@
+[Unit]
+Description=Rename CAN0 and CAN1 to reflect order of chassis
+DefaultDependencies=no
+After=network.target
+ConditionPathExists=/sys/class/net/can1/
+
+[Service]
+Type=oneshot
+ExecStart=ip link set can0 down
+ExecStart=ip link set can1 down
+ExecStart=ip link set dev can0 name can_TMP
+ExecStart=ip link set dev can1 name can0
+ExecStart=ip link set dev can_TMP name can1
+
+[Install]
+WantedBy=multi-user.target

@@ -9,12 +9,20 @@ SRC_URI += " \
     file://cfg80211.cfg \
     file://ecdh.cfg \
     file://rtc.cfg \
+    file://gpio_sysfs.cfg \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
+    file://0001-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
+    file://0001-tty-serial-8250-Add-quirk-handling-for-some-sysworxx.patch \
+    \
+    file://k3-am623-systec-ctr600-pinmux-0.dtsi${MOVE} \
+    file://k3-am623-systec-ctr800-pinmux-0.dtsi${MOVE} \
+    \
+    file://k3-am623-systec-fallback.dts${MOVE} \
     \
     file://k3-am623-systec-ctr-common.dtsi${MOVE} \
-    file://k3-am623-systec-fallback.dts${MOVE} \
-    file://k3-am623-systec-ctr800-pinmux-0.dtsi${MOVE} \
+    file://k3-am623-systec-ctr-prodtest.dts${MOVE} \
+    file://k3-am623-systec-ctr600-rev0.dts${MOVE} \
     file://k3-am623-systec-ctr800-rev0.dts${MOVE} \
 "
 
@@ -36,5 +44,6 @@ KERNEL_CONFIG_FRAGMENTS_WIFI += " \
 KERNEL_CONFIG_FRAGMENTS += " \
     ${FRAGMENTS_DIR}/dynamic_debug.cfg \
     ${FRAGMENTS_DIR}/rtc.cfg \
+    ${FRAGMENTS_DIR}/gpio_sysfs.cfg \
     ${KERNEL_CONFIG_FRAGMENTS_WIFI} \
 "

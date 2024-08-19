@@ -172,12 +172,12 @@
 };
 // gpu
 &gpu {
-	status = "disable";
+	status = "disabled";
 };
 
 // gpu watchdog
 &main_rti15 {
-	status = "isabled";
+	status = "disabled";
 };
 
 &a53_opp_table {
@@ -323,6 +323,12 @@
 		};
 	};
 
+	/* ADC */
+	adc@48 {
+		compatible = "ti,ads1015";
+		reg = <0x48>;
+	};
+
 	eeprom: eeprom@50 {
 		compatible = "atmel,24c16";
 		reg = <0x50>;
@@ -422,14 +428,3 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&usb0_pins_default>;
 };
-
-// FIXME: CTR 750 Modem
-// &usbss1 {
-// 	ti,vbus-divider;
-// 	status = "okay";
-// };
-// &usb1 {
-// 	dr_mode = "host";
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&usb1_pins_default>;
-// };

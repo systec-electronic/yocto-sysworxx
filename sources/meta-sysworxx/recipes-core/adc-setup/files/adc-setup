@@ -1,0 +1,5 @@
+# Possible values for ADC modes are "voltage" or "current"
+AI0_MODE="voltage"
+AI1_MODE="voltage"
+AI2_MODE="voltage"
+AI3_MODE="voltage"

@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup driver for digital inputs
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/di-setup.sh
+
+[Install]
+WantedBy=multi-user.target
