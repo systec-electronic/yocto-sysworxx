@@ -12,6 +12,7 @@ variables:
 
 stages:
   - build
+  - deploy
 
 before_script:
   - echo 'DL_DIR="/cache/downloads"' >> ./build/conf/local.conf
@@ -30,3 +31,42 @@ sysworxx-image-default:
     expire_in: 1 week
     paths:
       - "*.wic.xz"
+
+bare-repo-release:
+  stage: deploy
+  image:
+    name: alpine
+  variables:
+    GIT_STRATEGY: clone
+    GIT_CHECKOUT: "false"
+  before_script:
+    - |
+      mkdir -p /cache/apk/
+      apk add --cache-dir /cache/apk/ git
+  script:
+    - |
+      describe="${CI_COMMIT_TAG:-${CI_COMMIT_BRANCH}}-${CI_COMMIT_SHORT_SHA}"
+      gitc="git -C "${CI_PROJECT_NAME}.git""
+      project_url=$(git -C .git/ remote -v | grep fetch | awk '{print $2}')
+      rm -r .git
+
+      git clone --bare ${project_url} "${CI_PROJECT_NAME}.git"
+
+      if [[ -n "${CI_COMMIT_BRANCH}" && "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
+        $gitc branch | grep -v -e "${CI_DEFAULT_BRANCH}" -e ${CI_COMMIT_BRANCH} | xargs $gitc branch -D
+      else
+        $gitc branch | grep -v -e "${CI_DEFAULT_BRANCH}" | xargs $gitc branch -D
+      fi
+      $gitc gc
+      $gitc remote remove origin
+
+      echo branches:
+      $gitc branch
+      echo tags:
+      $gitc tag
+
+      tar jcfv "${CI_PROJECT_NAME}-${describe}.tar.bz2" "${CI_PROJECT_NAME}.git"
+      tar zcfv "${CI_PROJECT_NAME}-${describe}.tar.gz" "${CI_PROJECT_NAME}.git"
+  artifacts:
+    paths:
+      - "./${CI_PROJECT_NAME}-*.tar.*"

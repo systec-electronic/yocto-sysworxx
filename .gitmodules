@@ -30,10 +30,6 @@
 	path = sources/oe-core
 	url = https://git.openembedded.org/openembedded-core
 	branch = kirkstone
-[submodule "pin-muxing"]
-	path = pin-muxing
-	url = ../../hw/pin-muxing.git
-	branch = master
 [submodule "sources/meta-yocto"]
 	path = sources/meta-yocto
 	url = https://git.yoctoproject.org/meta-yocto
