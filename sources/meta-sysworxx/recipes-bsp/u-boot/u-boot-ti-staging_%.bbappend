@@ -10,4 +10,6 @@ SRC_URI += " \
     file://0007-board-ti-am62x-sysworxx.env-Load-u-boot-environment-.patch \
     file://0008-board-ti-am62x-sysworxx.c-Remove-obsolete-board-dete.patch \
     file://0009-board-ti-am62x-sysworxx.c-Import-EEPROM-as-part-of-b.patch \
+    file://0010-board-ti-am62x-sysworxx.c-Detect-mmcdev-based-on-boo.patch \
+    file://0011-board-ti-am62x-sysworxx.env-Select-root-partition-bo.patch \
 "
