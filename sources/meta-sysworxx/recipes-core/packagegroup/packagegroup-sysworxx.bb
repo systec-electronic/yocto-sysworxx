@@ -34,6 +34,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     adc-setup \
     attr \
     bash \
+    bringup \
     bzip2 \
     can-setup \
     coreutils \
