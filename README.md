@@ -25,7 +25,7 @@ shown below.
 
 ```sh
 # replace "sdX" with the block device which should be used
-./init_sd.sh /dev/sdX
+sudo ./init_sd.sh /dev/sdX
 ```
 
 ## Modifying Linux kernel source
