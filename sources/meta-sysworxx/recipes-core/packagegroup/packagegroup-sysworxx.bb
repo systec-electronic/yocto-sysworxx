@@ -63,6 +63,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     phy-lan8830t-setup \
     procps \
     psmisc \
+    rauc \
     rng-tools \
     rs485-setup \
     sed \
