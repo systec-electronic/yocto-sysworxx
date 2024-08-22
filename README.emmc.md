@@ -1,5 +1,33 @@
 # eMMC
 
+## Partitions
+
+| Size   | Device    | mountpoint | usage                                             |
+|--------|-----------|------------|---------------------------------------------------|
+| 4 MiB  | mmcblk0p1 | /vendor    | serial number, license keys, calibration          |
+| 4 MiB  | mmcblk0p2 | -          | RAUC U-Boot environment                           |
+| 2 GiB  | mmcblk0p3 | /          | root-fs slot a                                    |
+| 2 GiB  | mmcblk0p4 | /          | root-fs slot b                                    |
+| >3 GiB | mmcblk0p5 | /home*     | user data in /home and overlays for /etc and /var |
+
+(*) overlays are mounted to `/etc` and `/var`
+
+Boot partitions of eMMC are used for the bootloader.
+
+```sh
+parted -s /dev/mmcblk0 mktable gpt
+parted -s /dev/mmcblk0 mkpart vendor fat32 1 4MiB
+parted -s /dev/mmcblk0 mkpart rauc   fat32 4MiB 8MiB
+parted -s /dev/mmcblk0 mkpart root.0 ext4  8MiB 3GiB
+parted -s /dev/mmcblk0 mkpart root.1 ext4  3GiB 6GiB
+parted -s /dev/mmcblk0 mkpart user   ext4  6GiB 100%
+mkfs.vfat /dev/mmcblk0p1 -n vendor
+mkfs.vfat /dev/mmcblk0p2 -n rauc.env
+mkfs.ext4 /dev/mmcblk0p3 -L root.0
+mkfs.ext4 /dev/mmcblk0p4 -L root.1
+mkfs.ext4 /dev/mmcblk0p5 -L user
+parted -s /dev/mmcblk0 print
+```
 
 ## eMMC Provisioning
 
