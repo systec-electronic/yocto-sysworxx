@@ -14,24 +14,7 @@
 
 Boot partitions of eMMC are used for the bootloader.
 
-```sh
-parted -s /dev/mmcblk0 mktable gpt
-parted -s /dev/mmcblk0 mkpart vendor fat32 1 4MiB
-parted -s /dev/mmcblk0 mkpart rauc   fat32 4MiB 8MiB
-parted -s /dev/mmcblk0 mkpart root.0 ext4  8MiB 3GiB
-parted -s /dev/mmcblk0 mkpart root.1 ext4  3GiB 6GiB
-parted -s /dev/mmcblk0 mkpart user   ext4  6GiB 100%
-mkfs.vfat /dev/mmcblk0p1 -n vendor
-mkfs.vfat /dev/mmcblk0p2 -n rauc.env
-mkfs.ext4 /dev/mmcblk0p3 -L root.0
-mkfs.ext4 /dev/mmcblk0p4 -L root.1
-mkfs.ext4 /dev/mmcblk0p5 -L user
-parted -s /dev/mmcblk0 print
-```
-
-## eMMC Provisioning
-
-## Enable eMMC boot partition
+## eMMC Provisioning (only needed for new eMMC)
 
 ```sh
 # This needs to be done only once for a new eMMC
@@ -42,44 +25,6 @@ mmc rst-function 0 1
 # activate boot partitions for booting from them
 mmc partconf 0 1 1 1
 mmc bootbus 0 2 0 0
-```
-
-# Install to eMMC manually
-
-Boot from sd card and run the following commands:
-
-```sh
-# install bootloader(s) to eMMC boot partition
-mount /dev/mmcblk1p1 /mnt && cd /mnt
-echo 0 > /sys/block/mmcblk0boot0/force_ro
-dd if=tiboot3.bin of=/dev/mmcblk0boot0 seek=0
-dd if=tispl.bin of=/dev/mmcblk0boot0 seek=1024
-dd if=u-boot.img of=/dev/mmcblk0boot0 seek=5120
-cd && umount /mnt
-
-# copy rootfs to /tmp (run from PC)
-scp build/deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.tar.xz root@sysworxx
-
-# install rootfs
-dd if=/dev/zero of=/dev/mmcblk0 bs=1024 count=1024
-parted -s /dev/mmcblk0 mktable msdos
-parted -s /dev/mmcblk0 unit MiB mkpart primary ext4 0% 100%
-partprobe /dev/mmcblk0
-mkfs.ext4 -q -F /dev/mmcblk0p1
-mount /dev/mmcblk0p1 /mnt
-cd /mnt
-xzcat /tmp/sysworxx-image-default-sysworxx.tar.xz | tar -xvf -
-```
-
-- Poweroff
-- Switch DIP-SW 6 to "on"
-
-```sh
-mmc dev 0
-load mmc 0:2 ${fdtaddr}  /boot/dtb/ti/k3-am623-systec-fallback.dtb
-load mmc 0:2 ${loadaddr} /boot/Image
-setenv bootargs console=${console} ${optargs} root=/dev/mmcblk0p2 rw rootfstype=ext4
-booti ${loadaddr} ${rd_spec} ${fdtaddr}
 ```
 
 ## Links
