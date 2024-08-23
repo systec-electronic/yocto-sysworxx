@@ -1,6 +1,8 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += " \
+    file://fw_env.config \
+    \
     file://cmd-read-use-part-get-info-by-dev-and-name-or-num-instead.patch \
     file://cmd-introduce-write-command.patch \
     \
@@ -15,4 +17,5 @@ SRC_URI += " \
     file://0009-board-ti-am62x-sysworxx.c-Import-EEPROM-as-part-of-b.patch \
     file://0010-board-ti-am62x-sysworxx.c-Detect-mmcdev-based-on-boo.patch \
     file://0011-board-ti-am62x-sysworxx.env-Select-root-partition-bo.patch \
+    file://0012-board-ti-am62x-sysworxx.env-Use-rauc-slots-when-boot.patch \
 "
