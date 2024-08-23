@@ -1,0 +1,108 @@
+From 8311ac5fe0831ae26ffb68fab6b927b18d7036d2 Mon Sep 17 00:00:00 2001
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Date: Thu, 2 Mar 2023 09:12:22 +0100
+Subject: [PATCH] cmd: introduce 'write' command
+
+It's almost no extra code to hook up a buddy to the 'read' command. In
+fact, since the command is passed its own 'struct cmd_tbl', we can use
+the exact same callback, and let it figure out for itself whether it
+was invoked as "read" or "write".
+
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+---
+ cmd/Kconfig  |  5 +++++
+ cmd/Makefile |  1 +
+ cmd/read.c   | 29 ++++++++++++++++++++++-------
+ 3 files changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/cmd/Kconfig b/cmd/Kconfig
+index a3512836c1a3..ba5ec69293fd 100644
+--- a/cmd/Kconfig
++++ b/cmd/Kconfig
+@@ -1562,6 +1562,11 @@ config CMD_WDT
+ 	help
+ 	  This provides commands to control the watchdog timer devices.
+ 
++config CMD_WRITE
++	bool "write - Write binary data to a partition"
++	help
++	  Provides low-level write access to a partition.
++
+ config CMD_AXI
+ 	bool "axi"
+ 	depends on AXI
+diff --git a/cmd/Makefile b/cmd/Makefile
+index 2d8bb4fc0529..7198029f11ea 100644
+--- a/cmd/Makefile
++++ b/cmd/Makefile
+@@ -140,6 +140,7 @@ obj-$(CONFIG_CMD_PXE) += pxe.o
+ obj-$(CONFIG_CMD_WOL) += wol.o
+ obj-$(CONFIG_CMD_QFW) += qfw.o
+ obj-$(CONFIG_CMD_READ) += read.o
++obj-$(CONFIG_CMD_WRITE) += read.o
+ obj-$(CONFIG_CMD_REGINFO) += reginfo.o
+ obj-$(CONFIG_CMD_REISER) += reiser.o
+ obj-$(CONFIG_CMD_REMOTEPROC) += remoteproc.o
+diff --git a/cmd/read.c b/cmd/read.c
+index 8645db49bb60..1218e7acfd0a 100644
+--- a/cmd/read.c
++++ b/cmd/read.c
+@@ -13,14 +13,14 @@
+ #include <mapmem.h>
+ #include <part.h>
+ 
+-int do_read(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
++static int
++do_rw(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
+ {
+ 	struct blk_desc *dev_desc = NULL;
+ 	struct disk_partition part_info;
+ 	ulong offset, limit;
++	uint blk, cnt, res;
+ 	void *addr;
+-	uint blk;
+-	uint cnt;
+ 	int part;
+ 
+ 	if (argc != 6) {
+@@ -47,20 +47,35 @@ int do_read(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
+ 	}
+ 
+ 	if (cnt + blk > limit) {
+-		printf("Read out of range\n");
++		printf("%s out of range\n", cmdtp->name);
+ 		return 1;
+ 	}
+ 
+-	if (blk_dread(dev_desc, offset + blk, cnt, addr) != cnt) {
+-		printf("Error reading blocks\n");
++	if (IS_ENABLED(CONFIG_CMD_WRITE) && !strcmp(cmdtp->name, "write"))
++		res = blk_dwrite(dev_desc, offset + blk, cnt, addr);
++	else
++		res = blk_dread(dev_desc, offset + blk, cnt, addr);
++
++	if (res != cnt) {
++		printf("%s error\n", cmdtp->name);
+ 		return 1;
+ 	}
+ 
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_CMD_READ
+ U_BOOT_CMD(
+-	read,	6,	0,	do_read,
++	read,	6,	0,	do_rw,
+ 	"Load binary data from a partition",
+ 	"<interface> <dev[:part|#partname]> addr blk# cnt"
+ );
++#endif
++
++#ifdef CONFIG_CMD_WRITE
++U_BOOT_CMD(
++	write,	6,	0,	do_rw,
++	"Store binary data to a partition",
++	"<interface> <dev[:part|#partname]> addr blk# cnt"
++);
++#endif

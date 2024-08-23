@@ -1,6 +1,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += " \
+    file://cmd-read-use-part-get-info-by-dev-and-name-or-num-instead.patch \
+    file://cmd-introduce-write-command.patch \
+    \
     file://0001-arch-arm-dts-k3-am625-sk.dts-Reduce-RAM-size-to-1GB.patch \
     file://0002-arch-arm-dts-k3-am625-sk.dts-Disable-GPIO-expander-f.patch \
     file://0003-arch-arm-dts-k3-am625-sk.dts-Enable-CLKOUT0-to-suppl.patch \
