@@ -73,6 +73,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     time \
     tzdata \
     util-linux \
+    vendor-setup \
 "
 
 RDEPENDS:packagegroup-sysworxx-benchmark = "\
