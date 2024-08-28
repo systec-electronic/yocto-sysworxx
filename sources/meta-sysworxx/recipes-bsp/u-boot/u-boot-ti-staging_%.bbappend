@@ -18,4 +18,5 @@ SRC_URI += " \
     file://0010-board-ti-am62x-sysworxx.c-Detect-mmcdev-based-on-boo.patch \
     file://0011-board-ti-am62x-sysworxx.env-Select-root-partition-bo.patch \
     file://0012-board-ti-am62x-sysworxx.env-Use-rauc-slots-when-boot.patch \
+    file://0013-board-ti-am62x-sysworxx.env-Add-quiet-flag-to-kernel.patch \
 "
