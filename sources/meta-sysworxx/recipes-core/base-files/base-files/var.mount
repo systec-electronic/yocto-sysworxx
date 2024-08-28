@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount var overlay when booted from eMMC
+ConditionPathIsMountPoint=/home
+
+[Mount]
+What=overlay
+Where=/var
+Type=overlay
+Options=rw,relatime,lowerdir=/var,upperdir=/home/overlays/var/upper,workdir=/home/overlays/var/workdir
+
+[Install]
+WantedBy=local-fs.target
