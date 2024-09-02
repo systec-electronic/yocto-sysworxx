@@ -17,6 +17,8 @@ stages:
 before_script:
   - echo 'DL_DIR="/cache/downloads"' >> ./build/conf/local.conf
   - echo 'SSTATE_DIR="/cache/sstate-cache"' >> ./build/conf/local.conf
+  - cp -v $RAUC_CRT rauc-ca/rauc.crt
+  - cp -v $RAUC_KEY rauc-ca/rauc.key
 
 sysworxx-image-default:
   stage: build
