@@ -55,6 +55,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     libgpiod \
     libgpiod-tools \
     makedevs \
+    mc \
     nano \
     ncurses \
     net-tools \
@@ -95,6 +96,7 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     python3-distutils \
     htop \
     mosquitto \
+    mosquitto-clients \
     node-red \
     openssl \
     vim \
