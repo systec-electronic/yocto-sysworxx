@@ -119,7 +119,7 @@
 		enable-active-high;
 		regulator-always-on;
 		vin-supply = <&vcc_3v3>;
-		gpio = <&main_gpio0 71 GPIO_ACTIVE_HIGH>;
+		gpio = <&main_gpio0 5 GPIO_ACTIVE_HIGH>;
 	};
 
 	/* Workaround for errata i2329 - just use mdio bitbang */
@@ -132,7 +132,7 @@
 
 		cpsw3g_phy0: ethernet-phy@1 {
 			reg = <1>;
-			reset-gpios = <&main_gpio1 15 GPIO_ACTIVE_LOW>;
+			reset-gpios = <&main_gpio0 31 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <2000>;
 			reset-deassert-us = <20000>; /* T2 */
 			micrel,led-mode = <1>;
@@ -308,7 +308,7 @@
 	bluetooth {
 		compatible = "cypress,cyw4373a0-bt";
 		max-speed = <921600>;
-		shutdown-gpios = <&main_gpio0 72 GPIO_ACTIVE_HIGH>;
+		shutdown-gpios = <&main_gpio0 6 GPIO_ACTIVE_HIGH>;
 	};
 };
 
@@ -318,7 +318,8 @@
 	ti,driver-strength-ohm = <50>;
 	disable-wp;
 	status = "okay";
-	reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
+	// FixMe: see issue: http://srv-gitlab.intern.systec-electronic.com/132401/hw/4600/-/issues/3
+	// reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
 };
 
 &sdhci1 {
