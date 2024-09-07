@@ -57,6 +57,20 @@ reboot
 
 The device will then reboot and switch to the other boot slot.
 
+## Build SDK
+
+```sh
+cd build/
+. conf/setenv
+bitbake sysworxx-image-default -c populate_sdk
+```
+
+The SDK installer script can then be found in:
+
+```
+./build/deploy-ti/sdk/poky-glibc-x86_64-sysworxx-image-default-aarch64-sysworxx-toolchain-4.0.19.
+```
+
 ## Modifying Linux kernel source
 
 ```sh
