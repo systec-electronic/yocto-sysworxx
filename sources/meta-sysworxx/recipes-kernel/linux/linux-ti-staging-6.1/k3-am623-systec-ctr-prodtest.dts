@@ -49,9 +49,6 @@
 };
 
 &dss_ports {
-	#address-cells = <1>;
-	#size-cells = <0>;
-
 	/* VP1: LVDS Output (OLDI TX 0) */
 	port@0 {
 		reg = <0>;
