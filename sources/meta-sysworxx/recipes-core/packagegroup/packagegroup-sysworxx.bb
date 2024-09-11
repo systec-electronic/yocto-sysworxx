@@ -76,6 +76,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     time \
     tzdata \
     util-linux \
+    usbutils \
     vendor-setup \
 "
 
