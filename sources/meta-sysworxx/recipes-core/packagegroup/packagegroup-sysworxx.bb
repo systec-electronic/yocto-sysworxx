@@ -81,13 +81,11 @@ RDEPENDS:packagegroup-sysworxx-base = "\
 "
 
 RDEPENDS:packagegroup-sysworxx-benchmark = "\
+    cpuburn-arm \
+    dhrystone \
+    memtester \
     tinymembench \
     whetstone \
-    dhrystone \
-    cpuburn-arm \
-    fio  \
-    lmbench \
-    memtester \
 "
 
 # python3-distutils is required by python3-docker-compose
