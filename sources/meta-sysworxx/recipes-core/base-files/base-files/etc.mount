@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount etc overlay when booted from eMMC
+ConditionPathIsMountPoint=/home
+
+[Mount]
+What=overlay
+Where=/etc
+Type=overlay
+Options=rw,relatime,lowerdir=/etc,upperdir=/home/overlays/etc/upper,workdir=/home/overlays/etc/workdir
+
+[Install]
+WantedBy=local-fs.target

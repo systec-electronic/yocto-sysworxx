@@ -25,8 +25,37 @@ shown below.
 
 ```sh
 # replace "sdX" with the block device which should be used
-./init_sd.sh /dev/sdX
+sudo ./init_sd.sh /dev/sdX
 ```
+
+## Install from SD-Card to eMMC
+
+- Boot from SD-Card (DIP-6=Off)
+- run `bringup.sh`
+- Reboot with DIP-6=On
+
+Now RAUC can be used to install new images.
+
+## Build and Install RAUC bundle
+
+```sh
+cd build/
+. conf/setenv
+bitbake sysworxx-bundle
+```
+
+The bundle `build/deploy-ti/images/sysworxx/sysworxx-bundle-sysworxx.raucb` can
+then be copied to a running device and be installed with `rauc install`. e.g.
+
+```sh
+# on PC:
+scp build/deploy-ti/images/sysworxx/sysworxx-bundle-sysworxx.raucb root@device:/tmp
+# on sysWORXX device:
+rauc install /tmp/sysworxx-bundle-sysworxx.raucb
+reboot
+```
+
+The device will then reboot and switch to the other boot slot.
 
 ## Modifying Linux kernel source
 
@@ -35,12 +64,12 @@ devtool modify linux-ti-staging
 devtool finish linux-ti-staging ../sources/meta-of-your-choice
 ```
 
-* `modify` will checkout the kernel sources to the workspace directory. Patches
+- `modify` will checkout the kernel sources to the workspace directory. Patches
   of recipes will be applied to the source as git commits.
-  * changes to the kernel configuration via fragment files is not supported
-* `finish` will format all git commits to patches and copy them to the specified
+  - changes to the kernel configuration via fragment files is not supported
+- `finish` will format all git commits to patches and copy them to the specified
   output directory.
-* After this it may be necessary to check the recipe file's content, since the
+- After this it may be necessary to check the recipe file's content, since the
   formatting is sometimes a bit awkward.
 
 ## Modifying Linux kernel configuration
@@ -77,13 +106,13 @@ setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr800-rev0.dtb; boot
 
 ## Links
 
-* [AM62x Starter Kit EVM Quick Start Guide](https://dev.ti.com/tirex/explore/node?node=A__AdoyIZ2jtLBUfHZNVmgFBQ__am62x-devtools__FUz-xrs__LATEST&search=am62x)
-* [SK-AM62 Starter Kit User's Guide (Rev. C)](https://www.ti.com/document-viewer/lit/html/spruj40)
+- [AM62x Starter Kit EVM Quick Start Guide](https://dev.ti.com/tirex/explore/node?node=A__AdoyIZ2jtLBUfHZNVmgFBQ__am62x-devtools__FUz-xrs__LATEST&search=am62x)
+- [SK-AM62 Starter Kit User's Guide (Rev. C)](https://www.ti.com/document-viewer/lit/html/spruj40)
 
 ## Issues & Open questions
 
-* U-Boot:
-  * am62x.env: Do we need to override the `default_device_tree`?
-* Linux:
-  * fallback pinmux and use it in fallback dts
-  * implement and test RS-232 with RTS/CTS and RS-485 support
+- U-Boot:
+  - am62x.env: Do we need to override the `default_device_tree`?
+- Linux:
+  - fallback pinmux and use it in fallback dts
+  - implement and test RS-232 with RTS/CTS and RS-485 support

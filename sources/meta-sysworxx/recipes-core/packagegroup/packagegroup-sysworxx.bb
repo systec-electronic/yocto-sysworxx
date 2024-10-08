@@ -34,6 +34,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     adc-setup \
     attr \
     bash \
+    bringup \
     bzip2 \
     can-setup \
     coreutils \
@@ -54,6 +55,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     libgpiod \
     libgpiod-tools \
     makedevs \
+    mc \
     nano \
     ncurses \
     net-tools \
@@ -63,6 +65,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     phy-lan8830t-setup \
     procps \
     psmisc \
+    rauc \
     rng-tools \
     rs485-setup \
     sed \
@@ -71,6 +74,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     time \
     tzdata \
     util-linux \
+    vendor-setup \
 "
 
 RDEPENDS:packagegroup-sysworxx-benchmark = "\
@@ -92,6 +96,7 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     python3-distutils \
     htop \
     mosquitto \
+    mosquitto-clients \
     node-red \
     openssl \
     vim \

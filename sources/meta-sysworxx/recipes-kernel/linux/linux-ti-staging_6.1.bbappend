@@ -10,6 +10,7 @@ SRC_URI += " \
     file://ecdh.cfg \
     file://rtc.cfg \
     file://gpio_sysfs.cfg \
+    file://overlayfs.cfg \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
     file://0001-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
@@ -45,5 +46,6 @@ KERNEL_CONFIG_FRAGMENTS += " \
     ${FRAGMENTS_DIR}/dynamic_debug.cfg \
     ${FRAGMENTS_DIR}/rtc.cfg \
     ${FRAGMENTS_DIR}/gpio_sysfs.cfg \
+    ${FRAGMENTS_DIR}/overlayfs.cfg \
     ${KERNEL_CONFIG_FRAGMENTS_WIFI} \
 "

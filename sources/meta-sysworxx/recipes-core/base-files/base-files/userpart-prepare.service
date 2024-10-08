@@ -1,0 +1,18 @@
+[Unit]
+Description=Initializes user partition after factory reset
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=systemd-journald.service
+Requires=etc.mount var.mount
+After=etc.mount var.mount
+ConditionPathIsReadWrite=/home/
+ConditionPathExists=!/home/.prepared
+
+[Service]
+Type=oneshot
+ExecStart=/bin/mkdir -p /home/root
+ExecStart=/bin/systemd-machine-id-setup
+ExecStart=/bin/touch /home/.prepared
+
+[Install]
+WantedBy=default.target

@@ -1,34 +1,30 @@
-# Manual programming and booting eMMC (from working SD card)
+# eMMC
 
-## Copy file system
+## Partitions
 
-```sh
-cat /dev/mmcblk1 > /dev/mmcblk0
-dd if=tiboot3.bin of=/dev/mmcblk0boot0 seek=0
-dd if=tispl.bin of=/dev/mmcblk0boot0 seek=1024
-dd if=u-boot.img of=/dev/mmcblk0boot0 seek=5120
-```
+| Size   | Device    | mountpoint | usage                                             |
+|--------|-----------|------------|---------------------------------------------------|
+| 4 MiB  | mmcblk0p1 | /vendor    | serial number, license keys, calibration          |
+| 4 MiB  | mmcblk0p2 | -          | RAUC U-Boot environment                           |
+| 2 GiB  | mmcblk0p3 | /          | root-fs slot a                                    |
+| 2 GiB  | mmcblk0p4 | /          | root-fs slot b                                    |
+| >3 GiB | mmcblk0p5 | /home*     | user data in /home and overlays for /etc and /var |
 
-## Enable eMMC boot partition
+(*) overlays are mounted to `/etc` and `/var`
+
+Boot partitions of eMMC are used for the bootloader.
+
+## eMMC Provisioning (only needed for new eMMC)
 
 ```sh
 # This needs to be done only once for a new eMMC
-=> mmc partconf 0 1 1 1
-=> mmc bootbus 0 2 0 0
-```
 
-## Boot from eMMC
+# https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1168342/faq-am62x-how-to-check-and-configure-emmc-flash-rst_n-signal-to-support-warm_reset-from-emmc-booting-on-am62x-sk-e2
+mmc rst-function 0 1
 
-- Poweroff
-- Switch DIP-SW 6 to "on"
-- Power on and enter U-Boot shell
-
-```sh
-mmc dev 0
-load mmc 0:2 ${fdtaddr}  /boot/dtb/ti/k3-am623-systec-fallback.dtb
-load mmc 0:2 ${loadaddr} /boot/Image
-setenv bootargs console=${console} ${optargs} root=/dev/mmcblk0p2 rw rootfstype=ext4
-booti ${loadaddr} ${rd_spec} ${fdtaddr}
+# activate boot partitions for booting from them
+mmc partconf 0 1 1 1
+mmc bootbus 0 2 0 0
 ```
 
 ## Links

@@ -40,3 +40,7 @@
 [submodule "sources/meta-node-red"]
 	path = sources/meta-node-red
 	url = https://github.com/ChristophHandschuh/meta-node-red/
+[submodule "sources/meta-rauc"]
+	path = sources/meta-rauc
+	url = https://github.com/rauc/meta-rauc.git
+	branch = kirkstone

@@ -1,0 +1,92 @@
+From 5cf3bd57635dba8d3d62dcf417a9181237674011 Mon Sep 17 00:00:00 2001
+From: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Date: Tue, 20 Aug 2024 14:32:55 +0200
+Subject: [PATCH 10/11] board/ti/am62x/sysworxx.c: Detect mmcdev based on
+ bootmode pins
+
+Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+---
+ board/ti/am62x/sysworxx.c   | 47 +++++++++++++++++++++++++++++++++++++
+ board/ti/am62x/sysworxx.env |  1 -
+ 2 files changed, 47 insertions(+), 1 deletion(-)
+
+diff --git a/board/ti/am62x/sysworxx.c b/board/ti/am62x/sysworxx.c
+index da97dc4c792..31dc72ed06e 100644
+--- a/board/ti/am62x/sysworxx.c
++++ b/board/ti/am62x/sysworxx.c
+@@ -164,6 +164,51 @@ void spl_perform_fixups(struct spl_image_info *spl_image)
+ #endif
+ 
+ #ifdef CONFIG_BOARD_LATE_INIT
++
++#define K3_PRIMARY_BOOTMODE		0x0
++#define MAIN_DEVSTAT_BOOTMODE	0x43000030
++#define BOOT_DEVICE_EMMC		0x09
++
++/*
++ * adopted from am625_init.c:
++ *
++ * devstat / BOOTMODE:
++ * -- 1 101 100 100X ---
++ * where X: 0 => sd card
++ *          1 => emmc
++ *      '-' have no effect on the boot mode
++ *
++ * We only support booting from sd-card or emmc as primary bootmedia.
++ * The only backup boot mode is sd card if booting from emmc fails.
++ *
++ * uboot environment:
++ * mmcdev = 0 => emmc
++ * mmcdev = 1 => sd card
++ */
++void env_set_mmcdev(void)
++{
++	/* sd-card by default */
++	char* mmcdev = "1";
++
++	u32 bootindex = *(u32 *)(CONFIG_SYS_K3_BOOT_PARAM_TABLE_INDEX);
++	u32 devstat = readl(MAIN_DEVSTAT_BOOTMODE);
++
++	if (bootindex == K3_PRIMARY_BOOTMODE) {
++
++		/* primary boot */
++		u32 bootmode = (devstat & MAIN_DEVSTAT_PRIMARY_BOOTMODE_MASK) >>
++					MAIN_DEVSTAT_PRIMARY_BOOTMODE_SHIFT;
++
++		if (bootmode == BOOT_DEVICE_EMMC)
++		{
++			mmcdev = "0";
++		}
++	}
++
++	printf("mmcdev: %s\n", mmcdev);
++	env_set("mmcdev", mmcdev);
++}
++
+ int board_late_init(void)
+ {
+ 	printf("EEPROM import\n");
+@@ -180,6 +225,8 @@ int board_late_init(void)
+ 		reset_eth_phys();
+ 	}
+ 
++	env_set_mmcdev();
++
+ 	return 0;
+ }
+ #endif
+diff --git a/board/ti/am62x/sysworxx.env b/board/ti/am62x/sysworxx.env
+index a1d8de4f880..2390fd6800f 100644
+--- a/board/ti/am62x/sysworxx.env
++++ b/board/ti/am62x/sysworxx.env
+@@ -22,7 +22,6 @@ args_all=setenv optargs ${optargs} earlycon=ns16550a,mmio32,0x02800000
+ run_kern=booti ${loadaddr} ${rd_spec} ${fdtaddr}
+ 
+ boot=mmc
+-mmcdev=1
+ bootpart=1:2
+ bootdir=/boot
+ rd_spec=-
+-- 
+2.46.0
+
