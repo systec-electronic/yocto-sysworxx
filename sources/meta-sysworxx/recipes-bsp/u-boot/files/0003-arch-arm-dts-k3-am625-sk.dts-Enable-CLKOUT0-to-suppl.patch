@@ -1,29 +1,19 @@
-From 1001df490b68f7c4f4287cd26318cbaa80d6335a Mon Sep 17 00:00:00 2001
+From 5a675fead01367f9fc8f7d12302ceb6855a1b2f5 Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Tue, 6 Feb 2024 11:54:06 +0100
-Subject: [PATCH 3/9] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
+Subject: [PATCH 03/13] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
  network phy's (EXT_REFCLK1.CLKOUT0)
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
-
-%% original patch: 0003-arch-arm-dts-k3-am625-sk.dts-Enable-CLKOUT0-to-suppl.patch
 ---
- arch/arm/dts/k3-am625-sk.dts | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/arm/dts/k3-am625-sk.dts | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
-index ee734dde56f..4116f784a39 100644
+index ee8a9fc3aa6..e0d5bcd88ac 100644
 --- a/arch/arm/dts/k3-am625-sk.dts
 +++ b/arch/arm/dts/k3-am625-sk.dts
-@@ -291,6 +291,7 @@
- 			AM62X_IOPAD(0x140, PIN_OUTPUT, 0) /* (AD18) RGMII1_TD3 */
- 			AM62X_IOPAD(0x130, PIN_OUTPUT, 0) /* (AE19) RGMII1_TXC */
- 			AM62X_IOPAD(0x12c, PIN_OUTPUT, 0) /* (AD19) RGMII1_TX_CTL */
-+			AM62X_IOPAD(0x01f0, PIN_OUTPUT, 5) /* (A18) EXT_REFCLK1.CLKOUT0 */
- 		>;
- 	};
- 
-@@ -311,6 +312,12 @@
+@@ -123,6 +123,12 @@
  		>;
  	};
  
@@ -33,10 +23,10 @@ index ee734dde56f..4116f784a39 100644
 +		>;
 +	};
 +
- 	ospi0_pins_default: ospi0-pins-default {
+ 	ospi0_pins_default: ospi0-default-pins {
+ 		bootph-all;
  		pinctrl-single,pins = <
- 			AM62X_IOPAD(0x000, PIN_OUTPUT, 0) /* (H24) OSPI0_CLK */
-@@ -429,7 +436,10 @@
+@@ -175,7 +181,10 @@
  &cpsw3g {
  	pinctrl-names = "default";
  	pinctrl-0 = <&main_rgmii1_pins_default
@@ -45,9 +35,9 @@ index ee734dde56f..4116f784a39 100644
 +			 &ext_refclk0_clkout0>;
 +	assigned-clocks = <&k3_clks 157 20>;
 +	assigned-clock-parents = <&k3_clks 157 22>;
- };
  
- &cpsw_port1 {
+ 	cpts@3d000 {
+ 		/* MAP HW3_TS_PUSH to GENF1 */
 -- 
-2.46.0
+2.47.0
 

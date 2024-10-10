@@ -1,0 +1,311 @@
+From 451b5de7ed775826adb0adf7e01c08b7e9a6dc2b Mon Sep 17 00:00:00 2001
+From: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Date: Wed, 31 Jul 2024 16:05:21 +0200
+Subject: [PATCH 05/13] board/ti/am62x: Add sysWORXX specific adoptions
+
+Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+---
+ board/ti/am62x/Kconfig            |   3 +
+ board/ti/am62x/Makefile           |   4 +
+ board/ti/am62x/sysworxx.c         | 203 ++++++++++++++++++++++++++++++
+ board/ti/am62x/sysworxx.env       |  39 ++++++
+ configs/am625_sysworxx_a53.config |   4 +
+ 5 files changed, 253 insertions(+)
+ create mode 100644 board/ti/am62x/sysworxx.c
+ create mode 100644 board/ti/am62x/sysworxx.env
+ create mode 100644 configs/am625_sysworxx_a53.config
+
+diff --git a/board/ti/am62x/Kconfig b/board/ti/am62x/Kconfig
+index 610dacfdc08..93bf7189bfd 100644
+--- a/board/ti/am62x/Kconfig
++++ b/board/ti/am62x/Kconfig
+@@ -3,6 +3,9 @@
+ # Copyright (C) 2020-2022 Texas Instruments Incorporated - https://www.ti.com/
+ #	Suman Anna <s-anna@ti.com>
+ 
++config TARGET_SYSWORXX_AM62X_ADOPT
++	bool "Apply sysWORXX specific init, board detect, etc."
++
+ if TARGET_AM625_A53_EVM
+ 
+ config SYS_BOARD
+diff --git a/board/ti/am62x/Makefile b/board/ti/am62x/Makefile
+index f4c35edffad..3dbf52b83e8 100644
+--- a/board/ti/am62x/Makefile
++++ b/board/ti/am62x/Makefile
+@@ -5,4 +5,8 @@
+ # SPDX-License-Identifier:     GPL-2.0+
+ #
+ 
++ifndef CONFIG_TARGET_SYSWORXX_AM62X_ADOPT
+ obj-y	+= evm.o
++else
++obj-y	+= sysworxx.o
++endif
+diff --git a/board/ti/am62x/sysworxx.c b/board/ti/am62x/sysworxx.c
+new file mode 100644
+index 00000000000..3d924d6cbcd
+--- /dev/null
++++ b/board/ti/am62x/sysworxx.c
+@@ -0,0 +1,203 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Board specific initialization for AM62x platforms
++ *
++ * Copyright (C) 2020-2022 Texas Instruments Incorporated - https://www.ti.com/
++ *	Suman Anna <s-anna@ti.com>
++ *
++ */
++
++#include <env.h>
++#include <spl.h>
++#include <init.h>
++#include <video.h>
++#include <splash.h>
++#include <cpu_func.h>
++#include <k3-ddrss.h>
++#include <fdt_support.h>
++#include <fdt_simplefb.h>
++#include <asm/io.h>
++#include <asm/arch/hardware.h>
++#include <dm/uclass.h>
++
++#include "../common/board_detect.h"
++#include "../common/fdt_ops.h"
++
++#include "../common/k3-ddr-init.h"
++
++#define board_is_am62x_skevm()  (board_ti_k3_is("AM62-SKEVM") || \
++				 board_ti_k3_is("AM62B-SKEVM"))
++#define board_is_am62b_p1_skevm() board_ti_k3_is("AM62B-SKEVM-P1")
++#define board_is_am62x_lp_skevm()  board_ti_k3_is("AM62-LP-SKEVM")
++#define board_is_am62x_sip_skevm()  board_ti_k3_is("AM62SIP-SKEVM")
++#define board_is_am62x_play()	board_ti_k3_is("BEAGLEPLAY-A0-")
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#if CONFIG_IS_ENABLED(SPLASH_SCREEN)
++static struct splash_location default_splash_locations[] = {
++	{
++		.name = "sf",
++		.storage = SPLASH_STORAGE_SF,
++		.flags = SPLASH_STORAGE_RAW,
++		.offset = 0x700000,
++	},
++	{
++		.name		= "mmc",
++		.storage	= SPLASH_STORAGE_MMC,
++		.flags		= SPLASH_STORAGE_FS,
++		.devpart	= "1:1",
++	},
++};
++
++int splash_screen_prepare(void)
++{
++	return splash_source_load(default_splash_locations,
++				ARRAY_SIZE(default_splash_locations));
++}
++#endif
++
++int board_init(void)
++{
++	return 0;
++}
++
++#if CONFIG_IS_ENABLED(TI_I2C_BOARD_DETECT)
++int do_board_detect(void)
++{
++	int ret;
++
++	ret = ti_i2c_eeprom_am6_get_base(CONFIG_EEPROM_BUS_ADDRESS,
++					 CONFIG_EEPROM_CHIP_ADDRESS);
++	if (ret) {
++		printf("EEPROM not available at 0x%02x, trying to read at 0x%02x\n",
++		       CONFIG_EEPROM_CHIP_ADDRESS, CONFIG_EEPROM_CHIP_ADDRESS + 1);
++		ret = ti_i2c_eeprom_am6_get_base(CONFIG_EEPROM_BUS_ADDRESS,
++						 CONFIG_EEPROM_CHIP_ADDRESS + 1);
++		if (ret)
++			pr_err("Reading on-board EEPROM at 0x%02x failed %d\n",
++			       CONFIG_EEPROM_CHIP_ADDRESS + 1, ret);
++	}
++
++	return ret;
++}
++
++int checkboard(void)
++{
++	struct ti_am6_eeprom *ep = TI_AM6_EEPROM_DATA;
++
++	if (!do_board_detect())
++		printf("Board: %s rev %s\n", ep->name, ep->version);
++
++	return 0;
++}
++
++#if CONFIG_IS_ENABLED(BOARD_LATE_INIT)
++static void setup_board_eeprom_env(void)
++{
++	char *name = "am62x_skevm";
++
++	if (do_board_detect())
++		goto invalid_eeprom;
++
++	if (board_is_am62x_skevm())
++		name = "am62x_skevm";
++	else if (board_is_am62b_p1_skevm())
++		name = "am62b_p1_skevm";
++	else if (board_is_am62x_lp_skevm())
++		name = "am62x_lp_skevm";
++	else if (board_is_am62x_sip_skevm())
++		name = "am62x_sip_skevm";
++	else if (board_is_am62x_play())
++		name = "am62x_beagleplay";
++	else
++		printf("Unidentified board claims %s in eeprom header\n",
++		       board_ti_get_name());
++
++invalid_eeprom:
++	set_board_info_env_am6(name);
++}
++
++static void setup_serial(void)
++{
++	struct ti_am6_eeprom *ep = TI_AM6_EEPROM_DATA;
++	unsigned long board_serial;
++	char *endp;
++	char serial_string[17] = { 0 };
++
++	if (env_get("serial#"))
++		return;
++
++	board_serial = simple_strtoul(ep->serial, &endp, 16);
++	if (*endp != '\0') {
++		pr_err("Error: Can't set serial# to %s\n", ep->serial);
++		return;
++	}
++
++	snprintf(serial_string, sizeof(serial_string), "%016lx", board_serial);
++	env_set("serial#", serial_string);
++}
++#endif
++#endif
++
++#if CONFIG_IS_ENABLED(BOARD_LATE_INIT)
++int board_late_init(void)
++{
++	if (IS_ENABLED(CONFIG_TI_I2C_BOARD_DETECT)) {
++		setup_board_eeprom_env();
++		setup_serial();
++	}
++
++	ti_set_fdt_env(NULL, NULL);
++	return 0;
++}
++#endif
++
++#if defined(CONFIG_SPL_BUILD)
++
++void spl_board_init(void)
++{
++	u32 val;
++
++	/* We have 32k crystal, so lets enable it */
++	val = readl(MCU_CTRL_LFXOSC_CTRL);
++	val &= ~(MCU_CTRL_LFXOSC_32K_DISABLE_VAL);
++	writel(val, MCU_CTRL_LFXOSC_CTRL);
++	/* Add any TRIM needed for the crystal here.. */
++	/* Make sure to mux up to take the SoC 32k from the crystal */
++	writel(MCU_CTRL_DEVICE_CLKOUT_LFOSC_SELECT_VAL,
++	       MCU_CTRL_DEVICE_CLKOUT_32K_CTRL);
++
++	enable_caches();
++	if (IS_ENABLED(CONFIG_SPL_SPLASH_SCREEN) && IS_ENABLED(CONFIG_SPL_BMP))
++		splash_display();
++}
++
++void spl_perform_fixups(struct spl_image_info *spl_image)
++{
++	if (IS_ENABLED(CONFIG_K3_DDRSS) && IS_ENABLED(CONFIG_K3_INLINE_ECC))
++		fixup_ddr_driver_for_ecc(spl_image);
++	else
++		fixup_memory_node(spl_image);
++}
++#endif
++
++#if defined(CONFIG_OF_BOARD_SETUP)
++int ft_board_setup(void *blob, struct bd_info *bd)
++{
++	int ret = -1;
++
++	if (IS_ENABLED(CONFIG_FDT_SIMPLEFB))
++		ret = fdt_simplefb_enable_and_mem_rsv(blob);
++
++	/* If simplefb is not enabled and video is active, then at least reserve
++	 * the framebuffer region to preserve the splash screen while OS is booting
++	 */
++	if (IS_ENABLED(CONFIG_VIDEO) && IS_ENABLED(CONFIG_OF_LIBFDT)) {
++		if (ret && video_is_active())
++			return fdt_add_fb_mem_rsv(blob);
++	}
++
++	return 0;
++}
++#endif
+diff --git a/board/ti/am62x/sysworxx.env b/board/ti/am62x/sysworxx.env
+new file mode 100644
+index 00000000000..32c96d83e8b
+--- /dev/null
++++ b/board/ti/am62x/sysworxx.env
+@@ -0,0 +1,39 @@
++#include <env/ti/ti_common.env>
++#include <env/ti/mmc.env>
++#include <env/ti/k3_dfu.env>
++#include <env/ti/ospi_nand.env>
++#if CONFIG_CMD_REMOTEPROC
++#include <env/ti/k3_rproc.env>
++#endif
++
++name_kern=Image
++console=ttyS2,115200n8
++args_all=setenv optargs ${optargs} earlycon=ns16550a,mmio32,0x02800000
++	${mtdparts}
++run_kern=booti ${loadaddr} ${rd_spec} ${fdtaddr}
++
++boot_targets=mmc1 mmc0 usb pxe dhcp
++boot=mmc
++mmcdev=1
++bootpart=1:2
++bootdir=/boot
++rd_spec=-
++
++splashfile=ti_logo_414x97_32bpp.bmp.gz
++splashimage=0x80200000
++splashpos=m,m
++splashsource=mmc
++rproc_fw_binaries= 0 /lib/firmware/am62-mcu-m4f0_0-fw
++
++#if CONFIG_BOOTMETH_ANDROID
++#include <env/ti/android.env>
++force_avb=0
++adtb_idx=0
++get_adtb_idx=
++	if test ${board_name} = am62x_lp_skevm; then
++		setenv adtb_idx 1;
++	else
++		setenv adtb_idx 0;
++	fi;
++bootcmd=run get_adtb_idx; bootflow scan -lb
++#endif
+diff --git a/configs/am625_sysworxx_a53.config b/configs/am625_sysworxx_a53.config
+new file mode 100644
+index 00000000000..a07a69ade7e
+--- /dev/null
++++ b/configs/am625_sysworxx_a53.config
+@@ -0,0 +1,4 @@
++# Defconfig fragment to apply on top of am62x_evm_a53_defconfig
++
++CONFIG_TARGET_SYSWORXX_AM62X_ADOPT=y
++CONFIG_ENV_SOURCE_FILE="sysworxx"
+-- 
+2.47.0
+

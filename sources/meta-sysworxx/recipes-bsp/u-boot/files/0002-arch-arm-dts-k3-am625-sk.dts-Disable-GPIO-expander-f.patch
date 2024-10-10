@@ -1,22 +1,20 @@
-From 64220aa41c0073d868cd6e1ff83dcefc276b8c1a Mon Sep 17 00:00:00 2001
+From f106e5f98f6f6f2310392bc26b4164f430bbda2c Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Mon, 5 Feb 2024 14:32:33 +0100
-Subject: [PATCH 2/9] arch/arm/dts/k3-am625-sk.dts: Disable GPIO expander (for
- SD card voltage selection)
+Subject: [PATCH 02/13] arch/arm/dts/k3-am625-sk.dts: Disable GPIO expander
+ (for SD card voltage selection)
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
-
-%% original patch: 0002-arch-arm-dts-k3-am625-sk.dts-Disable-GPIO-expander-f.patch
 ---
- arch/arm/dts/k3-am625-sk.dts                | 31 +--------------------
- arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi |  4 ---
- 2 files changed, 1 insertion(+), 34 deletions(-)
+ arch/arm/dts/k3-am625-sk.dts         | 28 ----------------------------
+ arch/arm/dts/k3-am62x-sk-common.dtsi |  3 +--
+ 2 files changed, 1 insertion(+), 30 deletions(-)
 
 diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
-index 5bdba4042da..ee734dde56f 100644
+index 639133e6ba8..ee8a9fc3aa6 100644
 --- a/arch/arm/dts/k3-am625-sk.dts
 +++ b/arch/arm/dts/k3-am625-sk.dts
-@@ -141,7 +141,6 @@
+@@ -74,7 +74,6 @@
  		regulator-boot-on;
  		enable-active-high;
  		vin-supply = <&vcc_3v3_sys>;
@@ -24,21 +22,12 @@ index 5bdba4042da..ee734dde56f 100644
  	};
  
  	vdd_sd_dv: regulator-4 {
-@@ -150,7 +149,7 @@
- 		regulator-name = "tlv71033";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vdd_sd_dv_pins_default>;
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
- 		vin-supply = <&vcc_5v0>;
-@@ -408,34 +407,6 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&main_i2c1_pins_default>;
- 	clock-frequency = <400000>;
--
+@@ -166,33 +165,6 @@
+ 
+ &main_i2c1 {
+ 	bootph-all;
 -	exp1: gpio@22 {
+-		bootph-all;
 -		compatible = "ti,tca6424";
 -		reg = <0x22>;
 -		gpio-controller;
@@ -51,7 +40,7 @@ index 5bdba4042da..ee734dde56f 100644
 -				   "UART1_FET_BUF_EN", "WL_LT_EN",
 -				   "GPIO_HDMI_RSTn", "CSI_GPIO1",
 -				   "CSI_GPIO2", "PRU_3V3_EN",
--				   "HDMI_INTn", "TEST_GPIO2",
+-				   "HDMI_INTn", "PD_I2C_IRQ",
 -				   "MCASP1_FET_EN", "MCASP1_BUF_BT_EN",
 -				   "MCASP1_FET_SEL", "UART1_FET_SEL",
 -				   "TSINT#", "IO_EXP_TEST_LED";
@@ -64,25 +53,25 @@ index 5bdba4042da..ee734dde56f 100644
 -		pinctrl-names = "default";
 -		pinctrl-0 = <&main_gpio1_ioexp_intr_pins_default>;
 -	};
--
  };
  
- &sdhci0 {
-diff --git a/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi b/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi
-index 4265b434168..cd62fe267d3 100644
---- a/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi
-+++ b/arch/arm/dts/k3-am62x-sk-common-u-boot.dtsi
-@@ -228,10 +228,6 @@
- 	bootph-pre-ram;
- };
+ &sdhci1 {
+diff --git a/arch/arm/dts/k3-am62x-sk-common.dtsi b/arch/arm/dts/k3-am62x-sk-common.dtsi
+index 59ee4961650..c484e7df0d5 100644
+--- a/arch/arm/dts/k3-am62x-sk-common.dtsi
++++ b/arch/arm/dts/k3-am62x-sk-common.dtsi
+@@ -418,10 +418,9 @@
+ 	sii9022: bridge-hdmi@3b {
+ 		compatible = "sil,sii9022";
+ 		reg = <0x3b>;
+-		interrupt-parent = <&exp1>;
+-		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
+ 		#sound-dai-cells = <0>;
+ 		sil,i2s-data-lanes = < 0 >;
++		status = "disabled";
  
--&exp1 {
--	bootph-pre-ram;
--};
--
- &vdd_mmc1 {
- 	bootph-pre-ram;
- };
+ 		ports {
+ 			#address-cells = <1>;
 -- 
-2.46.0
+2.47.0
 

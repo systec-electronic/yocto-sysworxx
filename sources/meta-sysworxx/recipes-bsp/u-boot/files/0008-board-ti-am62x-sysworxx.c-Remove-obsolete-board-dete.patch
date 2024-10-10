@@ -1,28 +1,26 @@
-From 0c15edf52339bcb55fd1e6090f2c5cb9303a3cba Mon Sep 17 00:00:00 2001
+From dbaa7bfa3f69da354ffa0587de779b313b65d054 Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Fri, 2 Aug 2024 15:34:25 +0200
-Subject: [PATCH 8/9] board/ti/am62x/sysworxx.c: Remove obsolete board
+Subject: [PATCH 08/13] board/ti/am62x/sysworxx.c: Remove obsolete board
  detection
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
 ---
- board/ti/am62x/sysworxx.c | 101 --------------------------------------
- 1 file changed, 101 deletions(-)
+ board/ti/am62x/sysworxx.c | 94 ---------------------------------------
+ 1 file changed, 94 deletions(-)
 
 diff --git a/board/ti/am62x/sysworxx.c b/board/ti/am62x/sysworxx.c
-index e638beb45ad..2ce54b38db2 100644
+index fe5a6c13bf3..11f0ecff086 100644
 --- a/board/ti/am62x/sysworxx.c
 +++ b/board/ti/am62x/sysworxx.c
-@@ -26,21 +26,12 @@
- 
- #include <linux/sizes.h>
+@@ -21,18 +21,9 @@
+ #include <dm/uclass.h>
+ #include <asm/gpio.h>
  
 -#include "../common/board_detect.h"
- #include "../common/rtc.h"
- 
+ #include "../common/fdt_ops.h"
+-
  #include "../common/k3-ddr-init.h"
- 
- DECLARE_GLOBAL_DATA_PTR;
  
 -#define board_is_am62x_skevm()  (board_ti_k3_is("AM62-SKEVM") || \
 -				 board_ti_k3_is("AM62B-SKEVM"))
@@ -30,32 +28,39 @@ index e638beb45ad..2ce54b38db2 100644
 -#define board_is_am62x_lp_skevm()  board_ti_k3_is("AM62-LP-SKEVM")
 -#define board_is_am62x_sip_skevm()  board_ti_k3_is("AM62SIP-SKEVM")
 -#define board_is_am62x_play()	board_ti_k3_is("BEAGLEPLAY-A0-")
--#define board_is_am62x_sysworxx_ctr()	board_ti_k3_is("sysWORXX-CTR")
 -
- #if CONFIG_IS_ENABLED(SPLASH_SCREEN)
- static struct splash_location default_splash_locations[] = {
- 	{
-@@ -171,101 +162,9 @@ void spl_perform_fixups(struct spl_image_info *spl_image)
- }
- #endif
+ DECLARE_GLOBAL_DATA_PTR;
  
--#ifdef CONFIG_TI_I2C_BOARD_DETECT
+ #if CONFIG_IS_ENABLED(SPLASH_SCREEN)
+@@ -63,8 +54,6 @@ int board_init(void)
+ 	return 0;
+ }
+ 
+-#if CONFIG_IS_ENABLED(TI_I2C_BOARD_DETECT)
+-
+ void reset_eth_phy(const char* phy_rst_name) {
+ 	int ret;
+ 	struct gpio_desc phy_rst_desc;
+@@ -98,92 +87,9 @@ void reset_eth_phys(void) {
+ 	reset_eth_phy("gpio@601000_29");
+ }
+ 
 -int do_board_detect(void)
 -{
 -	int ret;
 -
 -	ret = ti_i2c_eeprom_am6_get_base(CONFIG_EEPROM_BUS_ADDRESS,
 -					 CONFIG_EEPROM_CHIP_ADDRESS);
--
 -	if (ret) {
--		printf("EEPROM not available at %d, trying to read at %d\n",
--			CONFIG_EEPROM_CHIP_ADDRESS, CONFIG_EEPROM_CHIP_ADDRESS + 1);
+-		printf("EEPROM not available at 0x%02x, trying to read at 0x%02x\n",
+-		       CONFIG_EEPROM_CHIP_ADDRESS, CONFIG_EEPROM_CHIP_ADDRESS + 1);
 -		ret = ti_i2c_eeprom_am6_get_base(CONFIG_EEPROM_BUS_ADDRESS,
 -						 CONFIG_EEPROM_CHIP_ADDRESS + 1);
 -		if (ret)
 -			pr_err("Reading on-board EEPROM at 0x%02x failed %d\n",
--				CONFIG_EEPROM_CHIP_ADDRESS + 1, ret);
+-			       CONFIG_EEPROM_CHIP_ADDRESS + 1, ret);
 -	}
+-
 -	return ret;
 -}
 -
@@ -68,9 +73,8 @@ index e638beb45ad..2ce54b38db2 100644
 -
 -	return 0;
 -}
--#endif
 -
- #ifdef CONFIG_BOARD_LATE_INIT
+-#if CONFIG_IS_ENABLED(BOARD_LATE_INIT)
 -static void setup_board_eeprom_env(void)
 -{
 -	char *name = "am62x_skevm";
@@ -88,8 +92,6 @@ index e638beb45ad..2ce54b38db2 100644
 -		name = "am62x_sip_skevm";
 -	else if (board_is_am62x_play())
 -		name = "am62x_beagleplay";
--	else if (board_is_am62x_sysworxx_ctr())
--		name = "am62x_sysworxx_ctr";
 -	else
 -		printf("Unidentified board claims %s in eeprom header\n",
 -		       board_ti_get_name());
@@ -117,26 +119,21 @@ index e638beb45ad..2ce54b38db2 100644
 -	snprintf(serial_string, sizeof(serial_string), "%016lx", board_serial);
 -	env_set("serial#", serial_string);
 -}
+-#endif
+-#endif
 -
+ #if CONFIG_IS_ENABLED(BOARD_LATE_INIT)
  int board_late_init(void)
  {
 -	if (IS_ENABLED(CONFIG_TI_I2C_BOARD_DETECT)) {
--		struct ti_am6_eeprom *ep = TI_AM6_EEPROM_DATA;
--
 -		setup_board_eeprom_env();
 -		setup_serial();
--		/*
--		 * The first MAC address for ethernet a.k.a. ethernet0 comes from
--		 * efuse populated via the am654 gigabit eth switch subsystem driver.
--		 * All the other ones are populated via EEPROM, hence continue with
--		 * an index of 1.
--		 */
--		board_ti_am6_set_ethaddr(1, ep->mac_addr_cnt);
 -	}
 -
+-	ti_set_fdt_env(NULL, NULL);
  	reset_eth_phys();
  
  	return 0;
 -- 
-2.46.0
+2.47.0
 
