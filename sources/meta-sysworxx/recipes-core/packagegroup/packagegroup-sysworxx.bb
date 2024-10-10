@@ -92,9 +92,9 @@ RDEPENDS:packagegroup-sysworxx-benchmark = "\
 
 RDEPENDS:packagegroup-sysworxx-extended = "\
     bash-completion \
-    docker-ce \
-    python3-docker-compose \
-    python3-distutils \
+    docker-moby \
+    docker-compose \
+    python3-distutils-extra \
     htop \
     mosquitto \
     mosquitto-clients \
