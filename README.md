@@ -102,6 +102,7 @@ specified device tree.
 setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr-prodtest.dtb; boot
 setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr600-rev0.dtb; boot
 setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr800-rev0.dtb; boot
+setenv findfdt setenv name_fdt ti/k3-am625-systec-pi-rev0.dtb; boot
 ```
 
 ## Links
