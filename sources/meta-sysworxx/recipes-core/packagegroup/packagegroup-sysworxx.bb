@@ -11,6 +11,7 @@ PACKAGES = "\
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-graphical \
     packagegroup-sysworxx-wifi \
 "
 
@@ -20,6 +21,7 @@ RDEPENDS:packagegroup-sysworxx = "\
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-graphical \
     packagegroup-sysworxx-wifi \
 "
 
@@ -74,17 +76,16 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     time \
     tzdata \
     util-linux \
+    usbutils \
     vendor-setup \
 "
 
 RDEPENDS:packagegroup-sysworxx-benchmark = "\
+    cpuburn-arm \
+    dhrystone \
+    memtester \
     tinymembench \
     whetstone \
-    dhrystone \
-    cpuburn-arm \
-    fio  \
-    lmbench \
-    memtester \
 "
 
 # python3-distutils is required by python3-docker-compose
@@ -100,6 +101,12 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     node-red \
     openssl \
     vim \
+"
+
+RDEPENDS:packagegroup-sysworxx-graphical = "\
+    kms++ \
+    fb-test \
+    fbv \
 "
 
 # TODO: we should probably not install the full vim experience, since this

@@ -3,14 +3,14 @@
 set -e
 
 if [ -z "$1" ]; then
-   echo "Usage: $0 <device>"
+   echo "Usage: $0 <BLOCK DEVICE> [DEPLOY DIR]"
    exit 1
 fi
 
 DEV=$1
-DEPLOY_DIR=./build/deploy-ti/images/sysworxx
+DEPLOY_DIR=${2:-./build/deploy-ti/images/sysworxx}
 
-xzcat ${DEPLOY_DIR}/sysworxx-image-default-sysworxx.wic.xz >"${DEV}"
+xzcat "${DEPLOY_DIR}/sysworxx-image-default-sysworxx.wic.xz" >"${DEV}"
 
 sync
 sleep 1

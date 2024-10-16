@@ -22,6 +22,7 @@ mkdir -p ./devicetree
 #      <SOURCE_DIR> <SYSCFG_NAME>          <DTSI_FILENAME>
 update sysworxx-ctr ctr800-pinmux-0.syscfg ./devicetree/k3-am623-systec-ctr800-pinmux-0.dtsi
 update sysworxx-ctr ctr600-pinmux-0.syscfg ./devicetree/k3-am623-systec-ctr600-pinmux-0.dtsi
+update sysworxx-pi pi-pinmux-0.syscfg ./devicetree/k3-am625-systec-pi-pinmux-0.dtsi
 
 # remove unwanted files
 git clean -dfX

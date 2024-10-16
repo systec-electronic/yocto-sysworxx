@@ -25,6 +25,10 @@ SRC_URI += " \
     file://k3-am623-systec-ctr-prodtest.dts${MOVE} \
     file://k3-am623-systec-ctr600-rev0.dts${MOVE} \
     file://k3-am623-systec-ctr800-rev0.dts${MOVE} \
+    \
+    file://k3-am625-systec-pi-common.dtsi${MOVE} \
+    file://k3-am625-systec-pi-pinmux-0.dtsi${MOVE} \
+    file://k3-am625-systec-pi-rev0.dts${MOVE} \
 "
 
 FRAGMENTS_DIR := "${THISDIR}/${PN}-6.1"
