@@ -284,13 +284,6 @@ iGPIO1["72"].pu_pd                 = "pd";
 iGPIO1["72"].rx                    = false;
 iGPIO1["72"].$assign               = "MMC2_SDWP";
 iGPIO1["72"].$used                 = true;
-iGPIO1["85"].pu_pd                 = "pu";
-iGPIO1["85"].$assign               = "MDIO0_MDIO";
-iGPIO1["85"].$used                 = true;
-iGPIO1["86"].pu_pd                 = "pu";
-iGPIO1["86"].rx                    = false;
-iGPIO1["86"].$assign               = "MDIO0_MDC";
-iGPIO1["86"].$used                 = true;
 iGPIO1.$name                       = "GPIO0";
 iGPIO1.$assign                     = "GPIO0";
 iGPIO1.$assignVoltage              = "3.3 V";
@@ -378,6 +371,12 @@ iMCU_UART1.CTSn.pu_pd              = "pu";
 iMCU_UART1.CTSn.$assign            = "MCU_UART0_CTSn";
 iMCU_UART1.RTSn.pu_pd              = "pu";
 iMCU_UART1.RTSn.$assign            = "MCU_UART0_RTSn";
+const iMDIO1                       = scripting.addPeripheral("MDIO");
+iMDIO1.$name                       = "MDIO0";
+iMDIO1.MDC.pu_pd                   = "pu";
+iMDIO1.MDC.$assign                 = "MDIO0_MDC";
+iMDIO1.MDIO.pu_pd                  = "pu";
+iMDIO1.MDIO.$assign                = "MDIO0_MDIO";
 const iMMC01                       = scripting.addPeripheral("MMC0");
 iMMC01.$useCase                    = "MMC0_3";
 iMMC01.$name                       = "MMC0-EMMC";
@@ -557,3 +556,10 @@ iWKUP_SYSTEM1.$assign              = "WKUP_SYSTEM";
 iWKUP_SYSTEM1.$assignVoltage       = "3.3 V";
 iWKUP_SYSTEM1.WKUP_CLKOUT0.$assign = "WKUP_CLKOUT0";
 iWKUP_SYSTEM1.PMIC_LPM_EN0.$used   = false;
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+iMDIO1.$suggestSolution = "MDIO0";

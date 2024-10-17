@@ -133,31 +133,6 @@
 		/delete-node/ cpu@2;
 		/delete-node/ cpu@3;
 	};
-
-	/* Workaround for errata i2329 - just use mdio bitbang */
-	mdio0: mdio {
-		compatible = "virtual,mdio-gpio";
-		gpios = <&main_gpio0 86 GPIO_ACTIVE_HIGH>, /* MDC */
-			<&main_gpio0 85 GPIO_ACTIVE_HIGH>; /* MDIO */
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		cpsw3g_phy0: ethernet-phy@1 {
-			reg = <1>;
-			reset-gpios = <&main_gpio1 15 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <2000>;
-			reset-deassert-us = <20000>; /* T2 */
-			micrel,led-mode = <1>;
-		};
-
-		cpsw3g_phy1: ethernet-phy@3 {
-			reg = <3>;
-			reset-gpios = <&main_gpio1 29 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <2000>;
-			reset-deassert-us = <20000>; /* T2 */
-			micrel,led-mode = <1>;
-		};
-	};
 };
 
 // we have the dual core, not the quad core model of AM62x
@@ -414,8 +389,25 @@
 };
 
 &cpsw3g_mdio {
-	/* Workaround for errata i2329 - just use mdio bitbang */
-	status = "disabled";
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&mdio0_pins_default>;
+
+	cpsw3g_phy0: ethernet-phy@1 {
+		reg = <1>;
+		reset-gpios = <&main_gpio1 15 GPIO_ACTIVE_LOW>;
+		reset-assert-us = <2000>;
+		reset-deassert-us = <20000>; /* T2 */
+		micrel,led-mode = <1>;
+	};
+
+	cpsw3g_phy1: ethernet-phy@3 {
+		reg = <3>;
+		reset-gpios = <&main_gpio1 29 GPIO_ACTIVE_LOW>;
+		reset-assert-us = <2000>;
+		reset-deassert-us = <20000>; /* T2 */
+		micrel,led-mode = <1>;
+	};
 };
 
 &usbss0 {
