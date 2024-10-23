@@ -1,5 +1,6 @@
 PINMUX_DIR = "${OEBASE}/pin-muxing/devicetree"
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-6.1:${PINMUX_DIR}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-6.6:${PINMUX_DIR}:"
+
 
 MOVE = ";subdir=git/arch/arm64/boot/dts/ti"
 
@@ -13,8 +14,8 @@ SRC_URI += " \
     file://overlayfs.cfg \
     \
     file://0001-Apply-Micrel-PHY-driver-from-https-github.com-microc.patch \
-    file://0001-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
-    file://0001-tty-serial-8250-Add-quirk-handling-for-some-sysworxx.patch \
+    file://0002-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
+    file://0003-tty-serial-8250-Add-quirk-handling-for-some-sysworxx.patch \
     \
     file://k3-am623-systec-ctr600-pinmux-0.dtsi${MOVE} \
     file://k3-am623-systec-ctr800-pinmux-0.dtsi${MOVE} \
@@ -31,7 +32,7 @@ SRC_URI += " \
     file://k3-am625-systec-pi-rev0.dts${MOVE} \
 "
 
-FRAGMENTS_DIR := "${THISDIR}/${PN}-6.1"
+FRAGMENTS_DIR := "${THISDIR}/${PN}-6.6"
 
 KERNEL_CONFIG_FRAGMENTS_WIFI += " \
     ${FRAGMENTS_DIR}/disable_wifi_bt.cfg \

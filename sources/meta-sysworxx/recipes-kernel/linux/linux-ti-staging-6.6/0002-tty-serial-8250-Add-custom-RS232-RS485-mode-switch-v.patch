@@ -1,29 +1,30 @@
-From 8674a8e3fa79e75b9ae2f6735d15319d8b462731 Mon Sep 17 00:00:00 2001
-From: Andreas Dinter <andreas.dinter@systec-electronic.com>
-Date: Mon, 12 Aug 2024 13:24:57 +0200
-Subject: [PATCH] tty: serial: 8250: Add custom RS232/RS485 mode switch via
+From 205cd8b63b09c1aa61429dfd3096b33b35e0ce73 Mon Sep 17 00:00:00 2001
+From: Christian Schuster <christian.schuster@systec-electronic.com>
+Date: Mon, 14 Oct 2024 13:28:49 +0200
+Subject: [PATCH 2/3] tty: serial: 8250: Add custom RS232/RS485 mode switch via
  gpio
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Signed-off-by: Christian Schuster <christian.schuster@systec-electronic.com>
 ---
- drivers/tty/serial/8250/8250_omap.c | 39 ++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c | 40 ++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 15e50fe40e4b..938bf47496a0 100644
+index cf68d9f6924f..a2125dc8ad47 100644
 --- a/drivers/tty/serial/8250/8250_omap.c
 +++ b/drivers/tty/serial/8250/8250_omap.c
 @@ -30,6 +30,7 @@
- #include <linux/reboot.h>
  #include <linux/sys_soc.h>
  #include <linux/pm_domain.h>
+ #include <linux/pinctrl/consumer.h>
 +#include <linux/gpio/consumer.h>
  
  #include "8250.h"
  
-@@ -146,6 +147,10 @@ struct omap8250_priv {
+@@ -156,6 +157,10 @@ struct omap8250_priv {
+ 
  	struct pinctrl *pinctrl;
- 	struct pinctrl_state *pinctrl_default;
  	struct pinctrl_state *pinctrl_wakeup;
 +
 +	__u32 rs485_flags;
@@ -32,12 +33,13 @@ index 15e50fe40e4b..938bf47496a0 100644
  };
  
  struct omap8250_dma_params {
-@@ -1268,6 +1273,35 @@ static int omap8250_sysoff_handler(struct sys_off_data *data)
+@@ -1382,6 +1387,36 @@ static int omap8250_sysoff_handler(struct sys_off_data *data)
  	return NOTIFY_DONE;
  }
  
-+static int omap8250_em485_config(struct uart_port *port, struct ktermios *termios,
-+			    struct serial_rs485 *rs485)
++static int omap8250_em485_config(struct uart_port *port,
++				 struct ktermios *termios,
++				 struct serial_rs485 *rs485)
 +{
 +	struct uart_8250_port *up = up_to_u8250p(port);
 +	struct omap8250_priv *priv = up->port.private_data;
@@ -68,16 +70,16 @@ index 15e50fe40e4b..938bf47496a0 100644
  static struct omap8250_dma_params am654_dma = {
  	.rx_size = SZ_2K,
  	.rx_trigger = 1,
-@@ -1376,7 +1410,7 @@ static int omap8250_probe(struct platform_device *pdev)
+@@ -1490,7 +1525,7 @@ static int omap8250_probe(struct platform_device *pdev)
  	up.port.shutdown = omap_8250_shutdown;
  	up.port.throttle = omap_8250_throttle;
  	up.port.unthrottle = omap_8250_unthrottle;
--	up.port.rs485_config = serial8250_em485_config;
+-	up.port.rs485_config = omap8250_rs485_config;
 +	up.port.rs485_config = omap8250_em485_config;
+ 	/* same rs485_supported for software emulation and native RS485 */
  	up.port.rs485_supported = serial8250_em485_supported;
  	up.rs485_start_tx = serial8250_em485_start_tx;
- 	up.rs485_stop_tx = serial8250_em485_stop_tx;
-@@ -1504,6 +1538,9 @@ static int omap8250_probe(struct platform_device *pdev)
+@@ -1624,6 +1659,9 @@ static int omap8250_probe(struct platform_device *pdev)
  				      SYS_OFF_PRIO_DEFAULT,
  				      omap8250_sysoff_handler, NULL);
  
@@ -88,5 +90,5 @@ index 15e50fe40e4b..938bf47496a0 100644
  err:
  	pm_runtime_dont_use_autosuspend(&pdev->dev);
 -- 
-2.46.0
+2.46.2
 

@@ -1,19 +1,20 @@
-From 8e5c418308511ea3ef3e52f64cf436db70a1a10f Mon Sep 17 00:00:00 2001
-From: Andreas Dinter <andreas.dinter@systec-electronic.com>
-Date: Wed, 14 Aug 2024 12:23:33 +0200
-Subject: [PATCH] tty: serial: 8250: Add quirk handling for some sysworxx
+From 3813166188e2513008f38043df074de8cb816e6b Mon Sep 17 00:00:00 2001
+From: Christian Schuster <christian.schuster@systec-electronic.com>
+Date: Mon, 14 Oct 2024 13:32:59 +0200
+Subject: [PATCH 3/3] tty: serial: 8250: Add quirk handling for some sysworxx
  modules
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
+Signed-off-by: Christian Schuster <christian.schuster@systec-electronic.com>
 ---
- drivers/tty/serial/8250/8250_omap.c | 65 +++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+ drivers/tty/serial/8250/8250_omap.c | 69 ++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 938bf47496a0..57883700e329 100644
+index a2125dc8ad47..68b0fda6c882 100644
 --- a/drivers/tty/serial/8250/8250_omap.c
 +++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -112,6 +112,10 @@
+@@ -118,15 +118,19 @@
  /* RX FIFO occupancy indicator */
  #define UART_OMAP_RX_LVL		0x19
  
@@ -21,10 +22,21 @@ index 938bf47496a0..57883700e329 100644
 +#define UART_ECR 0x24
 +#define UART_ECR_RX_EN (1 << 3)
 +
- /*
+ /* Timeout low and High */
+ #define UART_OMAP_TO_L                 0x26
+ #define UART_OMAP_TO_H                 0x27
+ 
+-/*
++	/*
   * Copy of the genpd flags for the console.
   * Only used if console suspend is disabled
-@@ -1288,6 +1292,62 @@ static int omap8250_em485_config(struct uart_port *port, struct ktermios *termio
+  */
+-static unsigned int genpd_flags_console;
++	static unsigned int genpd_flags_console;
+ 
+ struct omap8250_priv {
+ 	void __iomem *membase;
+@@ -1403,6 +1407,62 @@ static int omap8250_em485_config(struct uart_port *port,
  	return ret;
  }
  
@@ -87,7 +99,7 @@ index 938bf47496a0..57883700e329 100644
  static void ti_sermode_worker(struct work_struct *work)
  {
  	struct omap8250_priv *priv = container_of(work, struct omap8250_priv, sermode_worker);
-@@ -1452,6 +1512,11 @@ static int omap8250_probe(struct platform_device *pdev)
+@@ -1566,6 +1626,11 @@ static int omap8250_probe(struct platform_device *pdev)
  			 DEFAULT_CLK_SPEED);
  	}
  
@@ -100,5 +112,5 @@ index 938bf47496a0..57883700e329 100644
  	priv->line = -ENODEV;
  	priv->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
 -- 
-2.46.0
+2.46.2
 
