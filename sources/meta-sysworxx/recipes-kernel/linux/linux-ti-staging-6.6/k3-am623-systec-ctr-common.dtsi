@@ -289,7 +289,7 @@
 			};
 
 			ldo4_reg: ldo4 {
-				regulator-name = "VDD_1V2";
+				regulator-name = "VDD_2V5";
 				regulator-min-microvolt = <2500000>;
 				regulator-max-microvolt = <2500000>;
 				regulator-boot-on;
