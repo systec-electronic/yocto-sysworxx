@@ -3,7 +3,7 @@ SUMMARY = "Tiny framebuffer image viewer."
 AUTHOR = "SYS TEC electronic AG"
 HOMEPAGE = "https://github.com/godspeed1989/fbv"
 
-LICENSE = "GPL2"
+LICENSE = "GPL-2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=130f9d9dddfebd2c6ff59165f066e41c"
 
 DEPENDS += "jpeg libpng"
