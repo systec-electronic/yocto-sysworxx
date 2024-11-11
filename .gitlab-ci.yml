@@ -26,7 +26,7 @@ sysworxx-image-default:
     cd build/
     . conf/setenv
     bitbake sysworxx-image-default
-    cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.wic.xz ..
+    cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz ..
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     when: on_success
