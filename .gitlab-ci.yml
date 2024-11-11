@@ -34,6 +34,22 @@ sysworxx-image-default:
     paths:
       - "*.wic.xz"
 
+sysworxx-bundle:
+  tags:
+    - seccomp_unconfined
+  stage: build
+  script: |
+    cd build/
+    . conf/setenv
+    bitbake sysworxx-bundle
+    cp deploy-ti/images/sysworxx/sysworxx-bundle-sysworxx.raucb ..
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - "*.raucb"
+
 bare-repo-release:
   stage: deploy
   image:
