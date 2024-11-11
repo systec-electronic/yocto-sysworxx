@@ -74,6 +74,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     rs485-setup \
     sed \
     systec-version \
+    sysworxx-io \
     tar \
     time \
     tzdata \
