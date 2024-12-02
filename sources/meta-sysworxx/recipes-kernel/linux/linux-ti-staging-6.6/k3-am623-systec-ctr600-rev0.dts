@@ -7,6 +7,8 @@
  */
 /dts-v1/;
 
+#include <dt-bindings/input/input.h>
+
 #include "k3-am625.dtsi"
 #include "k3-am623-systec-ctr600-pinmux-0.dtsi"
 #include "k3-am623-systec-ctr-common.dtsi"
@@ -213,4 +215,17 @@
 		"",       "MCU_MCAN0_TX", "MCU_MCAN0_RX", "",       // 12
 		"",       "",             "",             "",       // 16
 		"",       "",             "",             "";       // 20
+};
+
+/ {
+	gpio_input {
+		compatible = "gpio-keys";
+		status = "okay";
+
+		di@0 { label = "Digital In 0"; linux,code = <KEY_F1>; gpios = <&main_gpio0 45 GPIO_ACTIVE_HIGH>; };
+		di@1 { label = "Digital In 1"; linux,code = <KEY_F2>; gpios = <&main_gpio0 46 GPIO_ACTIVE_HIGH>; };
+		di@2 { label = "Digital In 2"; linux,code = <KEY_F3>; gpios = <&main_gpio0 47 GPIO_ACTIVE_HIGH>; };
+		di@3 { label = "Digital In 3"; linux,code = <KEY_F4>; gpios = <&main_gpio0 48 GPIO_ACTIVE_HIGH>; };
+		runstop { label = "Run-Stop";  linux,code = <KEY_1>;  gpios = <&main_gpio0 11 GPIO_ACTIVE_HIGH>; };
+	};
 };

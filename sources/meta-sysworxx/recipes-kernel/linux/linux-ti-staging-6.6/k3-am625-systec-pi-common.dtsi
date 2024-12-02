@@ -6,6 +6,8 @@
  * published by the Free Software Foundation.
  */
 
+#include <dt-bindings/input/input.h>
+
 / {
 	aliases {
 		serial0 = &mcu_uart0;
@@ -476,5 +478,20 @@
 		usb1_drd_sw: endpoint {
 			remote-endpoint = <&typec_dr_sw>;
 		};
+	};
+};
+
+/ {
+	gpio_input {
+		compatible = "gpio-keys";
+		status = "okay";
+
+		di@0 { label = "Digital In 0"; linux,code = <KEY_F1>; gpios = <&main_gpio0 0 GPIO_ACTIVE_HIGH>; };
+		di@1 { label = "Digital In 1"; linux,code = <KEY_F2>; gpios = <&main_gpio0 1 GPIO_ACTIVE_HIGH>; };
+		di@2 { label = "Digital In 2"; linux,code = <KEY_F3>; gpios = <&main_gpio0 2 GPIO_ACTIVE_HIGH>; };
+		di@3 { label = "Digital In 3"; linux,code = <KEY_F4>; gpios = <&main_gpio0 3 GPIO_ACTIVE_HIGH>; };
+		di@4 { label = "Digital In 4"; linux,code = <KEY_F5>; gpios = <&main_gpio0 44 GPIO_ACTIVE_HIGH>; };
+		di@5 { label = "Digital In 5"; linux,code = <KEY_F6>; gpios = <&main_gpio1 28 GPIO_ACTIVE_HIGH>; };
+		di@6 { label = "Digital In 6"; linux,code = <KEY_F7>; gpios = <&main_gpio0 4 GPIO_ACTIVE_HIGH>; };
 	};
 };

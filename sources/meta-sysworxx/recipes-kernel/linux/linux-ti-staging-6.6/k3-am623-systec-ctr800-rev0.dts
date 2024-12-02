@@ -7,6 +7,8 @@
  */
 /dts-v1/;
 
+#include <dt-bindings/input/input.h>
+
 #include "k3-am625.dtsi"
 #include "k3-am623-systec-ctr800-pinmux-0.dtsi"
 #include "k3-am623-systec-ctr-common.dtsi"
@@ -228,4 +230,29 @@
 		"",       "MCU_MCAN0_TX", "MCU_MCAN0_RX", "",       // 12
 		"",       "",             "",             "",       // 16
 		"",       "",             "",             "";       // 20
+};
+
+/ {
+	gpio_input {
+		compatible = "gpio-keys";
+		status = "okay";
+
+		di@0  { label = "Digital In 0";  linux,code = <KEY_F1>;  gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>; };
+		di@1  { label = "Digital In 1";  linux,code = <KEY_F2>;  gpios = <&main_gpio0 32 GPIO_ACTIVE_HIGH>; };
+		di@2  { label = "Digital In 2";  linux,code = <KEY_F3>;  gpios = <&main_gpio0 33 GPIO_ACTIVE_HIGH>; };
+		di@3  { label = "Digital In 3";  linux,code = <KEY_F4>;  gpios = <&main_gpio0 34 GPIO_ACTIVE_HIGH>; };
+		di@4  { label = "Digital In 4";  linux,code = <KEY_F5>;  gpios = <&main_gpio0 35 GPIO_ACTIVE_HIGH>; };
+		di@5  { label = "Digital In 5";  linux,code = <KEY_F6>;  gpios = <&main_gpio0 36 GPIO_ACTIVE_HIGH>; };
+		di@6  { label = "Digital In 6";  linux,code = <KEY_F7>;  gpios = <&main_gpio0 37 GPIO_ACTIVE_HIGH>; };
+		di@7  { label = "Digital In 7";  linux,code = <KEY_F8>;  gpios = <&main_gpio0 38 GPIO_ACTIVE_HIGH>; };
+		di@8  { label = "Digital In 8";  linux,code = <KEY_F9>;  gpios = <&main_gpio0 39 GPIO_ACTIVE_HIGH>; };
+		di@9  { label = "Digital In 9";  linux,code = <KEY_F10>; gpios = <&main_gpio0 40 GPIO_ACTIVE_HIGH>; };
+		di@10 { label = "Digital In 10"; linux,code = <KEY_F11>; gpios = <&main_gpio0 41 GPIO_ACTIVE_HIGH>; };
+		di@11 { label = "Digital In 11"; linux,code = <KEY_F12>; gpios = <&main_gpio0 42 GPIO_ACTIVE_HIGH>; };
+		di@12 { label = "Digital In 12"; linux,code = <KEY_F13>; gpios = <&main_gpio0 45 GPIO_ACTIVE_HIGH>; };
+		di@13 { label = "Digital In 13"; linux,code = <KEY_F14>; gpios = <&main_gpio0 46 GPIO_ACTIVE_HIGH>; };
+		di@14 { label = "Digital In 14"; linux,code = <KEY_F15>; gpios = <&main_gpio0 47 GPIO_ACTIVE_HIGH>; };
+		di@15 { label = "Digital In 15"; linux,code = <KEY_F16>; gpios = <&main_gpio0 48 GPIO_ACTIVE_HIGH>; };
+		runstop { label = "Run-Stop";    linux,code = <KEY_1>;   gpios = <&main_gpio0 11 GPIO_ACTIVE_HIGH>; };
+	};
 };
