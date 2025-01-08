@@ -1,0 +1,11 @@
+[Unit]
+Description=Node-RED
+
+[Service]
+Environment=NODE_ENV=production
+ExecStart=/bin/su root -c 'node-red'
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
