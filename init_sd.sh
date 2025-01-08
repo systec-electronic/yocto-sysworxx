@@ -16,14 +16,16 @@ sync
 sleep 1
 
 udisksctl mount -b /dev/disk/by-label/boot
-cp "/run/media/${USER}/boot/tiboot3-am62x-gp-evm.bin" \
-   "/run/media/${USER}/boot/tiboot3.bin"
+mp_boot=$(udisksctl info -b /dev/disk/by-label/boot | grep MountPoint | awk '{ print $2} ')
+cp "${mp_boot}/tiboot3-am62x-gp-evm.bin" \
+   "${mp_boot}/tiboot3.bin"
 udisksctl unmount -b /dev/disk/by-label/boot
 
 udisksctl mount -b /dev/disk/by-label/root
-sudo mkdir -p "/run/media/${USER}/root/opt/image"
-sudo cp -L ${DEPLOY_DIR}/tiboot3-am62x-gp-evm.bin "/run/media/${USER}/root/opt/image/tiboot3.bin"
-sudo cp -L ${DEPLOY_DIR}/tispl.bin "/run/media/${USER}/root/opt/image/"
-sudo cp -L ${DEPLOY_DIR}/u-boot.img "/run/media/${USER}/root/opt/image/"
-sudo cp -L ${DEPLOY_DIR}/sysworxx-image-default-sysworxx.rootfs.tar.gz "/run/media/${USER}/root/opt/image/"
+mp_root=$(udisksctl info -b /dev/disk/by-label/root | grep MountPoint | awk '{ print $2} ')
+sudo mkdir -p "${mp_root}/opt/image"
+sudo cp -L "${DEPLOY_DIR}/tiboot3-am62x-gp-evm.bin" "${mp_root}/opt/image/tiboot3.bin"
+sudo cp -L "${DEPLOY_DIR}/tispl.bin" "${mp_root}/opt/image/"
+sudo cp -L "${DEPLOY_DIR}/u-boot.img" "${mp_root}/opt/image/"
+sudo cp -L "${DEPLOY_DIR}/sysworxx-image-default-sysworxx.rootfs.tar.gz" "${mp_root}/opt/image/"
 udisksctl unmount -b /dev/disk/by-label/root
