@@ -69,7 +69,8 @@ ${DEV_SDCARD}*)
 ${DEV_EMMC}*)
     if [ "$(ls /dev/${DEV_EMMC}p* | wc -l)" -eq 5 ]; then
         msg "mounting eMMC partitions..."
-        xfsckext4 "${ROOT_DEVICE}" || /bin/sh
+        xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
+        xfsckext4 /dev/${DEV_EMMC}p4 || /bin/sh
         mount -o ro,relatime "${ROOT_DEVICE}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
 
         msg "mounting user part and overlays..."
