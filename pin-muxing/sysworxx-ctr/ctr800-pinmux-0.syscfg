@@ -341,10 +341,10 @@ iMCAN1.RX.pu_pd                    = "pu";
 iMCAN1.RX.$assign                  = "MCAN0_RX";
 iMCAN1.TX.$assign                  = "MCAN0_TX";
 const iMCU_GPIO1                   = scripting.addPeripheral("MCU_GPIO");
-iMCU_GPIO1["17"].$assign           = "MCU_I2C0_SCL";
-iMCU_GPIO1["17"].$used             = true;
-iMCU_GPIO1["18"].$assign           = "MCU_I2C0_SDA";
-iMCU_GPIO1["18"].$used             = true;
+iMCU_GPIO1["2"].rx                 = false;
+iMCU_GPIO1["2"].$used              = true;
+iMCU_GPIO1["3"].rx                 = false;
+iMCU_GPIO1["3"].$used              = true;
 iMCU_GPIO1["19"].rx                = false;
 iMCU_GPIO1["20"].rx                = false;
 iMCU_GPIO1.$name                   = "MCU_GPIO0";
@@ -562,4 +562,6 @@ iWKUP_SYSTEM1.PMIC_LPM_EN0.$used   = false;
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
-iMDIO1.$suggestSolution = "MDIO0";
+iMCU_GPIO1["2"].$suggestSolution = "MCU_SPI0_CLK";
+iMCU_GPIO1["3"].$suggestSolution = "MCU_SPI0_D0";
+iMDIO1.$suggestSolution          = "MDIO0";
