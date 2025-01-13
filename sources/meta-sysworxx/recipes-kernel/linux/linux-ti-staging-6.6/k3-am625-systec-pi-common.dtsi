@@ -298,6 +298,13 @@
 			};
 		};
 	};
+};
+
+// I2C0_MCU
+&mcu_i2c0 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&mcui2c1rtc_pins_default>;
 
 	sii9022: sii9022@3b {
 		#sound-dai-cells = <0>;
