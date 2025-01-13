@@ -21,14 +21,6 @@
 	};
 };
 
-// I2C ID
-&main_i2c2 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c2ideepromshield_pins_default>;
-	clock-frequency = <400000>;
-};
-
 // I2C0_MAIN
 &main_i2c0 {
 	/* RTC */

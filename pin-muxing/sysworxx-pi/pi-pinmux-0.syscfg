@@ -202,7 +202,9 @@ iGPIO1["41"].$used                 = true;
 iGPIO1["42"].$assign               = "GPMC0_CSn1";
 iGPIO1["42"].$used                 = true;
 iGPIO1["43"].$assign               = "GPMC0_CSn2";
+iGPIO1["43"].$used                 = true;
 iGPIO1["44"].$assign               = "GPMC0_CSn3";
+iGPIO1["44"].$used                 = true;
 iGPIO1["71"].pu_pd                 = "pd";
 iGPIO1["71"].$assign               = "MMC2_SDCD";
 iGPIO1["71"].$used                 = true;
@@ -269,10 +271,6 @@ iI2C1.$assign                      = "I2C0";
 iI2C1.$assignVoltage               = "3.3 V";
 iI2C1.SCL.$assign                  = "I2C0_SCL";
 iI2C1.SDA.$assign                  = "I2C0_SDA";
-const iI2C2                        = scripting.addPeripheral("I2C");
-iI2C2.$name                        = "I2C2_ID_EEPROM_Shield";
-iI2C2.SCL.$assign                  = "GPMC0_CSn2";
-iI2C2.SDA.$assign                  = "GPMC0_CSn3";
 const iMCASP1                      = scripting.addPeripheral("MCASP");
 iMCASP1.$name                      = "HDMI_Audio";
 iMCASP1.$assign                    = "MCASP0";
@@ -477,6 +475,5 @@ iWKUP_SYSTEM1.PMIC_LPM_EN0.$assign = "PMIC_LPM_EN0";
  * re-solve from scratch.
  */
 iGPIO1.$suggestSolution    = "GPIO0";
-iI2C2.$suggestSolution     = "I2C2";
 iMCU_I2C1.$suggestSolution = "MCU_I2C0";
 iMDIO1.$suggestSolution    = "MDIO0";
