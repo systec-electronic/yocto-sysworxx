@@ -303,10 +303,7 @@
 		#sound-dai-cells = <0>;
 		compatible = "sil,sii9022";
 		reg = <0x3b>;
-        reset-gpios = <&main_gpio1 8 GPIO_ACTIVE_LOW>;
-
-		interrupt-parent = <&main_gpio1>;
-		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&main_gpio1 8 GPIO_ACTIVE_LOW>;
 
 		sil,i2s-data-lanes = <0>;
 
