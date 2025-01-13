@@ -3,22 +3,22 @@
 ## Digital outputs
 
 ```sh
-gpioset 4201000.gpio  22=1  # DO_0 FIXME:
-gpioset 4201000.gpio  23=1  # DO_1 FIXME:
-gpioset 600000.gpio  51=1  # do_2
-gpioset 600000.gpio  52=1  # do_3
-gpioset 600000.gpio  57=1  # do_4
-gpioset 600000.gpio  58=1  # do_5
-gpioset 600000.gpio  59=1  # do_6
-gpioset 600000.gpio  60=1  # do_7
-gpioset 600000.gpio  61=1  # do_8
-gpioset 600000.gpio  17=1  # do_9
-gpioset 600000.gpio   1=1  # do_10
-gpioset 600000.gpio  26=1  # do_11
-gpioset 600000.gpio  19=1  # do_12
-gpioset 600000.gpio  20=1  # do_13
-gpioset 600000.gpio   3=1  # relay0_en
-gpioset 600000.gpio   4=1  # relay1_en
+gpioset -t0 DO_0=1; sleep 0.2; gpioset -t0 DO_0=0
+gpioset -t0 DO_1=1; sleep 0.2; gpioset -t0 DO_1=0
+gpioset -t0 DO_2=1; sleep 0.2; gpioset -t0 DO_2=0
+gpioset -t0 DO_3=1; sleep 0.2; gpioset -t0 DO_3=0
+gpioset -t0 DO_4=1; sleep 0.2; gpioset -t0 DO_4=0
+gpioset -t0 DO_5=1; sleep 0.2; gpioset -t0 DO_5=0
+gpioset -t0 DO_6=1; sleep 0.2; gpioset -t0 DO_6=0
+gpioset -t0 DO_7=1; sleep 0.2; gpioset -t0 DO_7=0
+gpioset -t0 DO_8=1; sleep 0.2; gpioset -t0 DO_8=0
+gpioset -t0 DO_9=1; sleep 0.2; gpioset -t0 DO_9=0
+gpioset -t0 DO_10=1; sleep 0.2; gpioset -t0 DO_10=0
+gpioset -t0 DO_11=1; sleep 0.2; gpioset -t0 DO_11=0
+gpioset -t0 DO_12=1; sleep 0.2; gpioset -t0 DO_12=0
+gpioset -t0 DO_13=1; sleep 0.2; gpioset -t0 DO_13=0
+gpioset -t0 RELAY0_EN=1; sleep 1; gpioset -t0 RELAY0_EN=0
+gpioset -t0 RELAY1_EN=1; sleep 1; gpioset -t0 RELAY1_EN=0
 
 # DO_14_PWM
 echo 0 > /sys/class/pwm/pwmchip0/export
@@ -33,24 +33,19 @@ echo 100000000 > /sys/class/pwm/pwmchip2/pwm0/duty_cycle
 echo 1 > /sys/class/pwm/pwmchip2/pwm0/enable
 
 # RUN and ERR LED
-gpioset 600000.gpio 5=1
-gpioset 600000.gpio 6=1
+gpioset -t0 LED_RUN=1; sleep 0.2; gpioset -t0 LED_RUN=0
+gpioset -t0 LED_ERR=1; sleep 0.2; gpioset -t0 LED_ERR=0
 ```
 
 ## Digital inputs
 
 ```sh
-# DI0 .. DI15
-gpioget 600000.gpio 31 32 33 34 35 36 37 38 39 40 41 42 45 46 47 48
-
-# or check periodically
-while true; do gpioget 600000.gpio 31 32 33 34 35 36 37 38 39 40 41 42 45 46 47 48; sleep 0.2; done
-
-# RUN switch
-gpioget 600000.gpio 11
+# DI0 .. DI15 == KEY_F1 .. KEY_F16
+# RUN switch == KEY_1
+evtest /dev/input/by-path/platform-gpio_input-event
 
 # /BOOT and /CONFIG
-gpioget 600000.gpio 12 62
+gpioget "/BOOT" "/CONFIG"
 ```
 
 ## Counter
