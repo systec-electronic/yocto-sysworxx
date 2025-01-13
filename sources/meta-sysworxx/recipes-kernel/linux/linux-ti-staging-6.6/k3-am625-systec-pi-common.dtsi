@@ -370,8 +370,7 @@
 	ti,driver-strength-ohm = <50>;
 	disable-wp;
 	status = "okay";
-	// FixMe: see issue: http://srv-gitlab.intern.systec-electronic.com/132401/hw/4600/-/issues/3
-	// reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
+	reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
 };
 
 &sdhci1 {
