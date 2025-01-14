@@ -185,7 +185,7 @@
 		"",            "",           "",               "",               // 4
 		"",            "DO_2_PWM",   "eMMC_/RST",      "DI_2_PHA_A",     // 8
 		"DI_3_PHA_B",  "",           "",               "ETH0_/RST",      // 12
-		"",            "SPI2_SCLK",  "SPI2_MOSI",      "SPI2_MISO",      // 16
+		"",            "SPI0_SCLK",  "SPI0_MOSI",      "SPI0_MISO",      // 16
 		"SERVICE_RX",  "SERVICE_TX", "I2C3_BOARD_SCL", "I2C3_BOARD_SDA", // 20
 		"MCAN0_TX",    "MCAN0_RX",   "I2C0_SOM_SCL",   "I2C0_SOM_SDA",   // 24
 		"DO_3_PWM",    "ETH1_/RST",  "",               "",               // 28
@@ -193,7 +193,7 @@
 		"",            "",           "",               "",               // 36
 		"",            "",           "",               "",               // 40
 		"",            "",           "",               "",               // 44
-		"",            "",           "",               "SER0_DEN",       // 48
+		"",            "",           "USB0_DRVVBUS",   "USB1_DRVVBUS",   // 48
 		"",            "",           "",               "",               // 52
 		"",            "",           "",               "",               // 56
 		"",            "",           "",               "",               // 60
