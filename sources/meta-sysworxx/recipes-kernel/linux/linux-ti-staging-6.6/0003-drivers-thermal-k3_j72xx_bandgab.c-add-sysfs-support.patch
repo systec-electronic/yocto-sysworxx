@@ -1,7 +1,7 @@
-From 6b36f72f774df67bd1454be8b2aec628ded45ef0 Mon Sep 17 00:00:00 2001
+From 0baf1ea79ea2df92eda94d8f09119b254d6d9de2 Mon Sep 17 00:00:00 2001
 From: Christian Schuster <christian.schuster@systec-electronic.com>
 Date: Wed, 18 Dec 2024 16:25:49 +0100
-Subject: [PATCH] drivers/thermal/k3_j72xx_bandgab.c: add sysfs support for
+Subject: [PATCH 3/3] drivers/thermal/k3_j72xx_bandgab.c: add sysfs support for
  thermal zones
 
 Signed-off-by: Christian Schuster <christian.schuster@systec-electronic.com>
@@ -32,5 +32,5 @@ index 0acafdfdd6f2..63a799ed7286 100644
  
  	print_look_up_table(dev, ref_table);
 -- 
-2.47.0
+2.47.1
 

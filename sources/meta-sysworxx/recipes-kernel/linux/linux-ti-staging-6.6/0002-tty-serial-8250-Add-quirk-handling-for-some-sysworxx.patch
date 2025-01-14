@@ -1,7 +1,7 @@
-From 3813166188e2513008f38043df074de8cb816e6b Mon Sep 17 00:00:00 2001
+From 3ab66932e9171499a8cdfd2edf838fb91d913eb4 Mon Sep 17 00:00:00 2001
 From: Christian Schuster <christian.schuster@systec-electronic.com>
 Date: Mon, 14 Oct 2024 13:32:59 +0200
-Subject: [PATCH 3/3] tty: serial: 8250: Add quirk handling for some sysworxx
+Subject: [PATCH 2/3] tty: serial: 8250: Add quirk handling for some sysworxx
  modules
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
@@ -11,7 +11,7 @@ Signed-off-by: Christian Schuster <christian.schuster@systec-electronic.com>
  1 file changed, 67 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index a2125dc8ad47..68b0fda6c882 100644
+index 0ae5bdd94812..ef11a47e70af 100644
 --- a/drivers/tty/serial/8250/8250_omap.c
 +++ b/drivers/tty/serial/8250/8250_omap.c
 @@ -118,15 +118,19 @@
@@ -36,7 +36,7 @@ index a2125dc8ad47..68b0fda6c882 100644
  
  struct omap8250_priv {
  	void __iomem *membase;
-@@ -1403,6 +1407,62 @@ static int omap8250_em485_config(struct uart_port *port,
+@@ -1407,6 +1411,62 @@ static int omap8250_em485_config(struct uart_port *port,
  	return ret;
  }
  
@@ -99,7 +99,7 @@ index a2125dc8ad47..68b0fda6c882 100644
  static void ti_sermode_worker(struct work_struct *work)
  {
  	struct omap8250_priv *priv = container_of(work, struct omap8250_priv, sermode_worker);
-@@ -1566,6 +1626,11 @@ static int omap8250_probe(struct platform_device *pdev)
+@@ -1570,6 +1630,11 @@ static int omap8250_probe(struct platform_device *pdev)
  			 DEFAULT_CLK_SPEED);
  	}
  
@@ -112,5 +112,5 @@ index a2125dc8ad47..68b0fda6c882 100644
  	priv->line = -ENODEV;
  	priv->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
 -- 
-2.46.2
+2.47.1
 
