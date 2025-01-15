@@ -67,6 +67,8 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     phy-lan8830t-setup \
     procps \
     psmisc \
+    python3 \
+    python3-pip \
     rauc \
     rng-tools \
     rs485-setup \
@@ -99,6 +101,8 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     mosquitto \
     mosquitto-clients \
     node-red \
+    nodejs \
+    nodejs-npm \
     openssl \
     vim \
 "
