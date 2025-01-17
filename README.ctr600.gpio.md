@@ -3,8 +3,8 @@
 ## Digital outputs
 
 ```sh
-gpioset 600000.gpio  19=1  # DO_0
-gpioset 600000.gpio  20=1  # DO_1
+gpioset -t0 DO_0=1; sleep 0.2; gpioset -t0 DO_0=0
+gpioset -t0 DO_1=1; sleep 0.2; gpioset -t0 DO_1=0
 
 # DO_2_PWM
 echo 0 > /sys/class/pwm/pwmchip0/export
@@ -19,24 +19,19 @@ echo 100000000 > /sys/class/pwm/pwmchip2/pwm0/duty_cycle
 echo 1 > /sys/class/pwm/pwmchip2/pwm0/enable
 
 # RUN and ERR LED
-gpioset 600000.gpio 5=1
-gpioset 600000.gpio 6=1
+gpioset -t0 LED_RUN=1; sleep 0.2; gpioset -t0 LED_RUN=0
+gpioset -t0 LED_ERR=1; sleep 0.2; gpioset -t0 LED_ERR=0
 ```
 
 ## Digital inputs
 
 ```sh
-# DI0 .. DI3
-gpioget 600000.gpio 45 46 47 48
-
-# or check periodically
-while true; do gpioget 600000.gpio 45 46 47 48; sleep 0.2; done
-
-# RUN switch
-gpioget 600000.gpio 11
+# DI0 .. DI3 == KEY_F1 .. KEY_F4
+# RUN switch == KEY_1
+evtest /dev/input/by-path/platform-gpio_input-event
 
 # /BOOT and /CONFIG
-gpioget 600000.gpio 12 62
+gpioget "/BOOT" "/CONFIG"
 ```
 
 ## Counter

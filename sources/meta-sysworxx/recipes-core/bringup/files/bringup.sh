@@ -78,8 +78,8 @@ mkfs.vfat /dev/disk/by-partlabel/vendor -n vendor
 mkfs.ext4 /dev/disk/by-partlabel/user -q -F -L user
 
 # install rootfs using rauc
-rauc write-slot rootfs.0 "${BRINGUP_SOURCE_DIR}/sysworxx-image-default-sysworxx.tar.gz"
-rauc write-slot rootfs.1 "${BRINGUP_SOURCE_DIR}/sysworxx-image-default-sysworxx.tar.gz"
+rauc write-slot rootfs.0 "${BRINGUP_SOURCE_DIR}/sysworxx-image-default-sysworxx.rootfs.tar.gz"
+rauc write-slot rootfs.1 "${BRINGUP_SOURCE_DIR}/sysworxx-image-default-sysworxx.rootfs.tar.gz"
 
 sync
 

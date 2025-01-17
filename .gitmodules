@@ -1,39 +1,39 @@
 [submodule "sources/meta-arm"]
 	path = sources/meta-arm
 	url = https://git.yoctoproject.org/meta-arm
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-ti"]
 	path = sources/meta-ti
 	url = https://git.yoctoproject.org/meta-ti
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-arago"]
 	path = sources/meta-arago
 	url = https://git.yoctoproject.org/meta-arago
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-qt5"]
 	path = sources/meta-qt5
 	url = https://github.com/meta-qt5/meta-qt5.git
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-virtualization"]
 	path = sources/meta-virtualization
 	url = https://git.yoctoproject.org/meta-virtualization
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/bitbake"]
 	path = sources/bitbake
 	url = https://git.openembedded.org/bitbake
-	branch = 2.0
+	branch = 2.8
 [submodule "sources/meta-openembedded"]
 	path = sources/meta-openembedded
 	url = https://git.openembedded.org/meta-openembedded
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/oe-core"]
 	path = sources/oe-core
 	url = https://git.openembedded.org/openembedded-core
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-yocto"]
 	path = sources/meta-yocto
 	url = https://git.yoctoproject.org/meta-yocto
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-summit-radio"]
 	path = sources/meta-summit-radio
 	url = https://github.com/LairdCP/meta-summit-radio.git
@@ -43,4 +43,4 @@
 [submodule "sources/meta-rauc"]
 	path = sources/meta-rauc
 	url = https://github.com/rauc/meta-rauc.git
-	branch = kirkstone
+	branch = scarthgap

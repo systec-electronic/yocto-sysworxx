@@ -92,9 +92,9 @@ RDEPENDS:packagegroup-sysworxx-benchmark = "\
 
 RDEPENDS:packagegroup-sysworxx-extended = "\
     bash-completion \
-    docker-ce \
-    python3-docker-compose \
-    python3-distutils \
+    docker-moby \
+    docker-compose \
+    python3-distutils-extra \
     htop \
     mosquitto \
     mosquitto-clients \
@@ -127,10 +127,11 @@ RDEPENDS:packagegroup-sysworxx-debug = "\
 RDEPENDS:packagegroup-sysworxx-wifi = "\
     ca-certificates \
     iw \
-    kernel-module-lwb5p-backports-summit \
+    kernel-module-lwb-if-backports \
     lwb5plus-sdio-sa-firmware \
-    summit-networkmanager-60 \
-    summit-supplicant-60 \
+    summit-networkmanager-lwb-if \
+    summit-supplicant-lwb-if \
+    summit-networkmanager-lwb-if-nmcli \
     packagegroup-tools-bluetooth \
     bluez5 \
 "

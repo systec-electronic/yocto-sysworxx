@@ -57,6 +57,20 @@ reboot
 
 The device will then reboot and switch to the other boot slot.
 
+## Build SDK
+
+```sh
+cd build/
+. conf/setenv
+bitbake sysworxx-image-default -c populate_sdk
+```
+
+The SDK installer script can then be found in:
+
+```
+./build/deploy-ti/sdk/poky-glibc-x86_64-sysworxx-image-default-aarch64-sysworxx-toolchain-4.0.19.
+```
+
 ## Modifying Linux kernel source
 
 ```sh
@@ -99,10 +113,10 @@ Stop in u-boot shell and perform one of the following commands to boot with the
 specified device tree.
 
 ```sh
-setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr-prodtest.dtb; boot
-setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr600-rev0.dtb; boot
-setenv findfdt setenv name_fdt ti/k3-am623-systec-ctr800-rev0.dtb; boot
-setenv findfdt setenv name_fdt ti/k3-am625-systec-pi-rev0.dtb; boot
+setenv findfdt setenv fdtfile ti/k3-am623-systec-ctr-prodtest.dtb; boot
+setenv findfdt setenv fdtfile ti/k3-am623-systec-ctr600-rev0.dtb; boot
+setenv findfdt setenv fdtfile ti/k3-am623-systec-ctr800-rev0.dtb; boot
+setenv findfdt setenv fdtfile ti/k3-am625-systec-pi-rev0.dtb; boot
 ```
 
 ## Links

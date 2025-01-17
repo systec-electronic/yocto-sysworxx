@@ -27,8 +27,8 @@
 
 	memory@80000000 {
 		device_type = "memory";
-		/* 2G RAM */
-		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
+		/* 1G RAM */
+		reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
 	};
 
 	reserved-memory {
@@ -119,44 +119,40 @@
 		enable-active-high;
 		regulator-always-on;
 		vin-supply = <&vcc_3v3>;
-		gpio = <&main_gpio0 5 GPIO_ACTIVE_HIGH>;
+		gpio = <&main_gpio0 71 GPIO_ACTIVE_HIGH>;
 	};
 
-	/* Workaround for errata i2329 - just use mdio bitbang */
-	mdio0: mdio {
-		compatible = "virtual,mdio-gpio";
-		gpios = <&main_gpio0 86 GPIO_ACTIVE_HIGH>, /* MDC */
-			<&main_gpio0 85 GPIO_ACTIVE_HIGH>; /* MDIO */
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		cpsw3g_phy0: ethernet-phy@1 {
-			reg = <1>;
-			reset-gpios = <&main_gpio0 31 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <2000>;
-			reset-deassert-us = <20000>; /* T2 */
-			micrel,led-mode = <1>;
-		};
-
-		cpsw3g_phy1: ethernet-phy@3 {
-			reg = <3>;
-			reset-gpios = <&main_gpio1 29 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <2000>;
-			reset-deassert-us = <20000>; /* T2 */
-			micrel,led-mode = <1>;
-		};
-	};
-
-	hdmi0: connector {
-		compatible = "hdmi-connector";
-		label = "hdmi";
-		type = "a";
-		port {
-			hdmi_connector_in: endpoint {
-				remote-endpoint = <&sii9022_out>;
+	// we have the dual core, not the quad core model of AM62x
+	cpus {
+		cpu-map {
+			cluster0: cluster0 {
+				/delete-node/ core2;
+				/delete-node/ core3;
 			};
 		};
+		/delete-node/ cpu@2;
+		/delete-node/ cpu@3;
 	};
+};
+
+// we have the dual core, not the quad core model of AM62x
+
+// 3rd core
+&main_rti2 {
+	status = "disabled";
+};
+// 4th core
+&main_rti3 {
+	status = "disabled";
+};
+// gpu
+&gpu {
+	status = "disabled";
+};
+
+// gpu watchdog
+&main_rti15 {
+	status = "disabled";
 };
 
 &a53_opp_table {
@@ -224,7 +220,7 @@
 &main_i2c0 {
 	status = "okay";
 	pinctrl-names = "default";
-	pinctrl-0 = <&i2c0board_pins_default>;
+	pinctrl-0 = <&i2c0som_pins_default>;
 	clock-frequency = <400000>;
 
 	tps65219: pmic@30 {
@@ -293,7 +289,7 @@
 			};
 
 			ldo4_reg: ldo4 {
-				regulator-name = "VDD_1V2";
+				regulator-name = "VDD_2V5";
 				regulator-min-microvolt = <2500000>;
 				regulator-max-microvolt = <2500000>;
 				regulator-boot-on;
@@ -302,74 +298,16 @@
 		};
 	};
 
+	/* ADC */
+	adc@48 {
+		compatible = "ti,ads1015";
+		reg = <0x48>;
+	};
+
 	eeprom: eeprom@50 {
 		compatible = "atmel,24c16";
 		reg = <0x50>;
 		pagesize = <16>;
-	};
-
-	typec@3d {
-		compatible = "nxp,ptn5150";
-		reg = <0x3d>;
-		interrupt-parent = <&main_gpio1>;
-		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
-		status ="okay";
-
-		port {
-			typec_dr_sw: endpoint {
-				remote-endpoint = <&usb1_drd_sw>;
-			};
-		};
-	};
-
-	sii9022: sii9022@3b {
-		#sound-dai-cells = <0>;
-		compatible = "sil,sii9022";
-		reg = <0x3b>;
-        reset-gpios = <&main_gpio1 8 GPIO_ACTIVE_LOW>;
-
-		interrupt-parent = <&main_gpio1>;
-		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-
-		sil,i2s-data-lanes = <0>;
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-
-				sii9022_in: endpoint {
-					remote-endpoint = <&dpi1_out>;
-				};
-			};
-
-			port@1 {
-				reg = <1>;
-
-				sii9022_out: endpoint {
-					remote-endpoint = <&hdmi_connector_in>;
-				};
-			};
-		};
-	};
-};
-
-&dss {
-    status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&hdmi_24bitrgb_pins_default>;
-};
-
-&dss_ports {
-	/* VP2: DPI Output */
-	port@1 {
-		reg = <1>;
-
-		dpi1_out: endpoint {
-			remote-endpoint = <&sii9022_in>;
-		};
 	};
 };
 
@@ -383,7 +321,7 @@
 	bluetooth {
 		compatible = "cypress,cyw4373a0-bt";
 		max-speed = <921600>;
-		shutdown-gpios = <&main_gpio0 6 GPIO_ACTIVE_HIGH>;
+		shutdown-gpios = <&main_gpio0 72 GPIO_ACTIVE_HIGH>;
 	};
 };
 
@@ -393,8 +331,7 @@
 	ti,driver-strength-ohm = <50>;
 	disable-wp;
 	status = "okay";
-	// FixMe: see issue: http://srv-gitlab.intern.systec-electronic.com/132401/hw/4600/-/issues/3
-	// reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
+	reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
 };
 
 &sdhci1 {
@@ -452,37 +389,34 @@
 };
 
 &cpsw3g_mdio {
-	/* Workaround for errata i2329 - just use mdio bitbang */
-	status = "disabled";
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&mdio0_pins_default>;
+
+	cpsw3g_phy0: ethernet-phy@1 {
+		reg = <1>;
+		reset-gpios = <&main_gpio1 15 GPIO_ACTIVE_LOW>;
+		reset-assert-us = <2000>;
+		reset-deassert-us = <20000>; /* T2 */
+		micrel,led-mode = <1>;
+	};
+
+	cpsw3g_phy1: ethernet-phy@3 {
+		reg = <3>;
+		reset-gpios = <&main_gpio1 29 GPIO_ACTIVE_LOW>;
+		reset-assert-us = <2000>;
+		reset-deassert-us = <20000>; /* T2 */
+		micrel,led-mode = <1>;
+	};
 };
 
 &usbss0 {
 	ti,vbus-divider;
 	status = "okay";
-	/* usb0-drvvbus-hog ensures the supply of this USB */
 };
 
 &usb0 {
 	dr_mode = "host";
-};
-
-&usbss1 {
-	ti,vbus-divider;
-	status = "okay";
-	/* usb1-drvvbus-hog ensures the supply of this USB */
-};
-
-&usb1 {
-	dr_mode = "otg";
-	hnp-disable;
-	srp-disable;
-	adp-disable;
-	usb-role-switch;
-	role-switch-default-mode = "host";
-
-	port@0 {
-		usb1_drd_sw: endpoint {
-			remote-endpoint = <&typec_dr_sw>;
-		};
-	};
+	pinctrl-names = "default";
+	pinctrl-0 = <&usb0_pins_default>;
 };

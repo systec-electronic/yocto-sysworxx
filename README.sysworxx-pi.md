@@ -4,17 +4,17 @@
 
 ```sh
 # order: r/g/b
-gpioset 600000.gpio 12=1 14=0 11=0; sleep 1; \
-gpioset 600000.gpio 12=0 14=1 11=0; sleep 1; \
-gpioset 600000.gpio 12=0 14=0 11=1; sleep 1; \
-gpioset 600000.gpio 12=0 14=0 11=0;
+gpioset -t0 LED_RD=1 LED_GN=0 LED_BL=0 # red
+gpioset -t0 LED_RD=0 LED_GN=1 LED_BL=0 # green
+gpioset -t0 LED_RD=0 LED_GN=0 LED_BL=1 # blue
+gpioset -t0 LED_RD=0 LED_GN=0 LED_BL=0 # off
 ```
 
 ## I2C
 
 ```sh
-# connect some kind of network to get the current time via NTP beforehand
-cat /sys/bus/i2c/devices/0-0051/rtc/rtc0/{date,time}
+# connect network to get current time via NTP beforehand
+cat /sys/bus/i2c/devices/1-0032/rtc/rtc0/{date,time}
 ```
 
 ## 40 Pin connector
@@ -45,6 +45,29 @@ cat /sys/bus/i2c/devices/0-0051/rtc/rtc0/{date,time}
 The table lists the default function as configured in device tree. Functions
 in parentheses are usable as alternative.
 
+### Digital Outputs
+
+```sh
+gpioset -t0 GPIO0_35=1; sleep 0.2; gpioset -t0 GPIO0_35=0 # DO_0
+gpioset -t0 GPIO0_40=1; sleep 0.2; gpioset -t0 GPIO0_40=0 # DO_1
+gpioset -t0 GPIO0_43=1; sleep 0.2; gpioset -t0 GPIO0_43=0 # DO_2
+gpioset -t0 GPIO1_9=1;  sleep 0.2; gpioset -t0 GPIO1_9=0  # DO_3
+gpioset -t0 GPIO0_41=1; sleep 0.2; gpioset -t0 GPIO0_41=0 # DO_4
+```
+
+### Digital Inputs
+
+```sh
+# DI_0 == GPIO0_0  == KEY_F1
+# DI_1 == GPIO0_1  == KEY_F2
+# DI_2 == GPIO0_2  == KEY_F3
+# DI_3 == GPIO0_3  == KEY_F4
+# DI_4 == GPIO0_44 == KEY_F5
+# DI_5 == GPIO1_28 == KEY_F6
+# DI_6 == GPIO0_4  == KEY_F7
+evtest /dev/input/by-path/platform-gpio_input-event
+```
+
 ### I2C
 
 ```sh
@@ -53,15 +76,6 @@ i2cdetect -y -a -r 2
 i2cdetect -y -a -r 3
 ```
 
-### GPIO
-
-```sh
-gpiomon 600000.gpio  0 1 2 3 9 10 8 37 4 72 71 35 40 7 13 41 34 33
-gpiomon 601000.gpio  22 23 24 25 28 9
-gpiomon 4201000.gpio 13 14
-```
-
 ## OIL
 
-- Should we keep the JTAG connector at the bottom of the PCB?
 - RAM has size of 1 GiB since U-Boot initializes it in this way
