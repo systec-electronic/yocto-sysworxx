@@ -1,7 +1,7 @@
-From ddba71d0949d5e68c85aca7fdb4f880c8ebfb2fa Mon Sep 17 00:00:00 2001
+From d52726968ceaf4663da3cb8a895c394fd85827eb Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Tue, 20 Aug 2024 14:32:55 +0200
-Subject: [PATCH 10/13] board/ti/am62x/sysworxx.c: Detect mmcdev based on
+Subject: [PATCH 09/13] board/ti/am62x/sysworxx.c: Detect mmcdev based on
  bootmode pins
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
@@ -88,5 +88,5 @@ index e677c109094..6b4eefa2a43 100644
  bootdir=/boot
  rd_spec=-
 -- 
-2.47.0
+2.47.1
 

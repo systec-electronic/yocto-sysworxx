@@ -1,7 +1,7 @@
-From 5a675fead01367f9fc8f7d12302ceb6855a1b2f5 Mon Sep 17 00:00:00 2001
+From 19c25a89096fbc0fe79e1818ec3097fb71a2e06e Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Tue, 6 Feb 2024 11:54:06 +0100
-Subject: [PATCH 03/13] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
+Subject: [PATCH 02/13] arch/arm/dts/k3-am625-sk.dts: Enable CLKOUT0 to supply
  network phy's (EXT_REFCLK1.CLKOUT0)
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
@@ -10,7 +10,7 @@ Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/k3-am625-sk.dts b/arch/arm/dts/k3-am625-sk.dts
-index ee8a9fc3aa6..e0d5bcd88ac 100644
+index f026acfa3bf..7f0a58ef761 100644
 --- a/arch/arm/dts/k3-am625-sk.dts
 +++ b/arch/arm/dts/k3-am625-sk.dts
 @@ -123,6 +123,12 @@
@@ -39,5 +39,5 @@ index ee8a9fc3aa6..e0d5bcd88ac 100644
  	cpts@3d000 {
  		/* MAP HW3_TS_PUSH to GENF1 */
 -- 
-2.47.0
+2.47.1
 

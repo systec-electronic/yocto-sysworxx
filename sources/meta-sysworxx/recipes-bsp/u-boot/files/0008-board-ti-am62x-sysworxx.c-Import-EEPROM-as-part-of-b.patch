@@ -1,7 +1,7 @@
-From d9282841496f35002f13e4751ab235e26c60bae5 Mon Sep 17 00:00:00 2001
+From a467b8e024fa7f1452f2edf45e5a0bad4e25cd27 Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Mon, 5 Aug 2024 14:26:08 +0200
-Subject: [PATCH 09/13] board/ti/am62x/sysworxx.c: Import EEPROM as part of
+Subject: [PATCH 08/13] board/ti/am62x/sysworxx.c: Import EEPROM as part of
  board_late_init()
 
 This allows to perform board specific actions in u-boot itself and
@@ -60,5 +60,5 @@ index d69a1cc03ee..e677c109094 100644
  	setenv name_fdt ${default_device_tree};
  	if test -n "$fdt_prefix" -a -n "$hw_iface_rev"; then
 -- 
-2.47.0
+2.47.1
 

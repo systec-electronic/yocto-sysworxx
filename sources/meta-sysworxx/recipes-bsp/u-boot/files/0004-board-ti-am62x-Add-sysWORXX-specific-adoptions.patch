@@ -1,7 +1,7 @@
-From 451b5de7ed775826adb0adf7e01c08b7e9a6dc2b Mon Sep 17 00:00:00 2001
+From 174621aaed2ae6684379ab8d582840399621bc4d Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Wed, 31 Jul 2024 16:05:21 +0200
-Subject: [PATCH 05/13] board/ti/am62x: Add sysWORXX specific adoptions
+Subject: [PATCH 04/13] board/ti/am62x: Add sysWORXX specific adoptions
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
 ---
@@ -307,5 +307,5 @@ index 00000000000..a07a69ade7e
 +CONFIG_TARGET_SYSWORXX_AM62X_ADOPT=y
 +CONFIG_ENV_SOURCE_FILE="sysworxx"
 -- 
-2.47.0
+2.47.1
 

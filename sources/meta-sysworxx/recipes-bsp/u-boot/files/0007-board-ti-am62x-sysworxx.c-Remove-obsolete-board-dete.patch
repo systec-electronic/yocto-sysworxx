@@ -1,7 +1,7 @@
-From dbaa7bfa3f69da354ffa0587de779b313b65d054 Mon Sep 17 00:00:00 2001
+From 0155f51416325c151183149e3d40b6b7f2702abe Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Fri, 2 Aug 2024 15:34:25 +0200
-Subject: [PATCH 08/13] board/ti/am62x/sysworxx.c: Remove obsolete board
+Subject: [PATCH 07/13] board/ti/am62x/sysworxx.c: Remove obsolete board
  detection
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
@@ -135,5 +135,5 @@ index fe5a6c13bf3..11f0ecff086 100644
  
  	return 0;
 -- 
-2.47.0
+2.47.1
 
