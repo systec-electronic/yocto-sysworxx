@@ -44,9 +44,14 @@ cargo_do_install() {
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/systemd/iodaemon.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-connector.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-generate-devdesc-xml.service ${D}${systemd_system_unitdir}
 }
 
-FILES:${PN} += " \
+PACKAGES += "${PN}-codesys-connector"
+RDEPENDS:${PN}-codesys-connector += "${PN} sudo"
+
+FILES:${PN} = " \
     ${includedir}/*.h \
     ${libdir}/*.so \
     ${bindir}/iodaemon \
@@ -58,4 +63,17 @@ FILES:${PN} += " \
 # valid files.
 FILES:${PN}-dev = ""
 
+FILES:${PN}-codesys-connector = " \
+    ${bindir}/codesys-connector \
+    ${systemd_system_unitdir}/codesys-connector.service \
+    ${systemd_system_unitdir}/codesys-generate-devdesc-xml.service \
+"
+
+SYSTEMD_AUTO_ENABLE:${PN}-codesys-connector = "disable"
+SYSTEMD_PACKAGES = "${PN} ${PN}-codesys-connector"
+
 SYSTEMD_SERVICE:${PN} = "iodaemon.service"
+SYSTEMD_SERVICE:${PN}-codesys-connector += " \
+    codesys-connector.service \
+    codesys-generate-devdesc-xml.service \
+"
