@@ -21,5 +21,5 @@ SRC_URI += " \
 # error in case the file is deployed twice. Maybe we should move installing
 # fw_env.config to a separate recipe.
 do_deploy:prepend:sysworxx-k3r5() {
-    rm ${WORKDIR}/fw_env.config
+    rm -f ${WORKDIR}/fw_env.config
 }
