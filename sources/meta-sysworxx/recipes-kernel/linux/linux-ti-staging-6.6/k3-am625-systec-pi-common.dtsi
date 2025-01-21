@@ -375,7 +375,6 @@
 	disable-wp;
 	status = "okay";
 	reset-gpios = <&main_gpio1 10 GPIO_ACTIVE_LOW>;
-	no-1-8-v;
 };
 
 &sdhci1 {
