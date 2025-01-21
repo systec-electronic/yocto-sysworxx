@@ -16,6 +16,8 @@ Boot partitions of eMMC are used for the bootloader.
 
 ## eMMC Provisioning (only needed for new eMMC)
 
+In u-boot run:
+
 ```sh
 # This needs to be done only once for a new eMMC
 
@@ -26,6 +28,9 @@ mmc rst-function 0 1
 mmc partconf 0 1 1 1
 mmc bootbus 0 2 0 0
 ```
+
+Run `bringup.sh` in Linux to install root file systems (including RAUC support)
+ro eMMC.
 
 ## Links
 
