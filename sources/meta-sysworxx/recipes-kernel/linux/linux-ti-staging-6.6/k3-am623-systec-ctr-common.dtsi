@@ -137,6 +137,34 @@
 
 // we have the dual core, not the quad core model of AM62x
 
+&cpu0 {
+	#cooling-cells = <2>;
+};
+
+&cpu1 {
+	#cooling-cells = <2>;
+};
+
+/* Temperature Sensors: 0=DDR, 1=A53 (see k3-am62-thermal.dtsi) */
+&main1_thermal {
+	trips {
+		main1_hot: main1-hot {
+			temperature = <85000>;
+			hysteresis = <10000>;
+			type = "passive";
+		};
+	};
+
+	cooling-maps {
+		map0 {
+			trip = <&main1_hot>;
+			cooling-device =
+				<&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+				<&cpu1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+		};
+	};
+};
+
 // 3rd core
 &main_rti2 {
 	status = "disabled";
