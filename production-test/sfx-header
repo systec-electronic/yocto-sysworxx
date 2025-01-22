@@ -1,0 +1,40 @@
+#!/bin/sh
+
+#***************************************************************************#
+#                                                                           #
+#  SYSTEC electronic AG, D-08468 Heinsdorfergrund, Am Windrad 2             #
+#  www.systec-electronic.com                                                #
+#                                                                           #
+#  Description:  Self extracting Yocto installer                            #
+#                                                                           #
+#***************************************************************************#
+
+tmp_dir="/tmp"
+
+#------------------------------------------------------------------------
+echo ""
+echo "Running installation procedure... please wait"
+echo ""
+
+mkdir -p "$tmp_dir"
+
+# compute line number where the TGZ starts
+SKIP=$(awk '/^__ARCHIVE_FOLLOWS__/ { print NR + 1; exit 0; }' "$0")
+# Take the TGZ portion of this file and pipe it to tar
+tail -n +"$SKIP" "$0" | tar xzv -C "$tmp_dir"
+
+# check return code
+RC=$?
+if [ $RC -ne 0 ]; then
+    echo "Unable to un-tar the archive (return code: " $RC ")"
+    exit $RC
+fi
+
+sync
+
+chmod +x "$tmp_dir/bringup.sh"
+"$tmp_dir/bringup.sh" "$tmp_dir"
+
+exit 0
+
+__ARCHIVE_FOLLOWS__
