@@ -380,6 +380,8 @@
     status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&hdmi_24bitrgb_pins_default>;
+
+	/delete-node/ oldi-txes;
 };
 
 &dss_ports {

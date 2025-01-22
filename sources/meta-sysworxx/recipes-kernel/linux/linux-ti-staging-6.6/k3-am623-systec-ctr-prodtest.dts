@@ -56,10 +56,16 @@
 
 &dss {
 	status = "okay";
+
+	oldi-txes {
+		/delete-node/ oldi@1;
+	};
 };
 
 &oldi0 {
 	status = "okay";
+
+	/delete-property/ ti,companion-oldi;
 };
 
 &oldi0_ports {
