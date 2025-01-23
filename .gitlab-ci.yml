@@ -26,6 +26,9 @@ sysworxx-image-default:
     cd build/
     . conf/setenv
     bitbake sysworxx-image-default
+    cp deploy-ti/images/sysworxx/tiboot3-am62x-gp-evm.bin ../tiboot3.bin
+    cp deploy-ti/images/sysworxx/tispl.bin ..
+    cp deploy-ti/images/sysworxx/u-boot.img ..
     cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz ..
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
@@ -33,6 +36,12 @@ sysworxx-image-default:
     expire_in: 1 week
     paths:
       - "*.wic.xz"
+  only:
+    refs:
+      - master
+      - web
+      - merge_requests
+      - tags
 
 sysworxx-bundle:
   tags:
@@ -49,6 +58,30 @@ sysworxx-bundle:
     expire_in: 1 week
     paths:
       - "*.raucb"
+  only:
+    refs:
+      - master
+      - web
+      - merge_requests
+      - tags
+
+production-install-script:
+  stage: deploy
+  needs: [sysworxx-image-default]
+  script:
+    - ./production-test/build_installer.sh
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - E*.sh
+  only:
+    refs:
+      - master
+      - web
+      - merge_requests
+      - tags
 
 bare-repo-release:
   stage: deploy
@@ -88,3 +121,9 @@ bare-repo-release:
   artifacts:
     paths:
       - "./${CI_PROJECT_NAME}-*.tar.*"
+  only:
+    refs:
+      - master
+      - web
+      - merge_requests
+      - tags

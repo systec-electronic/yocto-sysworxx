@@ -16,16 +16,23 @@ Boot partitions of eMMC are used for the bootloader.
 
 ## eMMC Provisioning (only needed for new eMMC)
 
+In u-boot run:
+
 ```sh
 # This needs to be done only once for a new eMMC
-
-# https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1168342/faq-am62x-how-to-check-and-configure-emmc-flash-rst_n-signal-to-support-warm_reset-from-emmc-booting-on-am62x-sk-e2
-mmc rst-function 0 1
 
 # activate boot partitions for booting from them
 mmc partconf 0 1 1 1
 mmc bootbus 0 2 0 0
+
+# https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1168342/faq-am62x-how-to-check-and-configure-emmc-flash-rst_n-signal-to-support-warm_reset-from-emmc-booting-on-am62x-sk-e2
+mmc rst-function 0 1
+
+# Give device a PoR. Some eMMC need this for unknown reasons.
 ```
+
+Run `bringup.sh` in Linux to install root file systems (including RAUC support)
+ro eMMC.
 
 ## Links
 

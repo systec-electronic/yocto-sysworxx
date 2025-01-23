@@ -1,2 +1,4 @@
 downloads/
 sstate-cache/
+
+E*.sh

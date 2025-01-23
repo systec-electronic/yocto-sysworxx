@@ -122,6 +122,7 @@ RDEPENDS:packagegroup-sysworxx-debug = "\
     phytool \
     strace \
     tcpdump \
+    mmc-utils \
 "
 
 RDEPENDS:packagegroup-sysworxx-wifi = "\
