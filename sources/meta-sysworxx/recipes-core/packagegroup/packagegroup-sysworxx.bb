@@ -62,6 +62,8 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     libgpiod-tools \
     makedevs \
     mc \
+    mc-helpers \
+    mc-helpers-perl \
     nano \
     ncurses \
     net-tools \
