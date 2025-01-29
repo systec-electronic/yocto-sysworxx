@@ -1,4 +1,4 @@
-PINMUX_DIR = "${OEBASE}/pin-muxing/devicetree"
+PINMUX_DIR = "${THISDIR}/../../pin-muxing/devicetree"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-6.6:${PINMUX_DIR}:"
 
 

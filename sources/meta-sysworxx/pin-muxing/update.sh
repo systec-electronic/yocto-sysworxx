@@ -2,6 +2,9 @@
 
 set -e
 
+script_dir="$(dirname $0)"
+echo $script_dir
+
 update() {
    local dir=$1
    local syscfg=$2
@@ -17,12 +20,14 @@ update() {
    sed -i '/^\t.*-.*:/ s/-/_/' "$dtsi_name"
 }
 
-mkdir -p ./devicetree
+echo mkdir -p "${script_dir}/devicetree"
+mkdir -p "${script_dir}/devicetree"
 
 #      <SOURCE_DIR> <SYSCFG_NAME>          <DTSI_FILENAME>
-update sysworxx-ctr ctr800-pinmux-0.syscfg ./devicetree/k3-am623-systec-ctr800-pinmux-0.dtsi
-update sysworxx-ctr ctr600-pinmux-0.syscfg ./devicetree/k3-am623-systec-ctr600-pinmux-0.dtsi
-update sysworxx-pi pi-pinmux-0.syscfg ./devicetree/k3-am625-systec-pi-pinmux-0.dtsi
+update ${script_dir}/sysworxx-ctr ctr800-pinmux-0.syscfg "${script_dir}/devicetree/k3-am623-systec-ctr800-pinmux-0.dtsi"
+update ${script_dir}/sysworxx-ctr ctr600-pinmux-0.syscfg "${script_dir}/devicetree/k3-am623-systec-ctr600-pinmux-0.dtsi"
+update ${script_dir}/sysworxx-pi pi-pinmux-0.syscfg "${script_dir}/devicetree/k3-am625-systec-pi-pinmux-0.dtsi"
 
 # remove unwanted files
-git clean -dfX
+find ${script_dir} \( -name "*.h" -o -name "*.c" -o -name "*.csv" \) \
+   -exec rm -v {} \;
