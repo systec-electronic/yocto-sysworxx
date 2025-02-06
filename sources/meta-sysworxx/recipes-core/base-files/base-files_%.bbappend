@@ -2,13 +2,13 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 inherit systemd
 
-SRC_URI += "\
+SRC_URI:append:sysworxx = "\
     file://etc.mount \
     file://var.mount \
     file://userpart-prepare.service \
 "
 
-do_install:append () {
+do_install:append:sysworxx () {
     # create mountpoint for vendor partition
     install -d ${D}/vendor
 
@@ -18,10 +18,10 @@ do_install:append () {
     install -m 0644 ${WORKDIR}/userpart-prepare.service ${D}${systemd_system_unitdir}
 }
 
-FILES:${PN} += "\
+FILES:${PN}:append:sysworxx = "\
     /vendor \
 "
 
-SYSTEMD_SERVICE:${PN} = " \
+SYSTEMD_SERVICE:${PN}:append:sysworxx = " \
     userpart-prepare.service \
 "

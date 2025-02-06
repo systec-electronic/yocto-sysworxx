@@ -1,1 +1,1 @@
-SYSTEMD_AUTO_ENABLE:${PN} = "disable"
+SYSTEMD_AUTO_ENABLE:${PN}:sysworxx = "disable"
