@@ -17,6 +17,8 @@ SRC_URI += " \
     file://0013-board-ti-am62x-sysworxx.env-Add-quiet-flag-to-kernel.patch \
 "
 
+UBOOT_CONFIG_FRAGMENTS:sysworxx = "am625_sysworxx_a53.config"
+
 # We build for multiple machines: sysworxx and sysworxx-k3r5 and a QA check will
 # error in case the file is deployed twice. Maybe we should move installing
 # fw_env.config to a separate recipe.
