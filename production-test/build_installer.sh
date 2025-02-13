@@ -26,8 +26,6 @@ tmp_tar_ball="$(mktemp -d)/install.tar.gz"
 
 echo "Build tarball with install files..."
 
-cp -v "$deploy_dir/tiboot3-am62x-gp-evm.bin" \
-   "$deploy_dir/tiboot3.bin"
 
 tar -hczvf "$tmp_tar_ball" \
    -C "$deploy_dir" \
