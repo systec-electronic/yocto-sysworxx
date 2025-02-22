@@ -34,7 +34,7 @@ cat /sys/bus/i2c/devices/1-0032/rtc/rtc0/{date,time}
 |     GPIO0_10 (SPI1_D1) | 21  | 22  | GPIO0_40                    |
 |     GPIO0_8 (SPI1_CLK) | 23  | 24  | GPIO0_7 (SPI1_CS0)          |
 |                    GND | 25  | 26  | GPIO0_13 (SPI1_CS1)         |
-|    I2C2_SDA (GPIO0_44) | 27  | 28  | I2C2_SCL (GPIO0_43)         |
+|    GPIO0_44 (I2C2_SDA) | 27  | 28  | GPIO0_43 (I2C2_SCL)         |
 |    GPIO1_24 (MCAN0_TX) | 29  | 30  | GND                         |
 |    GPIO1_25 (MCAN0_RX) | 31  | 32  | GPIO1_9 (PWM1)              |
 |        GPIO1_28 (PWM2) | 33  | 34  | GND                         |
@@ -42,8 +42,9 @@ cat /sys/bus/i2c/devices/1-0032/rtc/rtc0/{date,time}
 |                GPIO0_4 | 37  | 38  | GPIO0_34 (MCASP1_AXR0)      |
 |                    GND | 39  | 40  | GPIO0_33 (MCASP1_AXR1)      |
 
-The table lists the default function as configured in device tree. Functions
-in parentheses are usable as alternative.
+## Device tree overlays
+
+... TODO: describe
 
 ### Digital Outputs
 
@@ -67,15 +68,3 @@ gpioset -t0 GPIO0_41=1; sleep 0.2; gpioset -t0 GPIO0_41=0 # DO_4
 # DI_6 == GPIO0_4  == KEY_F7
 evtest /dev/input/by-path/platform-gpio_input-event
 ```
-
-### I2C
-
-```sh
-# detect devices connected on each of the respective buses
-i2cdetect -y -a -r 2
-i2cdetect -y -a -r 3
-```
-
-## OIL
-
-- RAM has size of 1 GiB since U-Boot initializes it in this way
