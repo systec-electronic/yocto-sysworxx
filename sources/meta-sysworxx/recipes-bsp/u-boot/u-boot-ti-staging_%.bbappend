@@ -7,17 +7,15 @@ SRC_URI += " \
     file://0003-configs-am62x_evm_a53_defconfig-Disable-SD-card-volt.patch \
     file://0004-board-ti-am62x-Add-sysWORXX-specific-adoptions.patch \
     file://0005-board-ti-am62x-sysworxx.c-Reset-ethernet-phys-during.patch \
-    file://0006-board-ti-am62x-sysworxx.env-Load-u-boot-environment-.patch \
-    file://0007-board-ti-am62x-sysworxx.c-Remove-obsolete-board-dete.patch \
-    file://0008-board-ti-am62x-sysworxx.c-Import-EEPROM-as-part-of-b.patch \
+    file://0006-board-ti-am62x-sysworxx.c-Remove-obsolete-board-dete.patch \
+    file://0007-board-ti-am62x-sysworxx.c-Detect-RAM-size-at-runtime.patch \
+    file://0008-board-ti-am62x-sysworxx.env-Implement-EEPROM-board-d.patch \
     file://0009-board-ti-am62x-sysworxx.c-Detect-mmcdev-based-on-boo.patch \
-    file://0010-board-ti-am62x-sysworxx.c-Detect-RAM-size-at-runtime.patch \
+    file://0010-board-ti-am62x-sysworxx.env-Introduce-custom-bootcom.patch \
+    file://0011-board-ti-am62x-sysworxx.env-Load-restricted-environm.patch \
+    file://0012-board-ti-am62x-sysworxx.env-Add-quiet-parameter-to-K.patch \
     ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', \
-        'file://0011-board-ti-am62x-sysworxx.env-Select-root-partition-bo.patch', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', \
-        'file://0012-board-ti-am62x-sysworxx.env-Use-rauc-slots-when-boot.patch', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', \
-        'file://0013-board-ti-am62x-sysworxx.env-Add-quiet-flag-to-kernel.patch', '', d)} \
+        'file://0013-board-ti-am62x-sysworxx.env-Implement-bootcmd-for-ra.patch', '', d)} \
 "
 
 UBOOT_CONFIG_FRAGMENTS:sysworxx = "am625_sysworxx_a53.config"

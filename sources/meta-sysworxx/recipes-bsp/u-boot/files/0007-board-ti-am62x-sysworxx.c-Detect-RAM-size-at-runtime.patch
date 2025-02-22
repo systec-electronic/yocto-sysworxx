@@ -1,7 +1,7 @@
-From 5e1e85aeb7286133a1da5c965cb49f5d350b30bc Mon Sep 17 00:00:00 2001
+From b9362ec20352aa0343c26f697af44477eecc6f96 Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Thu, 16 Jan 2025 16:50:42 +0100
-Subject: [PATCH 10/13] board/ti/am62x/sysworxx.c: Detect RAM size at runtime
+Subject: [PATCH] board/ti/am62x/sysworxx.c: Detect RAM size at runtime
 
 Removing spl_perform_fixups and adjusting the Makefile is needed to
 avoid compiler and linker errors. Supported devices do not use ECC RAM
@@ -9,22 +9,15 @@ so we should be fine.
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
 ---
- board/ti/am62x/sysworxx.c | 33 ++++++++++++++++++++++++---------
+ board/ti/am62x/sysworxx.c | 31 +++++++++++++++++++++++--------
  board/ti/common/Makefile  |  2 ++
- 2 files changed, 26 insertions(+), 9 deletions(-)
+ 2 files changed, 25 insertions(+), 8 deletions(-)
 
 diff --git a/board/ti/am62x/sysworxx.c b/board/ti/am62x/sysworxx.c
-index 09315fa0d64..78015d59560 100644
+index a9214697b29..d0deddf879b 100644
 --- a/board/ti/am62x/sysworxx.c
 +++ b/board/ti/am62x/sysworxx.c
-@@ -21,12 +21,34 @@
- #include <dm/uclass.h>
- #include <asm/gpio.h>
- #include <command.h>
-+#include <linux/delay.h>
- 
- #include "../common/fdt_ops.h"
- #include "../common/k3-ddr-init.h"
+@@ -27,6 +27,27 @@
  
  DECLARE_GLOBAL_DATA_PTR;
  
@@ -52,15 +45,7 @@ index 09315fa0d64..78015d59560 100644
  #if CONFIG_IS_ENABLED(SPLASH_SCREEN)
  static struct splash_location default_splash_locations[] = {
  	{
-@@ -157,7 +179,6 @@ int board_late_init(void)
- #endif
- 
- #if defined(CONFIG_SPL_BUILD)
--
- void spl_board_init(void)
- {
- 	u32 val;
-@@ -175,14 +196,6 @@ void spl_board_init(void)
+@@ -116,14 +137,6 @@ void spl_board_init(void)
  	if (IS_ENABLED(CONFIG_SPL_SPLASH_SCREEN) && IS_ENABLED(CONFIG_SPL_BMP))
  		splash_display();
  }
@@ -75,7 +60,7 @@ index 09315fa0d64..78015d59560 100644
  #endif
  
  #if defined(CONFIG_OF_BOARD_SETUP)
-@@ -190,6 +203,8 @@ int ft_board_setup(void *blob, struct bd_info *bd)
+@@ -131,6 +144,8 @@ int ft_board_setup(void *blob, struct bd_info *bd)
  {
  	int ret = -1;
  
@@ -96,5 +81,5 @@ index 070dec3aebf..5c4a5dc6d00 100644
  obj-${CONFIG_ARCH_K3} += k3-ddr-init.o
 +endif
 -- 
-2.47.1
+2.48.1
 

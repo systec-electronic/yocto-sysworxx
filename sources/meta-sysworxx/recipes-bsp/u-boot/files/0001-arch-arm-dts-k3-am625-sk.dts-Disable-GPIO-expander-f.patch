@@ -1,8 +1,8 @@
 From 36c76369bc08922890e037636bdc19ca9f90fb8d Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Mon, 5 Feb 2024 14:32:33 +0100
-Subject: [PATCH 01/13] arch/arm/dts/k3-am625-sk.dts: Disable GPIO expander
- (for SD card voltage selection)
+Subject: [PATCH] arch/arm/dts/k3-am625-sk.dts: Disable GPIO expander (for SD
+ card voltage selection)
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
 ---
@@ -73,5 +73,5 @@ index 59ee4961650..c484e7df0d5 100644
  		ports {
  			#address-cells = <1>;
 -- 
-2.47.1
+2.48.1
 
