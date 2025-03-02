@@ -44,27 +44,29 @@ cat /sys/bus/i2c/devices/1-0032/rtc/rtc0/{date,time}
 
 ## Device tree overlays
 
-... TODO: describe
+```sh
+fw_setenv name_overlays ti/k3-am625-systec-pi-sysworxx-io-gpio.dtbo
+```
 
 ### Digital Outputs
 
 ```sh
-gpioset -t0 GPIO0_35=1; sleep 0.2; gpioset -t0 GPIO0_35=0 # DO_0
-gpioset -t0 GPIO0_40=1; sleep 0.2; gpioset -t0 GPIO0_40=0 # DO_1
-gpioset -t0 GPIO0_43=1; sleep 0.2; gpioset -t0 GPIO0_43=0 # DO_2
-gpioset -t0 GPIO1_9=1;  sleep 0.2; gpioset -t0 GPIO1_9=0  # DO_3
-gpioset -t0 GPIO0_41=1; sleep 0.2; gpioset -t0 GPIO0_41=0 # DO_4
+gpioset -t0 DO0=1; sleep 0.2; gpioset -t0 DO0=0
+gpioset -t0 DO1=1; sleep 0.2; gpioset -t0 DO1=0
+gpioset -t0 DO2=1; sleep 0.2; gpioset -t0 DO2=0
+gpioset -t0 DO3=1; sleep 0.2; gpioset -t0 DO3=0
+gpioset -t0 DO4=1; sleep 0.2; gpioset -t0 DO4=0
 ```
 
 ### Digital Inputs
 
 ```sh
-# DI_0 == GPIO0_0  == KEY_F1
-# DI_1 == GPIO0_1  == KEY_F2
-# DI_2 == GPIO0_2  == KEY_F3
-# DI_3 == GPIO0_3  == KEY_F4
-# DI_4 == GPIO0_44 == KEY_F5
-# DI_5 == GPIO1_28 == KEY_F6
-# DI_6 == GPIO0_4  == KEY_F7
-evtest /dev/input/by-path/platform-gpio_input-event
+# DI0 == GPIO0_0  == BTN_TRIGGER_HAPPY1
+# DI1 == GPIO0_1  == BTN_TRIGGER_HAPPY2
+# DI2 == GPIO0_2  == BTN_TRIGGER_HAPPY3
+# DI3 == GPIO0_3  == BTN_TRIGGER_HAPPY4
+# DI4 == GPIO0_44 == BTN_TRIGGER_HAPPY5
+# DI5 == GPIO1_28 == BTN_TRIGGER_HAPPY6
+# DI6 == GPIO1_9  == BTN_TRIGGER_HAPPY7
+evtest /dev/input/by-path/platform-sysworxx-0-io-inputs-event-joystick
 ```
