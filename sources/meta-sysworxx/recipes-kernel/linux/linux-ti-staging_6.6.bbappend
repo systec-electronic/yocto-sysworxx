@@ -17,6 +17,7 @@ SRC_URI += " \
     file://0001-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
     file://0002-tty-serial-8250-Add-quirk-handling-for-some-sysworxx.patch \
     file://0003-drivers-thermal-k3_j72xx_bandgab.c-add-sysfs-support.patch \
+    file://0004-drivers-gpio-gpio-aggregator.c-Add-compatible-gpio-a.patch \
     \
     file://k3-am623-systec-ctr600-pinmux-0.dtsi${MOVE} \
     file://k3-am623-systec-ctr800-pinmux-0.dtsi${MOVE} \
