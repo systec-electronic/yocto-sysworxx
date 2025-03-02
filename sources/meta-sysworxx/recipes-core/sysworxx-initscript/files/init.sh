@@ -67,6 +67,10 @@ ${DEV_SDCARD}*)
     mount "${ROOT_DEVICE}" "${ROOTFS_DIR}"
     ;;
 ${DEV_EMMC}*)
+    # If an SD card is inserted when booting from eMMC Kernel may need some time
+    # until eMMC partitions are populated
+    sleep 2
+
     if [ "$(ls /dev/${DEV_EMMC}p* | wc -l)" -eq 5 ]; then
         msg "mounting eMMC partitions..."
         xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
