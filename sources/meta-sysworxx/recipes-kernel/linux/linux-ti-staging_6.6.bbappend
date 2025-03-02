@@ -13,6 +13,7 @@ SRC_URI += " \
     file://gpio_sysfs.cfg \
     file://overlayfs.cfg \
     file://thermal.cfg \
+    file://gpio_aggregator.cfg \
     \
     file://0001-tty-serial-8250-Add-custom-RS232-RS485-mode-switch-v.patch \
     file://0002-tty-serial-8250-Add-quirk-handling-for-some-sysworxx.patch \
@@ -53,6 +54,7 @@ KERNEL_CONFIG_FRAGMENTS += " \
     ${FRAGMENTS_DIR}/dynamic_debug.cfg \
     ${FRAGMENTS_DIR}/rtc.cfg \
     ${FRAGMENTS_DIR}/gpio_sysfs.cfg \
+    ${FRAGMENTS_DIR}/gpio_aggregator.cfg \
     ${FRAGMENTS_DIR}/overlayfs.cfg \
     ${FRAGMENTS_DIR}/thermal.cfg \
     ${KERNEL_CONFIG_FRAGMENTS_WIFI} \
