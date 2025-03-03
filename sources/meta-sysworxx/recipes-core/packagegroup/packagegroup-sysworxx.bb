@@ -8,9 +8,11 @@ PACKAGES = "\
     packagegroup-sysworxx \
     packagegroup-sysworxx-init \
     packagegroup-sysworxx-base \
+    packagegroup-sysworxx-codesys \
     packagegroup-sysworxx-benchmark \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-develop \
     packagegroup-sysworxx-graphical \
     packagegroup-sysworxx-wifi \
 "
@@ -19,8 +21,10 @@ RDEPENDS:packagegroup-sysworxx = "\
     packagegroup-sysworxx-init \
     packagegroup-sysworxx-base \
     packagegroup-sysworxx-benchmark \
+    packagegroup-sysworxx-codesys \
     packagegroup-sysworxx-extended \
     packagegroup-sysworxx-debug \
+    packagegroup-sysworxx-develop \
     packagegroup-sysworxx-graphical \
     packagegroup-sysworxx-wifi \
 "
@@ -67,11 +71,14 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     phy-lan8830t-setup \
     procps \
     psmisc \
+    python3 \
+    python3-pip \
     rauc \
     rng-tools \
     rs485-setup \
     sed \
     systec-version \
+    sysworxx-io \
     tar \
     time \
     tzdata \
@@ -88,6 +95,10 @@ RDEPENDS:packagegroup-sysworxx-benchmark = "\
     whetstone \
 "
 
+RDEPENDS:packagegroup-sysworxx-codesys = "\
+    sysworxx-io-codesys-connector \
+"
+
 # python3-distutils is required by python3-docker-compose
 
 RDEPENDS:packagegroup-sysworxx-extended = "\
@@ -99,6 +110,8 @@ RDEPENDS:packagegroup-sysworxx-extended = "\
     mosquitto \
     mosquitto-clients \
     node-red \
+    nodejs \
+    nodejs-npm \
     openssl \
     vim \
 "
@@ -123,6 +136,10 @@ RDEPENDS:packagegroup-sysworxx-debug = "\
     strace \
     tcpdump \
     mmc-utils \
+"
+
+RDEPENDS:packagegroup-sysworxx-develop = "\
+    sysworxx-io-dev \
 "
 
 RDEPENDS:packagegroup-sysworxx-wifi = "\
