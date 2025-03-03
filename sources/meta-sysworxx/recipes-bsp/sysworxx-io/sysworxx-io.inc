@@ -1,7 +1,13 @@
 inherit systemd
 
 DEPENDS = "lmsensors libiio"
+
 RDEPENDS:${PN} = "lmsensors libiio"
+# Codesys needs sudo on the target to deploy the runtime
+RDEPENDS:${PN}-codesys-connector += "${PN} sudo"
+RDEPENDS:${PN}-dev += "${PN}"
+
+PACKAGES += "${PN}-codesys-connector"
 
 # Flags are empty, no device specifics necessary
 CARGO_BUILD_FLAGS += ""
@@ -18,25 +24,13 @@ oe_cargo_build:append() {
 # - *.rlib files will not be installed
 
 cargo_do_install() {
-    for tgt in "${B}/target/${CARGO_TARGET_SUBDIR}/"*; do
-        case $tgt in
-            *.rlib)
-                rm "$tgt"
-                ;;
-            *.so)
-                install -d "${D}${libdir}"
-                install -m755 "$tgt" "${D}${libdir}"
-                have_installed=true
-                ;;
-            *)
-                if [ -f "$tgt" ] && [ -x "$tgt" ]; then
-                    install -d "${D}${bindir}"
-                    install -m755 "$tgt" "${D}${bindir}"
-                    have_installed=true
-                fi
-                ;;
-        esac
-    done
+    install -d "${D}${libdir}"
+    install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/libctr700drv.so" "${D}${libdir}"
+    install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/libsysworxx_io.so" "${D}${libdir}"
+
+    install -d "${D}${bindir}"
+    install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/iodaemon" "${D}${bindir}"
+    install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/codesys-connector" "${D}${bindir}"
 
     install -d ${D}${includedir}
     install -m 0644 ${S}/include/sysworxx_io.h ${D}${includedir}
@@ -48,20 +42,10 @@ cargo_do_install() {
     install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-generate-devdesc-xml.service ${D}${systemd_system_unitdir}
 }
 
-PACKAGES += "${PN}-codesys-connector"
-RDEPENDS:${PN}-codesys-connector += "${PN} sudo"
-
 FILES:${PN} = " \
-    ${includedir}/*.h \
     ${libdir}/*.so \
     ${bindir}/iodaemon \
 "
-
-# there would be an symlink in this file to the library.
-# since the target path of the library has been changed by cargo_do_install (see
-# above), we do not want this. Bitbakes QA checker checks symlinks to point to
-# valid files.
-FILES:${PN}-dev = ""
 
 FILES:${PN}-codesys-connector = " \
     ${bindir}/codesys-connector \
@@ -76,4 +60,8 @@ SYSTEMD_SERVICE:${PN} = "iodaemon.service"
 SYSTEMD_SERVICE:${PN}-codesys-connector += " \
     codesys-connector.service \
     codesys-generate-devdesc-xml.service \
+"
+
+FILES:${PN}-dev = " \
+    ${includedir}/*.h \
 "
