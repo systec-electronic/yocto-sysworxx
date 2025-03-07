@@ -19,7 +19,7 @@
 		pinctrl-0 = <&smart_metering_hat_s0_gpio>;
 		compatible = "gpio-keys";
 
-		s0 { label = "S0"; linux,code = <KEY_F1>; gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>; };
+		s0 { label = "S0"; linux,code = <BTN_TRIGGER_HAPPY1>; gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>; };
 	};
 };
 

@@ -48,13 +48,13 @@
 		pinctrl-0 = <&gpio0_pins_inputs>, <&gpio1_pins_inputs>;
 		compatible = "gpio-keys";
 
-		di@0 { label = "DI0"; linux,code = <KEY_F1>; gpios = <&main_gpio0 0 GPIO_ACTIVE_HIGH>; };
-		di@1 { label = "DI1"; linux,code = <KEY_F2>; gpios = <&main_gpio0 1 GPIO_ACTIVE_HIGH>; };
-		di@2 { label = "DI2"; linux,code = <KEY_F3>; gpios = <&main_gpio0 2 GPIO_ACTIVE_HIGH>; };
-		di@3 { label = "DI3"; linux,code = <KEY_F4>; gpios = <&main_gpio0 3 GPIO_ACTIVE_HIGH>; };
-		di@4 { label = "DI4"; linux,code = <KEY_F5>; gpios = <&main_gpio0 44 GPIO_ACTIVE_HIGH>; };
-		di@5 { label = "DI5"; linux,code = <KEY_F6>; gpios = <&main_gpio1 28 GPIO_ACTIVE_HIGH>; };
-		di@6 { label = "DI6"; linux,code = <KEY_F7>; gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>; };
+		di@0 { label = "DI0"; linux,code = <BTN_TRIGGER_HAPPY1>; gpios = <&main_gpio0 0 GPIO_ACTIVE_HIGH>; };
+		di@1 { label = "DI1"; linux,code = <BTN_TRIGGER_HAPPY2>; gpios = <&main_gpio0 1 GPIO_ACTIVE_HIGH>; };
+		di@2 { label = "DI2"; linux,code = <BTN_TRIGGER_HAPPY3>; gpios = <&main_gpio0 2 GPIO_ACTIVE_HIGH>; };
+		di@3 { label = "DI3"; linux,code = <BTN_TRIGGER_HAPPY4>; gpios = <&main_gpio0 3 GPIO_ACTIVE_HIGH>; };
+		di@4 { label = "DI4"; linux,code = <BTN_TRIGGER_HAPPY5>; gpios = <&main_gpio0 44 GPIO_ACTIVE_HIGH>; };
+		di@5 { label = "DI5"; linux,code = <BTN_TRIGGER_HAPPY6>; gpios = <&main_gpio1 28 GPIO_ACTIVE_HIGH>; };
+		di@6 { label = "DI6"; linux,code = <BTN_TRIGGER_HAPPY7>; gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>; };
 	};
 
 	sysworxx-0-io-outputs {
