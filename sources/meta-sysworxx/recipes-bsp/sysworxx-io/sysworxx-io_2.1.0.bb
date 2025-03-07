@@ -8,7 +8,7 @@ inherit cargo
 # how to get sysworxx-io could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/sysworxx-io/2.1.0"
 SRC_URI += "git://srv-gitlab.intern.systec-electronic.com/121903/sysworxx-io.git;protocol=http;nobranch=1;branch=master"
-SRCREV = "ad2be4b2de1eb8650c3cc0a43a47653484a92168"
+SRCREV = "db8bab89296ca61a47fe720e2f62dbc065342118"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -35,6 +35,7 @@ SRC_URI += " \
     crate://crates.io/bitflags/0.8.2 \
     crate://crates.io/bitflags/0.9.1 \
     crate://crates.io/bitflags/1.3.2 \
+    crate://crates.io/bitflags/2.9.0 \
     crate://crates.io/bitvec/1.0.1 \
     crate://crates.io/bumpalo/3.17.0 \
     crate://crates.io/byteorder/1.5.0 \
@@ -70,6 +71,7 @@ SRC_URI += " \
     crate://crates.io/gcc/0.3.55 \
     crate://crates.io/getrandom/0.1.16 \
     crate://crates.io/gimli/0.31.1 \
+    crate://crates.io/gpio-cdev/0.6.0 \
     crate://crates.io/half/1.8.3 \
     crate://crates.io/hermit-abi/0.1.19 \
     crate://crates.io/human-sort/0.2.2 \
@@ -104,6 +106,7 @@ SRC_URI += " \
     crate://crates.io/neon/0.10.1 \
     crate://crates.io/nix/0.10.0 \
     crate://crates.io/nix/0.16.1 \
+    crate://crates.io/nix/0.27.1 \
     crate://crates.io/nix/0.9.0 \
     crate://crates.io/nom/7.1.3 \
     crate://crates.io/num-bigint/0.1.45 \
@@ -233,6 +236,7 @@ SRC_URI[basic-toml-0.1.9.sha256sum] = "823388e228f614e9558c6804262db37960ec88218
 SRC_URI[bitflags-0.8.2.sha256sum] = "1370e9fc2a6ae53aea8b7a5110edbd08836ed87c88736dfabccade1c2b44bff4"
 SRC_URI[bitflags-0.9.1.sha256sum] = "4efd02e230a02e18f92fc2735f44597385ed02ad8f831e7c1c1156ee5e1ab3a5"
 SRC_URI[bitflags-1.3.2.sha256sum] = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
+SRC_URI[bitflags-2.9.0.sha256sum] = "5c8214115b7bf84099f1309324e63141d4c5d7cc26862f97a0a857dbefe165bd"
 SRC_URI[bitvec-1.0.1.sha256sum] = "1bc2832c24239b0141d5674bb9174f9d68a8b5b3f2753311927c172ca46f7e9c"
 SRC_URI[bumpalo-3.17.0.sha256sum] = "1628fb46dfa0b37568d12e5edd512553eccf6a22a78e8bde00bb4aed84d5bdbf"
 SRC_URI[byteorder-1.5.0.sha256sum] = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
@@ -268,6 +272,7 @@ SRC_URI[funty-2.0.0.sha256sum] = "e6d5a32815ae3f33302d95fdcb2ce17862f8c65363dcfd
 SRC_URI[gcc-0.3.55.sha256sum] = "8f5f3913fa0bfe7ee1fd8248b6b9f42a5af4b9d65ec2dd2c3c26132b950ecfc2"
 SRC_URI[getrandom-0.1.16.sha256sum] = "8fc3cb4d91f53b50155bdcfd23f6a4c39ae1969c2ae85982b135750cccaf5fce"
 SRC_URI[gimli-0.31.1.sha256sum] = "07e28edb80900c19c28f1072f2e8aeca7fa06b23cd4169cefe1af5aa3260783f"
+SRC_URI[gpio-cdev-0.6.0.sha256sum] = "09831ec59b80be69e75d29cf36e16afbbe5fd1af9c1bf4689ad91c77db5aa6a6"
 SRC_URI[half-1.8.3.sha256sum] = "1b43ede17f21864e81be2fa654110bf1e793774238d86ef8555c37e6519c0403"
 SRC_URI[hermit-abi-0.1.19.sha256sum] = "62b467343b94ba476dcb2500d242dadbb39557df889310ac77c5d99100aaac33"
 SRC_URI[human-sort-0.2.2.sha256sum] = "140a09c9305e6d5e557e2ed7cbc68e05765a7d4213975b87cb04920689cc6219"
@@ -302,6 +307,7 @@ SRC_URI[neon-runtime-0.10.1.sha256sum] = "4676720fa8bb32c64c3d9f49c47a47289239ec
 SRC_URI[neon-0.10.1.sha256sum] = "28e15415261d880aed48122e917a45e87bb82cf0260bb6db48bbab44b7464373"
 SRC_URI[nix-0.10.0.sha256sum] = "b7fd5681d13fda646462cfbd4e5f2051279a89a544d50eb98c365b507246839f"
 SRC_URI[nix-0.16.1.sha256sum] = "dd0eaf8df8bab402257e0a5c17a254e4cc1f72a93588a1ddfb5d356c801aa7cb"
+SRC_URI[nix-0.27.1.sha256sum] = "2eb04e9c688eff1c89d72b407f168cf79bb9e867a9d3323ed6c01519eb9cc053"
 SRC_URI[nix-0.9.0.sha256sum] = "a2c5afeb0198ec7be8569d666644b574345aad2e95a53baf3a532da3e0f3fb32"
 SRC_URI[nom-7.1.3.sha256sum] = "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a"
 SRC_URI[num-bigint-0.1.45.sha256sum] = "1357c02fa1d647dd0769ef5bc2bf86281f064231c09c192a46c71246e3ec9258"
