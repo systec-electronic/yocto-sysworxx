@@ -45,7 +45,11 @@ cat /sys/bus/i2c/devices/1-0032/rtc/rtc0/{date,time}
 ## Device tree overlays
 
 ```sh
-fw_setenv name_overlays ti/k3-am625-systec-pi-sysworxx-io-gpio.dtbo
+dtbo-setup set k3-am625-systec-pi-sysworxx-io-gpio.dtbo
+reboot
+
+# get all options with:
+dtbo-setup --help
 ```
 
 ### Digital Outputs
