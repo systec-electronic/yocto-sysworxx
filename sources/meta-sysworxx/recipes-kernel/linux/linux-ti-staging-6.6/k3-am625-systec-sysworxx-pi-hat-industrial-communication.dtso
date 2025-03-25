@@ -1,0 +1,94 @@
+// SPDX-License-Identifier: GPL-2.0
+
+/**
+ * Copyright (C) 2025 SYS TEC electronic AG
+ *
+ * sysWORXX Pi HAT - Industrial Communication
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+#include "k3-pinctrl.h"
+
+&main_pmx0 {
+	industrial_communication_hat_gpio: industrual-communication-hat-gpio {
+		pinctrl-single,pins = <
+			// NETX_/DIRQ
+			AM62X_IOPAD(0x0004, PIN_OUTPUT, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
+			// NETX_/SIRQ
+			AM62X_IOPAD(0x0004, PIN_INPUT, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
+			// NETX_/RST
+			AM62X_IOPAD(0x0008, PIN_INPUT, 7) /* (J24) OSPI0_DQS.GPIO0_2 */
+			// MCAN0_LED
+			AM62X_IOPAD(0x0010, PIN_INPUT, 7) /* (G24) OSPI0_D1.GPIO0_4 */
+		>;
+	};
+
+	spi1_pins: spi1-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x0020, PIN_INPUT, 1) /* (J25) OSPI0_D5.SPI1_CLK */
+			AM62X_IOPAD(0x0024, PIN_OUTPUT, 1) /* (H25) OSPI0_D6.SPI1_D0 */
+			AM62X_IOPAD(0x0028, PIN_INPUT, 1) /* (J22) OSPI0_D7.SPI1_D1 */
+			AM62X_IOPAD(0x001c, PIN_OUTPUT, 1) /* (J23) OSPI0_D4.SPI1_CS0 */
+		>;
+	};
+
+	mcan0_pins: mcan0-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x01dc, PIN_INPUT, 0) /* (E15) MCAN0_RX */
+			AM62X_IOPAD(0x01d8, PIN_OUTPUT, 0) /* (C15) MCAN0_TX */
+		>;
+	};
+};
+
+&{/} {
+	industrial_communication_hat_gpio: industrial-communication-hat-gpio {
+		pinctrl-names = "default";
+		pinctrl-0 = <&industrial_communication_hat_gpio>;
+		compatible = "gpio-aggregator";
+
+		gpios = <&main_gpio0 1 GPIO_ACTIVE_HIGH>,
+				<&main_gpio0 2 GPIO_ACTIVE_HIGH>,
+				<&main_gpio0 3 GPIO_ACTIVE_HIGH>;
+		gpio-line-names =   "NETX_/DIRQ",
+							"NETX_/SIRQ",
+							"NETX_/RST";
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		mcan0_act {
+				#gpio-cells = <2>;
+				label = "mcan0_act";
+				gpios = <&main_gpio0 4 GPIO_ACTIVE_HIGH>;
+		};
+	};
+};
+
+&main_spi1 {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+	pinctrl-0 = <&spi1_pins>;
+	pinctrl-names = "default";
+	ti,pindir-d0-out-d1-in;
+
+	spidev@0 {
+		// Using spidev compatible is warned loudly,
+		// thus use another equivalent compatible id
+		// from spidev.
+		compatible = "rohm,dh2228fv";
+		spi-max-frequency = <20000000>;
+		reg = <0>;
+	};
+};
+
+&main_mcan0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mcan0_pins>;
+	status = "okay";
+};

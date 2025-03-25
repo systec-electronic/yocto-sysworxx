@@ -35,6 +35,7 @@ SRC_URI += " \
     file://k3-am625-systec-pi-rev0.dts${MOVE} \
     file://k3-am625-systec-pi-sysworxx-io-gpio.dtso${MOVE} \
     file://k3-am625-systec-sysworxx-pi-hat-smart-metering.dtso${MOVE} \
+    file://k3-am625-systec-sysworxx-pi-hat-industrial-communication.dtso${MOVE} \
 "
 
 FRAGMENTS_DIR := "${THISDIR}/${PN}-6.6"
