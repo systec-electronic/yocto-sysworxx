@@ -41,17 +41,17 @@ Now RAUC can be used to install new images.
 ```sh
 cd build/
 . conf/setenv
-bitbake sysworxx-bundle
+bitbake sysworxx-bundle-default
 ```
 
-The bundle `build/deploy-ti/images/sysworxx/sysworxx-bundle-sysworxx.raucb` can
+The bundle `build/deploy-ti/images/sysworxx/sysworxx-bundle-default-sysworxx.raucb` can
 then be copied to a running device and be installed with `rauc install`. e.g.
 
 ```sh
 # on PC:
-scp build/deploy-ti/images/sysworxx/sysworxx-bundle-sysworxx.raucb root@device:/tmp
+scp build/deploy-ti/images/sysworxx/sysworxx-bundle-default-sysworxx.raucb root@device:/tmp
 # on sysWORXX device:
-rauc install /tmp/sysworxx-bundle-sysworxx.raucb
+rauc install /tmp/sysworxx-bundle-default-sysworxx.raucb
 reboot
 ```
 
