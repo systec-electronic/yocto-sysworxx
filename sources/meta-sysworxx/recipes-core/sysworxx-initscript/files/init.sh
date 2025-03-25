@@ -50,7 +50,7 @@ for arg in ${CMDLINE}; do
     optarg=$(expr "x${arg}" : 'x[^=]*=\(.*\)')
     case ${arg} in
     root=*)
-        ROOT_DEVICE=${optarg}
+        ROOT_PART=${optarg}
         ;;
     esac
 done
@@ -60,11 +60,11 @@ msg "mounting filesystems"
 ROOTFS_DIR="/rootfs"
 mkdir -p ${ROOTFS_DIR}
 
-ROOT_DEV_NAME=$(basename "${ROOT_DEVICE}")
-case ${ROOT_DEV_NAME} in
+ROOT_PART_NAME=$(basename "${ROOT_PART}")
+case ${ROOT_PART_NAME} in
 ${DEV_SDCARD}*)
     msg "mounting SD card partitions..."
-    mount "${ROOT_DEVICE}" "${ROOTFS_DIR}"
+    mount /dev/${DEV_SDCARD}p3 "${ROOTFS_DIR}"
     ;;
 ${DEV_EMMC}*)
     # If an SD card is inserted when booting from eMMC Kernel may need some time
@@ -75,7 +75,7 @@ ${DEV_EMMC}*)
         msg "mounting eMMC partitions..."
         xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
         xfsckext4 /dev/${DEV_EMMC}p4 || /bin/sh
-        mount -o ro,relatime "${ROOT_DEVICE}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
+        mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
 
         msg "mounting user part and overlays..."
         xfsckext4 /dev/${DEV_EMMC}p5 || /bin/sh
@@ -95,7 +95,7 @@ ${DEV_EMMC}*)
     fi
     ;;
 *)
-    msg "ERROR: invalid root device in kernel command line! (root=${ROOT_DEV_NAME})"
+    msg "ERROR: invalid root device in kernel command line! (root=${ROOT_PART_NAME})"
     exec /bin/sh
     ;;
 esac
