@@ -8,10 +8,11 @@ msg() {
 }
 
 # Returns 0 on success, !=0 if device needs reboot
-xfsckext4() {
-    DEV=$1
+xfsck() {
+    FSTYPE=$1
+    DEV=$2
 
-    fsck.ext4 -p "${DEV}"
+    fsck.$FSTYPE -p "${DEV}"
     RC=$?
 
     # see man page of fsck.ext4 (e2fsprogs / e2fsck)
@@ -34,6 +35,14 @@ xfsckext4() {
     esac
 
     return ${RC}
+}
+
+xfsckfat() {
+    xfsck fat $1
+}
+
+xfsckext4() {
+    xfsck ext4 $1
 }
 
 msg "initramfs running"
@@ -65,6 +74,12 @@ case ${ROOT_PART_NAME} in
 ${DEV_SDCARD}*)
     msg "mounting SD card partitions..."
     mount /dev/${DEV_SDCARD}p3 "${ROOTFS_DIR}"
+
+    msg "mounting vendor and u-boot partitions"
+    xfsckfat /dev/${DEV_SDCARD}p1
+    xfsckfat /dev/${DEV_SDCARD}p2
+    mount /dev/${DEV_SDCARD}p1 "${ROOTFS_DIR}/boot/vendor"
+    mount /dev/${DEV_SDCARD}p2 "${ROOTFS_DIR}/boot/u-boot"
     ;;
 ${DEV_EMMC}*)
     # If an SD card is inserted when booting from eMMC Kernel may need some time
@@ -76,6 +91,12 @@ ${DEV_EMMC}*)
         xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
         xfsckext4 /dev/${DEV_EMMC}p4 || /bin/sh
         mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
+
+        msg "mounting vendor and u-boot partitions"
+        xfsckfat /dev/${DEV_EMMC}p1
+        xfsckfat /dev/${DEV_EMMC}p2
+        mount /dev/${DEV_EMMC}p1 "${ROOTFS_DIR}/boot/vendor"
+        mount /dev/${DEV_EMMC}p2 "${ROOTFS_DIR}/boot/u-boot"
 
         msg "mounting user part and overlays..."
         xfsckext4 /dev/${DEV_EMMC}p5 || /bin/sh

@@ -2,13 +2,14 @@
 
 ## Partitions
 
-| Size   | Device    | mountpoint | usage                                             |
-|--------|-----------|------------|---------------------------------------------------|
-| 4 MiB  | mmcblk0p1 | /vendor    | serial number, license keys, calibration          |
-| 4 MiB  | mmcblk0p2 | -          | RAUC U-Boot environment                           |
-| 2 GiB  | mmcblk0p3 | /          | root-fs slot a                                    |
-| 2 GiB  | mmcblk0p4 | /          | root-fs slot b                                    |
-| >3 GiB | mmcblk0p5 | /home*     | user data in /home and overlays for /etc and /var |
+| Size    | Device    | mountpoint   | usage                                              |
+|---------|-----------|--------------|----------------------------------------------------|
+| 4 MiB   | mmcblk0p1 | /boot/vendor | Serial number, license keys, calibration           |
+|         |           |              | (on SD card this contains U-Boot binaries as well) |
+| 4 MiB   | mmcblk0p2 | /boot/u-boot | U-Boot environment                                 |
+| 2 GiB   | mmcblk0p3 | /            | root-fs slot a                                     |
+| 2 GiB   | mmcblk0p4 | /            | root-fs slot b                                     |
+| \>3 GiB | mmcblk0p5 | /home\*      | user data in /home and overlays for /etc and /var  |
 
 (*) overlays are mounted to `/etc` and `/var`
 

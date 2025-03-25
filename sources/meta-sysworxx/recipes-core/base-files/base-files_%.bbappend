@@ -10,7 +10,8 @@ SRC_URI:append:sysworxx = "\
 
 do_install:append:sysworxx () {
     # create mountpoint for vendor partition
-    install -d ${D}/vendor
+    install -d ${D}/boot/vendor
+    install -d ${D}/boot/u-boot
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/etc.mount ${D}${systemd_system_unitdir}
@@ -19,7 +20,8 @@ do_install:append:sysworxx () {
 }
 
 FILES:${PN}:append:sysworxx = "\
-    /vendor \
+    /boot/u-boot \
+    /boot/vendor \
 "
 
 SYSTEMD_SERVICE:${PN}:append:sysworxx = " \
