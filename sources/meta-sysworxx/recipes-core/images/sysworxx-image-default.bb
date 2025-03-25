@@ -1,4 +1,4 @@
-DESCRIPTION = "Image with sensible deefaults for SYSTEC sysWORXX modules."
+DESCRIPTION = "Image with sensible defaults for SYSTEC sysWORXX modules."
 LICENSE = "MIT"
 
 # orig: debug-tweaks package-management splash
