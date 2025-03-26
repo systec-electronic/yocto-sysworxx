@@ -14,7 +14,7 @@
 #include "k3-pinctrl.h"
 
 &main_pmx0 {
-	industrial_communication_hat_gpio: industrual-communication-hat-gpio {
+	industrial_communication_hat_gpio: industrial-communication-hat-gpio {
 		pinctrl-single,pins = <
 			// NETX_/DIRQ
 			AM62X_IOPAD(0x0004, PIN_OUTPUT, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
@@ -45,7 +45,7 @@
 };
 
 &{/} {
-	industrial_communication_hat_gpio: industrial-communication-hat-gpio {
+	industrial-communication-hat-gpio {
 		pinctrl-names = "default";
 		pinctrl-0 = <&industrial_communication_hat_gpio>;
 		compatible = "gpio-aggregator";
