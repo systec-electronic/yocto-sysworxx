@@ -8,10 +8,11 @@ msg() {
 }
 
 # Returns 0 on success, !=0 if device needs reboot
-xfsckext4() {
-    DEV=$1
+xfsck() {
+    FSTYPE=$1
+    DEV=$2
 
-    fsck.ext4 -p "${DEV}"
+    fsck.$FSTYPE -p "${DEV}"
     RC=$?
 
     # see man page of fsck.ext4 (e2fsprogs / e2fsck)
@@ -36,6 +37,14 @@ xfsckext4() {
     return ${RC}
 }
 
+xfsckfat() {
+    xfsck fat $1
+}
+
+xfsckext4() {
+    xfsck ext4 $1
+}
+
 msg "initramfs running"
 
 mkdir -p /proc /sys /var
@@ -50,7 +59,7 @@ for arg in ${CMDLINE}; do
     optarg=$(expr "x${arg}" : 'x[^=]*=\(.*\)')
     case ${arg} in
     root=*)
-        ROOT_DEVICE=${optarg}
+        ROOT_PART=${optarg}
         ;;
     esac
 done
@@ -60,18 +69,34 @@ msg "mounting filesystems"
 ROOTFS_DIR="/rootfs"
 mkdir -p ${ROOTFS_DIR}
 
-ROOT_DEV_NAME=$(basename "${ROOT_DEVICE}")
-case ${ROOT_DEV_NAME} in
+ROOT_PART_NAME=$(basename "${ROOT_PART}")
+case ${ROOT_PART_NAME} in
 ${DEV_SDCARD}*)
     msg "mounting SD card partitions..."
-    mount "${ROOT_DEVICE}" "${ROOTFS_DIR}"
+    mount /dev/${DEV_SDCARD}p3 "${ROOTFS_DIR}"
+
+    msg "mounting vendor and u-boot partitions"
+    xfsckfat /dev/${DEV_SDCARD}p1
+    xfsckfat /dev/${DEV_SDCARD}p2
+    mount /dev/${DEV_SDCARD}p1 "${ROOTFS_DIR}/boot/vendor"
+    mount /dev/${DEV_SDCARD}p2 "${ROOTFS_DIR}/boot/u-boot"
     ;;
 ${DEV_EMMC}*)
+    # If an SD card is inserted when booting from eMMC Kernel may need some time
+    # until eMMC partitions are populated
+    sleep 2
+
     if [ "$(ls /dev/${DEV_EMMC}p* | wc -l)" -eq 5 ]; then
         msg "mounting eMMC partitions..."
         xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
         xfsckext4 /dev/${DEV_EMMC}p4 || /bin/sh
-        mount -o ro,relatime "${ROOT_DEVICE}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
+        mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
+
+        msg "mounting vendor and u-boot partitions"
+        xfsckfat /dev/${DEV_EMMC}p1
+        xfsckfat /dev/${DEV_EMMC}p2
+        mount /dev/${DEV_EMMC}p1 "${ROOTFS_DIR}/boot/vendor"
+        mount /dev/${DEV_EMMC}p2 "${ROOTFS_DIR}/boot/u-boot"
 
         msg "mounting user part and overlays..."
         xfsckext4 /dev/${DEV_EMMC}p5 || /bin/sh
@@ -91,7 +116,7 @@ ${DEV_EMMC}*)
     fi
     ;;
 *)
-    msg "ERROR: invalid root device in kernel command line! (root=${ROOT_DEV_NAME})"
+    msg "ERROR: invalid root device in kernel command line! (root=${ROOT_PART_NAME})"
     exec /bin/sh
     ;;
 esac

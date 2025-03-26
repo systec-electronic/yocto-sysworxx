@@ -1,8 +1,8 @@
-From d52726968ceaf4663da3cb8a895c394fd85827eb Mon Sep 17 00:00:00 2001
+From fd758093630e05b2a3d8c3ad56ac6ce63ce4fe78 Mon Sep 17 00:00:00 2001
 From: Andreas Dinter <andreas.dinter@systec-electronic.com>
 Date: Tue, 20 Aug 2024 14:32:55 +0200
-Subject: [PATCH 09/13] board/ti/am62x/sysworxx.c: Detect mmcdev based on
- bootmode pins
+Subject: [PATCH] board/ti/am62x/sysworxx.c: Detect mmcdev based on bootmode
+ pins
 
 Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
 ---
@@ -11,10 +11,10 @@ Signed-off-by: Andreas Dinter <andreas.dinter@systec-electronic.com>
  2 files changed, 47 insertions(+), 1 deletion(-)
 
 diff --git a/board/ti/am62x/sysworxx.c b/board/ti/am62x/sysworxx.c
-index 348949f3680..09315fa0d64 100644
+index 82fdcb23b3a..f8446785227 100644
 --- a/board/ti/am62x/sysworxx.c
 +++ b/board/ti/am62x/sysworxx.c
-@@ -89,6 +89,51 @@ void reset_eth_phys(void) {
+@@ -111,6 +111,51 @@ void reset_eth_phys(void) {
  }
  
  #if CONFIG_IS_ENABLED(BOARD_LATE_INIT)
@@ -66,7 +66,7 @@ index 348949f3680..09315fa0d64 100644
  int board_late_init(void)
  {
  	printf("EEPROM import\n");
-@@ -105,6 +150,8 @@ int board_late_init(void)
+@@ -127,6 +172,8 @@ int board_late_init(void)
  		reset_eth_phys();
  	}
  
@@ -88,5 +88,5 @@ index e677c109094..6b4eefa2a43 100644
  bootdir=/boot
  rd_spec=-
 -- 
-2.47.1
+2.48.1
 

@@ -15,12 +15,6 @@ xzcat "${DEPLOY_DIR}/sysworxx-image-default-sysworxx.rootfs.wic.xz" >"${DEV}"
 sync
 sleep 1
 
-udisksctl mount -b /dev/disk/by-label/boot
-mp_boot=$(udisksctl info -b /dev/disk/by-label/boot | grep MountPoint | awk '{ print $2} ')
-cp "${mp_boot}/tiboot3-am62x-gp-evm.bin" \
-   "${mp_boot}/tiboot3.bin"
-udisksctl unmount -b /dev/disk/by-label/boot
-
 udisksctl mount -b /dev/disk/by-label/root
 mp_root=$(udisksctl info -b /dev/disk/by-label/root | grep MountPoint | awk '{ print $2} ')
 sudo mkdir -p "${mp_root}/opt/image"

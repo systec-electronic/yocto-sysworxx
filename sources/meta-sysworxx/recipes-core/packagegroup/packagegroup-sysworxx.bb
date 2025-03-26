@@ -47,6 +47,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     cpio \
     cpufrequtils \
     di-setup \
+    dtbo-setup \
     e2fsprogs \
     e2fsprogs-resize2fs \
     file \
@@ -62,6 +63,8 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     libgpiod-tools \
     makedevs \
     mc \
+    mc-helpers \
+    mc-helpers-perl \
     nano \
     ncurses \
     net-tools \
@@ -83,6 +86,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     time \
     tzdata \
     util-linux \
+    util-linux-fstrim \
     usbutils \
     vendor-setup \
 "

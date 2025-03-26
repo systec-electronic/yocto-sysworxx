@@ -1,7 +1,7 @@
 DESCRIPTION = "Minimalistic initramfs"
 
 IMAGE_FEATURES = ""
-PACKAGE_INSTALL = "${VIRTUAL-RUNTIME_base-utils} base-passwd sysworxx-initscript"
+PACKAGE_INSTALL = "${VIRTUAL-RUNTIME_base-utils} dosfstools base-passwd sysworxx-initscript"
 
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 inherit core-image

@@ -1,0 +1,29 @@
+From bd79c519080f7104ac82d8abe0f7a3ee29300879 Mon Sep 17 00:00:00 2001
+From: des-b <desb@mail.de>
+Date: Sun, 2 Mar 2025 20:28:06 +0100
+Subject: [PATCH] drivers/gpio/gpio-aggregator.c: Add compatible
+ "gpio-aggregator"
+
+Signed-off-by: des-b <desb@mail.de>
+---
+ drivers/gpio/gpio-aggregator.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
+index 38e0fff9afe7..8a7c5218bfba 100644
+--- a/drivers/gpio/gpio-aggregator.c
++++ b/drivers/gpio/gpio-aggregator.c
+@@ -605,6 +605,10 @@ static const struct of_device_id gpio_aggregator_dt_ids[] = {
+ 	 * Add GPIO-operated devices controlled from userspace below,
+ 	 * or use "driver_override" in sysfs.
+ 	 */
++	{
++		.compatible = "gpio-aggregator",
++		.data = NULL,
++	},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, gpio_aggregator_dt_ids);
+--
+2.48.1
+
