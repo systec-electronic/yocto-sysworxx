@@ -13,7 +13,7 @@ IMAGE_INSTALL = "\
 
 IMAGE_FSTYPES = "ext4 tar.gz wic.xz"
 
-inherit core-image
+inherit core-image extrausers
 
 DEPENDS += "linux-ti-staging"
 do_rootfs[depends] += "linux-ti-staging:do_bundle_initramfs"
@@ -25,3 +25,7 @@ install_initramfs() {
     ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${INITRAMFS_LINK_NAME}${KERNEL_IMAGE_BIN_EXT} \
     ${IMAGE_ROOTFS}/boot/${KERNEL_IMAGETYPE}
 }
+
+# use `mkpasswd -m scrypt` (package whois)
+ROOT_PASSWORD = "\$7\$CU..../....HNOru6LUUPYp.nvaaMEEH.\$/L0GlGANyMVv8f1zyQwcu6ANQLoPPfXJ8euUUKqxez1"
+EXTRA_USERS_PARAMS = "usermod -p '${ROOT_PASSWORD}' root;"
