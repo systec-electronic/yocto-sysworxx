@@ -44,3 +44,19 @@
 	path = sources/meta-rauc
 	url = https://github.com/rauc/meta-rauc.git
 	branch = scarthgap
+[submodule "sources/meta-browser"]
+	path = sources/meta-browser
+	url = https://github.com/OSSystems/meta-browser
+	branch = scarthgap
+[submodule "sources/meta-clang"]
+	path = sources/meta-clang
+	url = https://github.com/kraj/meta-clang
+	branch = scarthgap
+[submodule "sources/meta-lts-mixin"]
+	path = sources/meta-lts-mixin
+	url = https://git.yoctoproject.org/meta-lts-mixins
+	branch = scarthgap/rust
+[submodule "sources/meta-wayland"]
+	path = sources/meta-wayland
+	url = https://codeberg.org/flk/meta-wayland
+	branch = scarthgap

@@ -1,0 +1,21 @@
+[Unit]
+Description=Web Browser Based HMI
+Requires=NetworkManager-wait-online.service
+After=NetworkManager-wait-online.service
+
+[Service]
+User=root
+Environment=HMI_URL="file:///usr/share/systec-logo/systec_logo.html"
+Environment=HMI_ARG1="--user-data-dir=/home/root/.chromium"
+Environment=HMI_ARG2="--no-sandbox"
+Environment=HMI_ARG3="--kiosk"
+Environment=HMI_ARG4=""
+Environment=HMI_ARG5=""
+Environment=XDG_RUNTIME_DIR=/run/user/0
+ExecStartPre=mkdir -p /run/user/0
+ExecStart=cage -- chromium ${HMI_ARG1} ${HMI_ARG2} ${HMI_ARG3} ${HMI_ARG4} ${HMI_ARG5} ${HMI_URL}
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
