@@ -38,9 +38,9 @@ python do_compile () {
             bb.warn(e.stderr.decode())
             git_tag = "no git version information available"
 
-    # matches e.g. "v0.0.1 (2020-12-01)"
-    # group(1)      ^^^^^^
-    regex = re.compile(r"^\s*(v\d+.\d+.\d+) \(\d+-\d+-\d+\)")
+    # matches e.g. "# v0.0.1 (2020-12-01)"
+    # group(1)        ^^^^^^
+    regex = re.compile(r"^#\s*(v\d+.\d+.\d+) \(\d+-\d+-\d+\)")
     release_notes = path.join(builddir, '../ReleaseNotes.md')
     versions = []
     try:
