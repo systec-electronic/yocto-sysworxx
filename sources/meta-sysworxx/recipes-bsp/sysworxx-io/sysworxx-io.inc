@@ -15,8 +15,8 @@ CARGO_BUILD_FLAGS += ""
 # patch oe_cargo_build so that libctr700drv.so is built
 
 oe_cargo_build:append() {
-	bbnote "${CARGO} build ${CARGO_BUILD_FLAGS} --workspace $@"
-	"${CARGO}" build ${CARGO_BUILD_FLAGS} --workspace "$@"
+    bbnote "${CARGO} build ${CARGO_BUILD_FLAGS} --workspace $@"
+    "${CARGO}" build ${CARGO_BUILD_FLAGS} --workspace "$@"
 }
 
 # patch cargo_do_install so that:
@@ -27,6 +27,7 @@ cargo_do_install() {
     install -d "${D}${libdir}"
     install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/libctr700drv.so" "${D}${libdir}"
     install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/libsysworxx_io.so" "${D}${libdir}"
+    install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/libsysworxx_io_js.so" "${D}${libdir}/libsysworxx_io_js.node"
 
     install -d "${D}${bindir}"
     install -m755 "${B}/target/${CARGO_TARGET_SUBDIR}/iodaemon" "${D}${bindir}"
@@ -44,6 +45,7 @@ cargo_do_install() {
 
 FILES:${PN} = " \
     ${libdir}/*.so \
+    ${libdir}/libsysworxx_io_js.node \
     ${bindir}/iodaemon \
 "
 
