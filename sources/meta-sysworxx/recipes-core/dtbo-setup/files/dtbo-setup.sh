@@ -5,7 +5,7 @@ set -e
 readonly COMMAND=$(basename $0)
 readonly SUB_COMMAND=$1
 
-function sub_usage() {
+sub_usage() {
     echo
     echo "Usage: $COMMAND <subcommand> [options]"
     echo
@@ -19,15 +19,16 @@ function sub_usage() {
     echo "        Get all enabled DTBO"
     echo "    set <dbto>..."
     echo "        Set active DTBO"
-    echo "        (If compatible multiple can be enabled at once)"
+    echo "        - if compatible multiple can be enabled at once"
+    echo "        - if no dtbo passed all DTBO will be disabled"
 }
 
-function sub_ls() {
+sub_ls() {
     echo "Available DTBO:"
     find /boot/dtb/ti/ -name "*.dtbo" -exec basename {} \; | sed 's/^/  /'
 }
 
-function sub_get() {
+sub_get() {
     name_overlays=$(fw_printenv name_overlays | sed 's/name_overlays=//g' | sed '/^$/d')
     if [ -n "$name_overlays" ]; then
         echo "Enabled DTBO:"
@@ -37,7 +38,7 @@ function sub_get() {
     fi
 }
 
-function sub_set() {
+sub_set() {
     if ! cat /sys/firmware/devicetree/base/compatible | tr '\0' '\n' | grep systec,pi >/dev/null; then
         echo "DTBO not compatible for the device"
     fi
