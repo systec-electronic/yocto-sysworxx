@@ -1,13 +1,16 @@
 inherit systemd
 
-DEPENDS = "lmsensors libiio"
+DEPENDS = "lmsensors libiio npm-typescript-native"
 
 RDEPENDS:${PN} = "lmsensors libiio"
-# Codesys needs sudo on the target to deploy the runtime
 RDEPENDS:${PN}-codesys-connector += "${PN} sudo"
 RDEPENDS:${PN}-dev += "${PN}"
+RDEPENDS:${PN}-node-red-contrib-sysworxx-io += "${PN} libgcc glibc"
 
-PACKAGES += "${PN}-codesys-connector"
+PACKAGES += " \
+    ${PN}-codesys-connector \
+    ${PN}-node-red-contrib-sysworxx-io \
+"
 
 # Flags are empty, no device specifics necessary
 CARGO_BUILD_FLAGS += ""
@@ -19,9 +22,13 @@ oe_cargo_build:append() {
     "${CARGO}" build ${CARGO_BUILD_FLAGS} --workspace "$@"
 }
 
-# patch cargo_do_install so that:
-# - shared objects are installed to /usr/lib/ instead of /usr/lib/rust
-# - *.rlib files will not be installed
+do_compile:append() {
+    cd "${S}/Bindings/node-red-contrib-sysworxx-io"
+    npm install
+    npm run prepack
+    npm pack
+    mv -v node-red-contrib-sysworxx-io-*.tgz ${B}/node-red-contrib-sysworxx-io-latest.tgz
+}
 
 cargo_do_install() {
     install -d "${D}${libdir}"
@@ -41,6 +48,9 @@ cargo_do_install() {
     install -m 0644 ${S}/systemd/iodaemon.service ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-connector.service ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-generate-devdesc-xml.service ${D}${systemd_system_unitdir}
+
+    install -d ${D}${datadir}/sysworxx-io
+    install -m 0644 ${B}/node-red-contrib-sysworxx-io-latest.tgz ${D}${datadir}/sysworxx-io
 }
 
 FILES:${PN} = " \
@@ -55,6 +65,14 @@ FILES:${PN}-codesys-connector = " \
     ${systemd_system_unitdir}/codesys-generate-devdesc-xml.service \
 "
 
+FILES:${PN}-node-red-contrib-sysworxx-io = " \
+    ${datadir} \
+"
+
+FILES:${PN}-dev = " \
+    ${includedir}/*.h \
+"
+
 SYSTEMD_AUTO_ENABLE:${PN}-codesys-connector = "disable"
 SYSTEMD_PACKAGES = "${PN} ${PN}-codesys-connector"
 
@@ -62,8 +80,4 @@ SYSTEMD_SERVICE:${PN} = "iodaemon.service"
 SYSTEMD_SERVICE:${PN}-codesys-connector += " \
     codesys-connector.service \
     codesys-generate-devdesc-xml.service \
-"
-
-FILES:${PN}-dev = " \
-    ${includedir}/*.h \
 "
