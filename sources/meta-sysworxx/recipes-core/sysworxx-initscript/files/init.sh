@@ -78,8 +78,8 @@ ${DEV_SDCARD}*)
     msg "mounting vendor and u-boot partitions"
     xfsckfat /dev/${DEV_SDCARD}p1
     xfsckfat /dev/${DEV_SDCARD}p2
-    mount /dev/${DEV_SDCARD}p1 "${ROOTFS_DIR}/boot/vendor"
-    mount /dev/${DEV_SDCARD}p2 "${ROOTFS_DIR}/boot/u-boot"
+    mount -o ro,relatime /dev/${DEV_SDCARD}p1 "${ROOTFS_DIR}/boot/vendor"
+    mount -o rw,relatime /dev/${DEV_SDCARD}p2 "${ROOTFS_DIR}/boot/u-boot"
     ;;
 ${DEV_EMMC}*)
     # If an SD card is inserted when booting from eMMC Kernel may need some time
@@ -90,13 +90,13 @@ ${DEV_EMMC}*)
         msg "mounting eMMC partitions..."
         xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
         xfsckext4 /dev/${DEV_EMMC}p4 || /bin/sh
-        mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
+        mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}"
 
         msg "mounting vendor and u-boot partitions"
         xfsckfat /dev/${DEV_EMMC}p1
         xfsckfat /dev/${DEV_EMMC}p2
-        mount /dev/${DEV_EMMC}p1 "${ROOTFS_DIR}/boot/vendor"
-        mount /dev/${DEV_EMMC}p2 "${ROOTFS_DIR}/boot/u-boot"
+        mount -o ro,relatime /dev/${DEV_EMMC}p1 "${ROOTFS_DIR}/boot/vendor"
+        mount -o rw,relatime /dev/${DEV_EMMC}p2 "${ROOTFS_DIR}/boot/u-boot"
 
         msg "mounting user part and overlays..."
         xfsckext4 /dev/${DEV_EMMC}p5 || /bin/sh
