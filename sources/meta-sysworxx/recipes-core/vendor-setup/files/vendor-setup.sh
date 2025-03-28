@@ -9,20 +9,28 @@ set -e
 readonly COMMAND=$(basename $0)
 readonly SUB_COMMAND=$1
 
-readonly BLK_VENDOR=mmcblk0p1
-
-readonly VENDOR_DEVICE_FILE=/vendor/device
+readonly MOUNTPOINT_VENDOR="/boot/vendor"
+readonly VENDOR_DEVICE_FILE="${MOUNTPOINT_VENDOR}/device"
 
 ################################################################################
 # Helper functions
 ################################################################################
 
 function remount_ro() {
-    mount -o remount,ro /dev/${BLK_VENDOR}
+    mount -o remount,ro ${MOUNTPOINT_VENDOR}
 }
 
 function remount_rw() {
-    mount -o remount,rw /dev/${BLK_VENDOR}
+    mount -o remount,rw ${MOUNTPOINT_VENDOR}
+}
+
+function eeprom_get() {
+    # TODO: find a better way to access the environment
+    if [ -e /sys/bus/i2c/devices/0-0050/eeprom ]; then
+        head -c 256 /sys/bus/i2c/devices/0-0050/eeprom | strings | grep $1 | sed 's/.*=//'
+    else
+        head -c 256 /sys/bus/i2c/devices/1-0050/eeprom | strings | grep $1 | sed 's/.*=//'
+    fi
 }
 
 ################################################################################
@@ -36,8 +44,7 @@ function sub_default() {
     echo
     echo "Subcommands:"
     echo "    vendor             - Set vendor data"
-    echo "    serial             - Set the serial number of the device"
-    echo "    lickey             - Set the Licence Key of the device"
+    echo "    lickey             - Set OpenPCS licence key of the device"
 }
 
 function sub_lickey() {
@@ -58,14 +65,18 @@ function sub_vendor() {
     local SERIAL
     local LIC_KEY
 
-    source <(fw_printenv -c <(echo "/sys/bus/i2c/devices/0-0050/eeprom 0x0000 0x200"))
+    compatible=$(eeprom_get fdt_prefix)
+    serial_number=$(eeprom_get dev_serial_number)
 
-    case ${fdt_prefix:-undefined} in
+    case ${compatible:-undefined} in
     k3-am623-systec-ctr600)
         model="sysWORXX CTR-600"
         ;;
     k3-am623-systec-ctr800)
         model="sysWORXX CTR-800"
+        ;;
+    k3-am625-systec-pi)
+        model="sysWORXX Pi"
         ;;
     *)
         echo "Device model not found. The device is not properly provisioned!"
@@ -81,7 +92,7 @@ function sub_vendor() {
         [Device]
         Vendor=SYS TEC electronic AG
         Model=$model
-        Serial=${dev_serial_number:-undefined}
+        Serial=${serial_number:-undefined}
         LicKey=$LIC_KEY
 
 EOF
