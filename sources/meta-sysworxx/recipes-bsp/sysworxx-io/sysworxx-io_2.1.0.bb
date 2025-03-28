@@ -7,8 +7,10 @@ inherit cargo
 
 # how to get sysworxx-io could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/sysworxx-io/2.1.0"
-SRC_URI += "git://srv-gitlab.intern.systec-electronic.com/121903/sysworxx-io.git;protocol=http;nobranch=1;branch=master"
-SRCREV = "0f033ef8bd082a2e41eadbbab43253e97b303936"
+SRC_URI += "\
+    git://git@github.com/systec-electronic/sysworxx-io.git;protocol=https;branch=main \
+"
+SRCREV = "b53a9211204beac17235b34c84c1b80ecfeab864"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -386,7 +388,7 @@ SRC_URI[zerocopy-0.7.35.sha256sum] = "1b9b4fd18abc82b8136838da5d50bae7bdea537c57
 
 # FIXME: update generateme with the real MD5 of the license file
 LIC_FILES_CHKSUM = " \
-    file://LICENSE;md5=170beaaf9260bfe824927d9a2935ef6b \
+    file://LICENSE;md5=c51d3eef3be114124d11349ca0d7e117 \
 "
 
 SUMMARY = "I/O library for accessing basic peripherals (digital/analog I/O's, watchdog, etc) on sysWORXX devices"
