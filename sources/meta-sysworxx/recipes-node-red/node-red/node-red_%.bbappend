@@ -2,11 +2,15 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append = " \
     file://node-red.service \
+    file://node-red-prepare.service \
 "
 
 inherit systemd
 
-SYSTEMD_SERVICE:${PN} = "${BPN}.service"
+SYSTEMD_SERVICE:${PN} = " \
+    node-red.service \
+    node-red-prepare.service \
+"
 SYSTEMD_AUTO_ENABLE:${PN} = "disable"
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
@@ -17,12 +21,14 @@ RDEPENDS:${PN} = "\
     libgcc \
     packagegroup-core-buildessential \
     nodejs-npm \
+    sysworxx-io-node-red-contrib-sysworxx-io \
 "
 
 do_install:append() {
     # Service Systemd
     install -d ${D}${systemd_unitdir}/system/
-    install -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/node-red.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/node-red-prepare.service ${D}${systemd_unitdir}/system/
 
     # Remove tmp files from npm install
     rm -rf ${D}/${libdir}/node_modules/${BPN}/node_modules/bcrypt/build-tmp-napi-v3

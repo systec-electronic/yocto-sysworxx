@@ -1,0 +1,11 @@
+[Unit]
+Description=Install 'node-red-dashboard' and 'node-red-contrib-sysworxx-io' if not present already
+ConditionPathExists=|!/home/root/.node-red/node_modules/node-red-dashboard
+ConditionPathExists=|!/home/root/.node-red/node_modules/node-red-contrib-sysworxx-io
+ConditionPathExists=|!/home/root/.node-red/settings.js
+
+[Service]
+Type=oneshot
+ExecStart=npm install --prefix /home/root/.node-red node-red-dashboard
+ExecStart=npm install --prefix /home/root/.node-red /usr/share/sysworxx-io/node-red-contrib-sysworxx-io-latest.tgz
+ExecStart=cp -v /usr/lib/node_modules/node-red/settings.js /home/root/.node-red/settings.js
