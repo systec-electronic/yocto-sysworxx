@@ -14,6 +14,7 @@ Environment=HMI_ARG5=""
 Environment=XDG_RUNTIME_DIR=/run/user/0
 ExecStartPre=mkdir -p /run/user/0
 ExecStart=cage -- chromium ${HMI_ARG1} ${HMI_ARG2} ${HMI_ARG3} ${HMI_ARG4} ${HMI_ARG5} ${HMI_URL}
+MemoryMax=500M
 Restart=always
 RestartSec=5
 
