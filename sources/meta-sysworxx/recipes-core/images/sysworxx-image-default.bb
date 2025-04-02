@@ -28,4 +28,4 @@ install_initramfs() {
 
 # use `mkpasswd -m scrypt` (package whois)
 ROOT_PASSWORD = "\$7\$CU..../....HNOru6LUUPYp.nvaaMEEH.\$/L0GlGANyMVv8f1zyQwcu6ANQLoPPfXJ8euUUKqxez1"
-EXTRA_USERS_PARAMS = "usermod -p '${ROOT_PASSWORD}' root;"
+EXTRA_USERS_PARAMS = "usermod -p '${ROOT_PASSWORD}' root; passwd-expire root;"
