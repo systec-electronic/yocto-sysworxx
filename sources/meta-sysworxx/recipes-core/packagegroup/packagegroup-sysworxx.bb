@@ -46,6 +46,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     coreutils \
     cpio \
     cpufrequtils \
+    curl \
     di-setup \
     dtbo-setup \
     e2fsprogs \
