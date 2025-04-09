@@ -17,13 +17,13 @@
 	industrial_communication_hat_gpio: industrial-communication-hat-gpio {
 		pinctrl-single,pins = <
 			// NETX_/DIRQ
-			AM62X_IOPAD(0x0004, PIN_OUTPUT, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
+			AM62X_IOPAD(0x0004, PIN_INPUT_PULLUP, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
 			// NETX_/SIRQ
-			AM62X_IOPAD(0x0004, PIN_INPUT, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
+			AM62X_IOPAD(0x0004, PIN_INPUT_PULLUP, 7) /* (G25) OSPI0_LBCLKO.GPIO0_1 */
 			// NETX_/RST
-			AM62X_IOPAD(0x0008, PIN_INPUT, 7) /* (J24) OSPI0_DQS.GPIO0_2 */
+			AM62X_IOPAD(0x0008, PIN_OUTPUT, 7) /* (J24) OSPI0_DQS.GPIO0_2 */
 			// MCAN0_LED
-			AM62X_IOPAD(0x0010, PIN_INPUT, 7) /* (G24) OSPI0_D1.GPIO0_4 */
+			AM62X_IOPAD(0x0010, PIN_OUTPUT, 7) /* (G24) OSPI0_D1.GPIO0_4 */
 		>;
 	};
 
@@ -38,7 +38,7 @@
 
 	mcan0_pins: mcan0-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x01dc, PIN_INPUT, 0) /* (E15) MCAN0_RX */
+			AM62X_IOPAD(0x01dc, PIN_INPUT_PULLUP, 0) /* (E15) MCAN0_RX */
 			AM62X_IOPAD(0x01d8, PIN_OUTPUT, 0) /* (C15) MCAN0_TX */
 		>;
 	};
