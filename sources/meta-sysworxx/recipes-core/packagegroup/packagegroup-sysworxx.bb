@@ -81,6 +81,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     rng-tools \
     rs485-setup \
     sed \
+    sudo \
     systec-version \
     sysworxx-io \
     tar \
