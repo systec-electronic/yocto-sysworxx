@@ -16,7 +16,7 @@ set -e
 
 EMMC_BOOT0_BLK=mmcblk0boot0
 EMMC_DEVICE=/dev/mmcblk0
-BRINGUP_SOURCE_DIR=${1:-/opt/image}
+BRINGUP_SOURCE_DIR=${1}
 PARTITIONS_START_MiB=1
 VENDOR_SIZE_MiB=4
 RAUC_ENV_SIZE_MiB=4
@@ -44,7 +44,7 @@ function lock_dev() {
 }
 
 if mount | grep -q -e "${EMMC_DEVICE}p[34]"; then
-    echo bringup can only be performed when booting from SD card!
+    echo Installation can only be performed when booted from SD card!
     exit 1
 fi
 

@@ -4,7 +4,7 @@
 - [Yocto Project for sysWORXX AM62x devices](#yocto-project-for-sysworxx-am62x-devices)
   - [Checking out](#checking-out)
   - [Build default image and write to SD card](#build-default-image-and-write-to-sd-card)
-  - [Install image from SD Card to eMMC (for supported devices)](#install-image-from-sd-card-to-emmc-for-supported-devices)
+  - [Build and use the eMMC installer](#build-and-use-the-emmc-installer)
   - [Build and Install RAUC bundle](#build-and-install-rauc-bundle)
   - [Build SDK](#build-sdk)
   - [Browser HMI image](#browser-hmi-image)
@@ -40,9 +40,7 @@
       - [Bluetooth](#bluetooth)
       - [Links for WiFi/Bluetooth driver/firmware](#links-for-wifibluetooth-driverfirmware)
   - [Boot media and partitioning](#boot-media-and-partitioning)
-    - [SD card](#sd-card)
-    - [eMMC](#emmc)
-      - [eMMC provisioning](#emmc-provisioning)
+    - [eMMC provisioning](#emmc-provisioning)
   - [Board Information EEPROM](#board-information-eeprom)
     - [Example EEPROM data](#example-eeprom-data)
 <!--toc:end-->
@@ -75,19 +73,40 @@ shown below.
 xzcat build/deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz > /dev/sdX
 ```
 
-### Install image from SD Card to eMMC (for supported devices)
+### Build and use the eMMC installer
 
 This only applies for sysWORXX devices which have on-board eMMC.
+
+The eMMC installer is a self-extracting archive which can be installed when
+booted from sd cards. This will format and partition the eMMC and writes the
+default image to it.
+
+```sh
+cd build/
+. conf/setenv
+bitbake sysworxx-image-default
+./emmc-installer/build.sh
+```
+
+The commands above will create the file `E004481-sysworxx-image-default-emmc-installer-*.sh`.
+To install it follow the steps below:
 
 - Boot from SD Card
   - sysWORXX CTR-600/800 devices: DIP-6=Off
   - sysWORXX Pi: Boot jumper not connected
-- run `bringup`
+- Copy and install
+
+  ```sh
+  # On PC: copy from PC zu sysworxx device (example)
+  scp E004481-sysworxx-image-default-emmc-installer-* root@sysworxx:/tmp
+  # On sysworxx:
+  chmod +x /tmp/E004481-sysworxx-image-default-emmc-installer-*
+  /tmp/E004481-sysworxx-image-default-emmc-installer-*
+  ```
+
 - Enable eMMC booting and `reboot`
   - sysWORXX CTR-600/800 devices: DIP-6=On
   - sysWORXX Pi: Connect boot jumper (`X501`)
-
-Now RAUC can be used to install new images.
 
 ### Build and Install RAUC bundle
 

@@ -40,7 +40,6 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     adc-setup \
     attr \
     bash \
-    bringup \
     bzip2 \
     can-setup \
     coreutils \
@@ -48,8 +47,10 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     cpufrequtils \
     curl \
     di-setup \
+    dosfstools \
     dtbo-setup \
     e2fsprogs \
+    e2fsprogs-mke2fs \
     e2fsprogs-resize2fs \
     file \
     findutils \
@@ -87,9 +88,9 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     tar \
     time \
     tzdata \
+    usbutils \
     util-linux \
     util-linux-fstrim \
-    usbutils \
     vendor-setup \
 "
 

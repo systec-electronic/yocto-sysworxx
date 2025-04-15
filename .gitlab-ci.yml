@@ -65,11 +65,11 @@ sysworxx-bundle-default:
       - merge_requests
       - tags
 
-production-install-script:
+emmc-installer-script:
   stage: deploy
   needs: [sysworxx-image-default]
   script:
-    - ./production-test/build_installer.sh
+    - ./emmc-installer/build.sh
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     when: on_success

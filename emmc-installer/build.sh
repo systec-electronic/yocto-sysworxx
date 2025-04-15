@@ -15,17 +15,15 @@ set -e
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 deploy_dir="$script_dir/../build/deploy-ti/images/sysworxx"
-bringup_dir="$script_dir/../sources/meta-sysworxx/recipes-core/bringup/files"
 
 e_num_prefix="E004481"
 git_describe=$(git describe --tags)
-installer=${e_num_prefix}_yocto_sysworxx_am62x_${git_describe}.sh
+installer=${e_num_prefix}-sysworxx-image-default-emmc-installer-${git_describe}.sh
 
 sfx_header="./production-test/sfx-header"
 tmp_tar_ball="$(mktemp -d)/install.tar.gz"
 
 echo "Build tarball with install files..."
-
 
 tar -hczvf "$tmp_tar_ball" \
    -C "$deploy_dir" \
@@ -33,7 +31,7 @@ tar -hczvf "$tmp_tar_ball" \
    tispl.bin \
    u-boot.img \
    sysworxx-image-default-sysworxx.rootfs.tar.gz \
-   -C "$bringup_dir" \
+   -C . \
    bringup.sh
 
 echo "Build sfx installer '$installer'..."
