@@ -2,18 +2,18 @@
 
 <!--toc:start-->
 - [Yocto Project for sysWORXX AM62x devices](#yocto-project-for-sysworxx-am62x-devices)
-    - [Checking out](#checking-out)
-    - [Build default image and write to SD card](#build-default-image-and-write-to-sd-card)
-    - [Install image from SD Card to eMMC (for supported devices)](#install-image-from-sd-card-to-emmc-for-supported-devices)
-    - [Build and Install RAUC bundle](#build-and-install-rauc-bundle)
-    - [Build SDK](#build-sdk)
-    - [Browser HMI image](#browser-hmi-image)
-      - [Browser-HMI example: Show External Web-Site on normal browser mode](#browser-hmi-example-show-external-web-site-on-normal-browser-mode)
-      - [Browser-HMI example: Show Local Node-RED Dashboard](#browser-hmi-example-show-local-node-red-dashboard)
-    - [Modifying Linux kernel source](#modifying-linux-kernel-source)
-    - [Modifying Linux kernel configuration](#modifying-linux-kernel-configuration)
-    - [Build a specific device-tree from Kernel source](#build-a-specific-device-tree-from-kernel-source)
-    - [Force a specific device tree](#force-a-specific-device-tree)
+  - [Checking out](#checking-out)
+  - [Build default image and write to SD card](#build-default-image-and-write-to-sd-card)
+  - [Install image from SD Card to eMMC (for supported devices)](#install-image-from-sd-card-to-emmc-for-supported-devices)
+  - [Build and Install RAUC bundle](#build-and-install-rauc-bundle)
+  - [Build SDK](#build-sdk)
+  - [Browser HMI image](#browser-hmi-image)
+    - [Browser-HMI example: Show External Web-Site on normal browser mode](#browser-hmi-example-show-external-web-site-on-normal-browser-mode)
+    - [Browser-HMI example: Show Local Node-RED Dashboard](#browser-hmi-example-show-local-node-red-dashboard)
+  - [Modifying Linux kernel source](#modifying-linux-kernel-source)
+  - [Modifying Linux kernel configuration](#modifying-linux-kernel-configuration)
+  - [Build a specific device-tree from Kernel source](#build-a-specific-device-tree-from-kernel-source)
+  - [Force a specific device tree](#force-a-specific-device-tree)
   - [Using Peripherals](#using-peripherals)
     - [Digital Outputs](#digital-outputs)
       - [Digital Outputs - sysWORXX CTR-600](#digital-outputs-sysworxx-ctr-600)
@@ -72,7 +72,7 @@ shown below.
 
 ```sh
 # replace "sdX" with the block device which should be used
-sudo ./init_sd.sh /dev/sdX
+xzcat build/deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz > /dev/sdX
 ```
 
 ### Install image from SD Card to eMMC (for supported devices)
