@@ -88,6 +88,7 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     tar \
     time \
     tzdata \
+    udev-bootsource \
     usbutils \
     util-linux \
     util-linux-fstrim \

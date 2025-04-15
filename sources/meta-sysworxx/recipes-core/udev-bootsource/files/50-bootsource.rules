@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="block", KERNELS=="*p5", PROGRAM="/sbin/is_bootsource $parent", SYMLINK+="disk/boot/rootfs.0"
+ACTION=="add", SUBSYSTEM=="block", KERNELS=="*p6", PROGRAM="/sbin/is_bootsource $parent", SYMLINK+="disk/boot/rootfs.1"
