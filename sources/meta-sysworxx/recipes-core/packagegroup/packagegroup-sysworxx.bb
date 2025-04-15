@@ -37,6 +37,7 @@ RDEPENDS:packagegroup-sysworxx-init = "\
 "
 
 RDEPENDS:packagegroup-sysworxx-base = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', 'rauc', '', d)} \
     adc-setup \
     attr \
     bash \
@@ -78,7 +79,6 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     psmisc \
     python3 \
     python3-pip \
-    rauc \
     rng-tools \
     rs485-setup \
     sed \
