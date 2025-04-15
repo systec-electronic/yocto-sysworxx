@@ -1,0 +1,5 @@
+part --type primary --source bootimg-partition --fstype=vfat --label boot --active --align 1024 --use-uuid --fixed-size 4M
+part --type primary --fstype=vfat --label uboot-env --align 1024 --size 4M
+part --type logical / --fixed-size 2560M --source rootfs --fstype=ext4 --label rootfs.0 --align 1024 --use-uuid
+part --type logical / --fixed-size 2560M --source rootfs --fstype=ext4 --label rootfs.1 --align 1024 --use-uuid
+part --type logical /home --fixed-size 1000M --fstype=ext4 --label user --align 1024 --use-uuid
