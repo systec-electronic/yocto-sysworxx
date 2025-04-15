@@ -21,17 +21,27 @@ installer=${e_num_prefix}-sysworxx-image-default-emmc-installer-${git_describe}.
 
 sfx_header="${script_dir}/sfx-header"
 tmp_tar_ball="$(mktemp -d)/install.tar.gz"
+tmp_system_conf="$(mktemp -d)/system.conf"
 
 echo "Build tarball with install files..."
 
 rm -f ${installer}
 
+sed \
+   -e '/^data-directory=/d' \
+   -e 's#^device=.*rootfs\.0#device=/dev/mmcblk0p5#' \
+   -e 's#^device=.*rootfs\.1#device=/dev/mmcblk0p6#' \
+   "${script_dir}/../sources/meta-sysworxx/dynamic-layers/meta-rauc/recipes-core/rauc-conf/files/system.conf" \
+   > ${tmp_system_conf}
+
 tar -hczvf "${tmp_tar_ball}" \
    -C "${deploy_dir}" \
-   tiboot3.bin \
+   tiboot3-am62x-gp-evm.bin \
    tispl.bin \
    u-boot.img \
    sysworxx-image-default-sysworxx.rootfs.tar.gz \
+   -C "$(dirname ${tmp_system_conf})" \
+   system.conf \
    -C "${script_dir}" \
    bringup.sh
 
@@ -41,4 +51,5 @@ cat ${sfx_header} "${tmp_tar_ball}" >"${installer}"
 chmod +x "${installer}"
 echo "done."
 
-rm -rv "$(dirname "$tmp_tar_ball")"
+rm -rfv "$(dirname "$tmp_tar_ball")"
+rm -rfv "$(dirname "$tmp_system_conf")"
