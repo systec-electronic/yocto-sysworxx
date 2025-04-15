@@ -78,7 +78,7 @@ xzcat build/deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic
 This only applies for sysWORXX devices which have on-board eMMC.
 
 The eMMC installer is a self-extracting archive which can be installed when
-booted from sd cards. This will format and partition the eMMC and writes the
+booted from SD cards. This will format and partition the eMMC and writes the
 default image to it.
 
 ```sh
@@ -593,29 +593,21 @@ discoverable on
 
 ## Boot media and partitioning
 
-### SD card
+| Size      | Device    | mountpoint    | usage                                             |
+|-----------|-----------|---------------|---------------------------------------------------|
+| 4 MiB     | mmcblk#p1 | /boot/vendor  | U-Boot bootloader binaries \[\^1\],               |
+|           |           |               | Serial number, license keys, calibration data     |
+| 4 MiB     | mmcblk#p2 | /boot/u-boot  | U-Boot environment                                |
+| \-        | mmcblk#p3 | \-            | Extended MBR partition                            |
+| 2.5 GiB   | mmcblk#p5 | /             | root-fs slot `A` (read-only)                      |
+| 2.5 GiB   | mmcblk#p6 | /             | root-fs slot `B` (read-only)                      |
+| Remaining | mmcblk#p7 | /home \[\^2\] | user data in /home and overlays for /etc and /var |
+|           |           |               | with read-write access.                           |
 
-| Size    | Device    | mountpoint   | usage                                              |
-|---------|-----------|--------------|----------------------------------------------------|
-| 4 MiB   | mmcblk1p1 | /boot/vendor | U-Boot bootloader binaries,                        |
-|         |           |              | Serial number, license keys, calibration data      |
-| 4 MiB   | mmcblk1p2 | /boot/u-boot | U-Boot environment                                 |
-| *       | mmcblk1p3 | /            | Root file systemd                                  |
+Where `#` represents the boot media:
 
-### eMMC
-
-Boot partitions of eMMC are used for the bootloader. (`/dev/mmcblk0boot0`)
-
-| Size    | Device    | mountpoint   | usage                                             |
-|---------|-----------|--------------|---------------------------------------------------|
-| 4 MiB   | mmcblk0p1 | /boot/vendor | Serial number, license keys, calibration data     |
-| 4 MiB   | mmcblk0p2 | /boot/u-boot | U-Boot environment                                |
-| 2 GiB   | mmcblk0p3 | /            | root-fs slot `A` (read-only)                      |
-| 2 GiB   | mmcblk0p4 | /            | root-fs slot `B` (read-only)                      |
-| \>3 GiB | mmcblk0p5 | /home\*      | user data in /home and overlays for /etc and /var |
-
-(*) Additionally `/etc` and `/var` are mounted via `overlayfs` to allow
-read-write access.
+- `mmcblk0`: eMMC
+- `mmcblk1`: SD card
 
 #### eMMC provisioning
 
