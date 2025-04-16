@@ -492,7 +492,7 @@ The script `dtbo-setup` is provided to simplify DTBO configuration. Examples:
 ```sh
 dtbo-setup --help
 dtbo-setup ls
-dtbo-setup set k3-am625-systec-pi-sysworxx-io-gpio.dtbo
+dtbo-setup set k3-am625-systec-pi-sysworxx-io-default.dtbo
 dtbo-setup get
 ```
 
@@ -506,7 +506,14 @@ This partition is mounted and the environment is available under:
 
 ##### DTBO: GPIO via 40 Pin Header
 
-Enable with: `dtbo-setup set k3-am625-systec-pi-sysworxx-io-gpio.dtbo`
+Enable with: `dtbo-setup set k3-am625-systec-pi-sysworxx-io-default.dtbo`
+
+This will enable:
+
+- SPI1 with CS0
+- UART4
+- I2C3
+- GPIOs as described below
 
 Outputs:
 
@@ -516,18 +523,26 @@ gpioset -t0 DO1=1; sleep 0.2; gpioset -t0 DO1=0
 gpioset -t0 DO2=1; sleep 0.2; gpioset -t0 DO2=0
 gpioset -t0 DO3=1; sleep 0.2; gpioset -t0 DO3=0
 gpioset -t0 DO4=1; sleep 0.2; gpioset -t0 DO4=0
+gpioset -t0 DO5=1; sleep 0.2; gpioset -t0 DO5=0
+gpioset -t0 DO6=1; sleep 0.2; gpioset -t0 DO6=0
 ```
 
 Inputs:
 
 ```sh
 # DI_0 == GPIO0_0  == BTN_TRIGGER_HAPPY1
-# DI_1 == GPIO0_1  == BTN_TRIGGER_HAPPY2
-# DI_2 == GPIO0_2  == BTN_TRIGGER_HAPPY3
-# DI_3 == GPIO0_3  == BTN_TRIGGER_HAPPY4
+# DI_1 == GPIO0_2  == BTN_TRIGGER_HAPPY2
+# DI_2 == MCU_GPIO0_14  == BTN_TRIGGER_HAPPY3
+# DI_3 == GPIO0_13 == BTN_TRIGGER_HAPPY4
 # DI_4 == GPIO0_44 == BTN_TRIGGER_HAPPY5
-# DI_5 == GPIO1_28 == BTN_TRIGGER_HAPPY6
-# DI_6 == GPIO1_9  == BTN_TRIGGER_HAPPY7
+# DI_5 == GPIO0_43 == BTN_TRIGGER_HAPPY6
+# DI_6 == GPIO1_24 == BTN_TRIGGER_HAPPY7
+# DI_7 == GPIO1_25 == BTN_TRIGGER_HAPPY8
+# DI_8 == GPIO1_9  == BTN_TRIGGER_HAPPY9
+# DI_9 == GPIO1_28 == BTN_TRIGGER_HAPPY10
+# DI_10 == GPIO0_37 == BTN_TRIGGER_HAPPY11
+# DI_11 == GPIO0_34 == BTN_TRIGGER_HAPPY12
+# DI_12 == GPIO0_33 == BTN_TRIGGER_HAPPY13
 evtest /dev/input/by-path/platform-sysworxx-0-io-inputs-event-joystick
 ```
 
