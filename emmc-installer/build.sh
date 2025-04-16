@@ -1,14 +1,8 @@
 #!/bin/bash
-
-#***************************************************************************#
-#                                                                           #
-#  SYSTEC electronic AG, D-08468 Heinsdorfergrund, Am Windrad 2             #
-#  www.systec-electronic.com                                                #
-#                                                                           #
-#  File:         build-installer.sh                                         #
-#  Description:  Create self extracting Yocto installer                     #
-#                                                                           #
-#***************************************************************************#
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
+#
+# Build self extracting installer
 
 set -e
 

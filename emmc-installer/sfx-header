@@ -1,13 +1,8 @@
 #!/bin/sh
-
-#***************************************************************************#
-#                                                                           #
-#  SYSTEC electronic AG, D-08468 Heinsdorfergrund, Am Windrad 2             #
-#  www.systec-electronic.com                                                #
-#                                                                           #
-#  Description:  Self extracting Yocto installer                            #
-#                                                                           #
-#***************************************************************************#
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
+#
+# Self extracting installer
 
 tmp_dir="/tmp"
 

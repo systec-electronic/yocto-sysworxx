@@ -1,15 +1,8 @@
 #!/bin/bash
-
-#***************************************************************************#
-#                                                                           #
-#  SYSTEC electronic AG, D-08468 Heinsdorfergrund, Am Windrad 2             #
-#  www.systec-electronic.com                                                #
-#                                                                           #
-#  File:         bringup.sh                                                 #
-#  Description:  Script for initial installation to eMMC                    #
-#                                                                           #
-#                                                                           #
-#****************************************************************************
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
+#
+# Partition and install eMMC with RAUC support
 
 # abort on errors
 set -e
