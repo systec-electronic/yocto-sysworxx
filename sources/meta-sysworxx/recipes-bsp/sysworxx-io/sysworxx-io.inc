@@ -1,15 +1,13 @@
 inherit systemd
 
-DEPENDS = "lmsensors libiio npm-typescript-native"
+DEPENDS = "lmsensors libiio"
 
 RDEPENDS:${PN} = "lmsensors libiio"
 RDEPENDS:${PN}-codesys-connector += "${PN} sudo"
 RDEPENDS:${PN}-dev += "${PN}"
-RDEPENDS:${PN}-node-red-contrib-sysworxx-io += "${PN} libgcc glibc"
 
 PACKAGES += " \
     ${PN}-codesys-connector \
-    ${PN}-node-red-contrib-sysworxx-io \
 "
 
 # Flags are empty, no device specifics necessary
@@ -18,16 +16,8 @@ CARGO_BUILD_FLAGS += ""
 # patch oe_cargo_build so that libctr700drv.so is built
 
 oe_cargo_build:append() {
-    bbnote "${CARGO} build ${CARGO_BUILD_FLAGS} --workspace $@"
-    "${CARGO}" build ${CARGO_BUILD_FLAGS} --workspace "$@"
-}
-
-do_compile:append() {
-    cd "${S}/Bindings/node-red-contrib-sysworxx-io"
-    npm install
-    npm run prepack
-    npm pack
-    mv -v node-red-contrib-sysworxx-io-*.tgz ${B}/node-red-contrib-sysworxx-io-latest.tgz
+    bbnote "${CARGO}" build ${CARGO_BUILD_FLAGS} --workspace "$@"
+    ${CARGO} build ${CARGO_BUILD_FLAGS} --workspace "$@"
 }
 
 cargo_do_install() {
@@ -48,9 +38,6 @@ cargo_do_install() {
     install -m 0644 ${S}/systemd/iodaemon.service ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-connector.service ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/Bindings/Codesys/systemd/codesys-generate-devdesc-xml.service ${D}${systemd_system_unitdir}
-
-    install -d ${D}${datadir}/sysworxx-io
-    install -m 0644 ${B}/node-red-contrib-sysworxx-io-latest.tgz ${D}${datadir}/sysworxx-io
 }
 
 FILES:${PN} = " \
@@ -63,10 +50,6 @@ FILES:${PN}-codesys-connector = " \
     ${bindir}/codesys-connector \
     ${systemd_system_unitdir}/codesys-connector.service \
     ${systemd_system_unitdir}/codesys-generate-devdesc-xml.service \
-"
-
-FILES:${PN}-node-red-contrib-sysworxx-io = " \
-    ${datadir} \
 "
 
 FILES:${PN}-dev = " \
