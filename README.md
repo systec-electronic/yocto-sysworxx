@@ -2,18 +2,18 @@
 
 <!--toc:start-->
 - [Yocto Project for sysWORXX AM62x devices](#yocto-project-for-sysworxx-am62x-devices)
-  - [Checking out](#checking-out)
-  - [Build default image and write to SD card](#build-default-image-and-write-to-sd-card)
-  - [Build and use the eMMC installer](#build-and-use-the-emmc-installer)
-  - [Build and Install RAUC bundle](#build-and-install-rauc-bundle)
-  - [Build SDK](#build-sdk)
-  - [Browser HMI image](#browser-hmi-image)
-    - [Browser-HMI example: Show External Web-Site on normal browser mode](#browser-hmi-example-show-external-web-site-on-normal-browser-mode)
-    - [Browser-HMI example: Show Local Node-RED Dashboard](#browser-hmi-example-show-local-node-red-dashboard)
-  - [Modifying Linux kernel source](#modifying-linux-kernel-source)
-  - [Modifying Linux kernel configuration](#modifying-linux-kernel-configuration)
-  - [Build a specific device-tree from Kernel source](#build-a-specific-device-tree-from-kernel-source)
-  - [Force a specific device tree](#force-a-specific-device-tree)
+  - [Checking out Yocto project and build images](#checking-out-yocto-project-and-build-images)
+    - [Build default image and write to SD card](#build-default-image-and-write-to-sd-card)
+    - [Build and use the eMMC installer](#build-and-use-the-emmc-installer)
+    - [Build and Install RAUC bundle](#build-and-install-rauc-bundle)
+    - [Build SDK](#build-sdk)
+    - [Browser HMI image](#browser-hmi-image)
+      - [Browser-HMI example: Show External Web-Site on normal browser mode](#browser-hmi-example-show-external-web-site-on-normal-browser-mode)
+      - [Browser-HMI example: Show Local Node-RED Dashboard](#browser-hmi-example-show-local-node-red-dashboard)
+    - [Modifying Linux kernel source](#modifying-linux-kernel-source)
+    - [Modifying Linux kernel configuration](#modifying-linux-kernel-configuration)
+    - [Build a specific device-tree from Kernel source](#build-a-specific-device-tree-from-kernel-source)
+    - [Force a specific device tree](#force-a-specific-device-tree)
   - [Using Peripherals](#using-peripherals)
     - [Digital Outputs](#digital-outputs)
       - [Digital Outputs - sysWORXX CTR-600](#digital-outputs-sysworxx-ctr-600)
@@ -45,7 +45,7 @@
     - [Example EEPROM data](#example-eeprom-data)
 <!--toc:end-->
 
-### Checking out
+## Checking out Yocto project and build images
 
 After doing the "normal" checkout using `git clone`, please run the following
 command to checkout and initialize all git submodules (e.g. `sources/meta-*`)
