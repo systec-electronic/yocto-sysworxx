@@ -76,6 +76,19 @@ BOOT_DEV=${ROOT_PART_NAME:0:-2}
 # until eMMC partitions are populated
 sleep 2
 
+LAST_PARTITION=$(parted -s /dev/${BOOT_DEV} print | awk '/^[ ]*[0-9]/ {print $1}' | tail -n 1)
+LAST_PARTITION_LAST_SECTOR=$(parted -s /dev/${BOOT_DEV} unit s print | awk "/^ ${LAST_PARTITION}/ {print \$3}" | sed 's/s$//')
+DISK_SIZE_SECTORS=$(parted -s /dev/${BOOT_DEV} unit s print | awk "/^Disk \/dev\/${BOOT_DEV}/ {print \$3}" | sed 's/s$//')
+AVAILABLE_FREE_SECTORS=$((DISK_SIZE_SECTORS - LAST_PARTITION_LAST_SECTOR))
+if [ "${AVAILABLE_FREE_SECTORS}" -gt 1 ]; then
+    msg "resize last partition to maximum size..."
+    # extended partition is always at position 3
+    parted /dev/${BOOT_DEV} -s -a opt "resizepart 3 100%" || /bin/sh
+    parted /dev/${BOOT_DEV} -s -a opt "resizepart ${LAST_PARTITION} 100%" || /bin/sh
+    resize2fs /dev/${BOOT_DEV}p${LAST_PARTITION} || /bin/sh
+    parted /dev/${BOOT_DEV} -s print
+fi
+
 if [ "$(ls /dev/${BOOT_DEV}p* | wc -l)" -ge 5 ]; then
     msg "mouting RAUC rootfs..."
     xfsckext4 /dev/${BOOT_DEV}p5 || /bin/sh
