@@ -102,9 +102,10 @@ To install it follow the steps below:
   # On sysworxx:
   chmod +x /tmp/E004481-sysworxx-image-default-emmc-installer-*
   /tmp/E004481-sysworxx-image-default-emmc-installer-*
+  poweroff
   ```
 
-- Enable eMMC booting and `reboot`
+- Unplug power supply, enable eMMC booting and power on again.
   - sysWORXX CTR-600/800 devices: DIP-6=On
   - sysWORXX Pi: Connect boot jumper (`X501`)
 
