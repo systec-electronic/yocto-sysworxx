@@ -20,7 +20,23 @@ before_script:
   - cp -v $RAUC_CRT sources/meta-sysworxx/keys/rauc.crt
   - cp -v $RAUC_KEY sources/meta-sysworxx/keys/rauc.key
 
-sysworxx-image-default:
+.rules-dev: &rules-dev
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
+  variables:
+    RAUC_CRT: $RAUC_CRT_DEFAULT
+    RAUC_KEY: $RAUC_KEY_DEFAULT
+
+.rules-release: &rules-release
+  rules:
+    - if: $CI_COMMIT_TAG
+  variables:
+    RAUC_CRT: $RAUC_CRT_RELEASE
+    RAUC_KEY: $RAUC_KEY_RELEASE
+
+.sysworxx-image-default:
   stage: build
   script: |
     cd build/
@@ -36,14 +52,16 @@ sysworxx-image-default:
     expire_in: 1 week
     paths:
       - "*.wic.xz"
-  only:
-    refs:
-      - master
-      - web
-      - merge_requests
-      - tags
 
-sysworxx-bundle-default:
+sysworxx-image-default-dev:
+  extends: .sysworxx-image-default
+  <<: *rules-dev
+
+sysworxx-image-default-release:
+  extends: .sysworxx-image-default
+  <<: *rules-release
+
+.sysworxx-bundle-default:
   tags:
     - seccomp_unconfined
   stage: build
@@ -58,16 +76,17 @@ sysworxx-bundle-default:
     expire_in: 1 week
     paths:
       - "*.raucb"
-  only:
-    refs:
-      - master
-      - web
-      - merge_requests
-      - tags
 
-emmc-installer-script:
+sysworxx-bundle-default-dev:
+  extends: .sysworxx-bundle-default
+  <<: *rules-dev
+
+sysworxx-bundle-default-release:
+  extends: .sysworxx-bundle-default
+  <<: *rules-release
+
+.emmc-installer:
   stage: deploy
-  needs: [sysworxx-image-default]
   script:
     - ./emmc-installer/build.sh
   artifacts:
@@ -76,12 +95,16 @@ emmc-installer-script:
     expire_in: 1 week
     paths:
       - E*.sh
-  only:
-    refs:
-      - master
-      - web
-      - merge_requests
-      - tags
+
+emmc-installer-dev:
+  extends: .emmc-installer
+  needs: [sysworxx-image-default-dev]
+  <<: *rules-dev
+
+emmc-installer-release:
+  extends: .emmc-installer
+  needs: [sysworxx-image-default-release]
+  <<: *rules-release
 
 bare-repo-release:
   stage: deploy
