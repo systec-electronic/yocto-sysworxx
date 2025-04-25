@@ -88,7 +88,7 @@ bitbake sysworxx-image-default
 ./emmc-installer/build.sh
 ```
 
-The commands above will create the file `E004481-sysworxx-image-default-emmc-installer-*.sh`.
+The commands above will create the file `sysworxx-image-default-emmc-installer-*.sh`.
 To install it follow the steps below:
 
 - Boot from SD Card
@@ -98,10 +98,10 @@ To install it follow the steps below:
 
   ```sh
   # On PC: copy from PC zu sysworxx device (example)
-  scp E004481-sysworxx-image-default-emmc-installer-* root@sysworxx:/tmp
+  scp sysworxx-image-default-emmc-installer-* root@sysworxx:/tmp
   # On sysworxx:
-  chmod +x /tmp/E004481-sysworxx-image-default-emmc-installer-*
-  /tmp/E004481-sysworxx-image-default-emmc-installer-*
+  chmod +x /tmp/sysworxx-image-default-emmc-installer-*
+  /tmp/sysworxx-image-default-emmc-installer-*
   poweroff
   ```
 

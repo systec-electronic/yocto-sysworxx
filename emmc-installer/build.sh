@@ -9,9 +9,7 @@ set -e
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 deploy_dir="${script_dir}/../build/deploy-ti/images/sysworxx"
 
-e_num_prefix="E004481"
-git_describe=$(git describe --tags)
-installer=${e_num_prefix}-sysworxx-image-default-emmc-installer-${git_describe}.sh
+installer=sysworxx-image-default-emmc-installer.sh
 
 sfx_header="${script_dir}/sfx-header"
 tmp_tar_ball="$(mktemp -d)/install.tar.gz"
