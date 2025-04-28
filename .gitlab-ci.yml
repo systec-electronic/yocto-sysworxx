@@ -89,11 +89,14 @@ sysworxx-bundle-default-release:
   <<: *rules-release
 
 .emmc-installer:
-  stage: deploy
+  stage: build
   script: |
-    ./emmc-installer/build.sh
-    mv ./sysworxx-image-default-emmc-installer.sh \
-       ./E004481-sysworxx-image-default-emmc-installer-${GIT_DESCRIBE}.sh
+    cd build/
+    . conf/setenv
+    bitbake sysworxx-bundle-default
+    ../emmc-installer/build.sh
+    cp ./sysworxx-image-default-emmc-installer.sh \
+       ../E004481-sysworxx-image-default-emmc-installer-${GIT_DESCRIBE}.sh
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     when: on_success
@@ -103,12 +106,10 @@ sysworxx-bundle-default-release:
 
 emmc-installer-dev:
   extends: .emmc-installer
-  needs: [sysworxx-image-default-dev]
   <<: *rules-dev
 
 emmc-installer-release:
   extends: .emmc-installer
-  needs: [sysworxx-image-default-release]
   <<: *rules-release
 
 bare-repo-release:
