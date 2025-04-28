@@ -3,8 +3,12 @@ SRC_URI:append := " file://system.conf"
 
 RDEPENDS:${PN}="u-boot-ti-staging-env"
 
+PV = "1.0"
+PR = "r0"
+
 do_copy_keyring[dirs] = "${WORKDIR}"
 do_copy_keyring() {
     cp "${SYSWORXX_RAUC_CRT_FILE}" "${WORKDIR}/${RAUC_KEYRING_FILE}"
 }
 do_unpack[postfuncs] += "do_copy_keyring"
+do_unpack[file-checksums] += "${SYSWORXX_RAUC_CRT_FILE}:True"
