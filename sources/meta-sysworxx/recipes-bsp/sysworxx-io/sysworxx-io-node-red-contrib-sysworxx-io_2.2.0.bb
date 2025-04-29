@@ -14,7 +14,7 @@ SRC_URI:append = " \
     git://git@github.com/systec-electronic/sysworxx-io.git;protocol=https;branch=main \
     npmsw://${THISDIR}/${BPN}/npm-shrinkwrap.json;dev=1 \
 "
-SRCREV = "b53a9211204beac17235b34c84c1b80ecfeab864"
+SRCREV = "8fd88c8e0a3d22d9d771abe4707fe53c275cf745"
 S = "${WORKDIR}/git/Bindings/node-red-contrib-sysworxx-io"
 
 python do_configure:append() {

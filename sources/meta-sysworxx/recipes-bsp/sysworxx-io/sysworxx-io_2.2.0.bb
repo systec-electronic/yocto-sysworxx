@@ -5,12 +5,10 @@ inherit cargo
 # If this is git based prefer versioned ones if they exist
 # DEFAULT_PREFERENCE = "-1"
 
-# how to get sysworxx-io could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/sysworxx-io/2.1.0"
 SRC_URI += "\
     git://git@github.com/systec-electronic/sysworxx-io.git;protocol=https;branch=main \
 "
-SRCREV = "b53a9211204beac17235b34c84c1b80ecfeab864"
+SRCREV = "8fd88c8e0a3d22d9d771abe4707fe53c275cf745"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -57,6 +55,7 @@ SRC_URI += " \
     crate://crates.io/crossbeam-epoch/0.9.18 \
     crate://crates.io/crossbeam-utils/0.7.2 \
     crate://crates.io/crossbeam-utils/0.8.21 \
+    crate://crates.io/csbindgen/1.9.3 \
     crate://crates.io/csv-core/0.1.11 \
     crate://crates.io/csv/1.3.1 \
     crate://crates.io/either/1.13.0 \
@@ -242,6 +241,7 @@ SRC_URI[crossbeam-deque-0.8.6.sha256sum] = "9dd111b7b7f7d55b72c0a6ae361660ee5853
 SRC_URI[crossbeam-epoch-0.9.18.sha256sum] = "5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e"
 SRC_URI[crossbeam-utils-0.7.2.sha256sum] = "c3c7c73a2d1e9fc0886a08b93e98eb643461230d5f1925e4036204d5f2e261a8"
 SRC_URI[crossbeam-utils-0.8.21.sha256sum] = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28"
+SRC_URI[csbindgen-1.9.3.sha256sum] = "c26b9831049b947d154bba920e4124053def72447be6fb106a96f483874b482a"
 SRC_URI[csv-core-0.1.11.sha256sum] = "5efa2b3d7902f4b634a20cae3c9c4e6209dc4779feb6863329607560143efa70"
 SRC_URI[csv-1.3.1.sha256sum] = "acdc4883a9c96732e4733212c01447ebd805833b7275a73ca3ee080fd77afdaf"
 SRC_URI[either-1.13.0.sha256sum] = "60b1af1c220855b6ceac025d3f6ecdd2b7c4894bfe9cd9bda4fbb4bc7c0d4cf0"
