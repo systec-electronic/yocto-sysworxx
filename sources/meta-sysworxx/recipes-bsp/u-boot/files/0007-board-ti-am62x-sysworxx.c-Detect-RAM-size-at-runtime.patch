@@ -81,5 +81,5 @@ index 070dec3aebf..5c4a5dc6d00 100644
  obj-${CONFIG_ARCH_K3} += k3-ddr-init.o
 +endif
 -- 
-2.48.1
+2.49.0
 

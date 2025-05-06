@@ -1,7 +1,12 @@
 [Unit]
 Description=Node-RED
+Requires=node-red-prepare.service
+After=node-red-prepare.service
 
 [Service]
+Type=simple
+User=root
+Group=root
 Environment=NODE_ENV=production
 ExecStart=/bin/su root -c 'node-red'
 Restart=always

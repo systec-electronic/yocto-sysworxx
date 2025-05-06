@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
+
 [Unit]
 Description=Rename CAN0 and CAN1 to reflect order of chassis
 DefaultDependencies=no

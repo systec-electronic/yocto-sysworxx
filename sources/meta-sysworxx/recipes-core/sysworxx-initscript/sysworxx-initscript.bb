@@ -1,11 +1,14 @@
 SUMMARY = "Init script for sysWORXX default setup"
-LICENSE = "CLOSED"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = "file://init.sh"
 S = "${WORKDIR}"
 
 RDEPENDS:${PN} = " \
     e2fsprogs-e2fsck \
+    e2fsprogs-resize2fs \
+    parted \
 "
 
 do_install() {

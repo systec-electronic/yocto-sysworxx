@@ -1,0 +1,6 @@
+[Unit]
+Description=Discard unused blocks on filesystems
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/fstrim --all --verbose

@@ -32,16 +32,16 @@
 
 	uart2_pins_default: uart2-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x01d0, PIN_INPUT, 3) /* (A15) UART0_CTSn.UART2_RXD */
+			AM62X_IOPAD(0x01d0, PIN_INPUT_PULLUP, 3) /* (A15) UART0_CTSn.UART2_RXD */
 			AM62X_IOPAD(0x01d4, PIN_OUTPUT, 3) /* (B15) UART0_RTSn.UART2_TXD */
 			// DEN
-			AM62X_IOPAD(0x00a8, PIN_INPUT_PULLDOWN, 7) /* (M21) GPMC0_CSn0.GPIO0_41 */
+			AM62X_IOPAD(0x00a8, PIN_OUTPUT, 7) /* (M21) GPMC0_CSn0.GPIO0_41 */
 		>;
 	};
 
 	uart4_pins_default: uart4-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x0124, PIN_INPUT, 3) /* (A23) MMC2_SDCD.UART4_RXD */
+			AM62X_IOPAD(0x0124, PIN_INPUT_PULLUP, 3) /* (A23) MMC2_SDCD.UART4_RXD */
 			AM62X_IOPAD(0x0128, PIN_OUTPUT, 3) /* (B23) MMC2_SDWP.UART4_TXD */
 		>;
 	};

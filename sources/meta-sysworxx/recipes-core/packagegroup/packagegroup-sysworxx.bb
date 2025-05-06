@@ -37,18 +37,21 @@ RDEPENDS:packagegroup-sysworxx-init = "\
 "
 
 RDEPENDS:packagegroup-sysworxx-base = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', 'rauc', '', d)} \
     adc-setup \
     attr \
     bash \
-    bringup \
     bzip2 \
     can-setup \
     coreutils \
     cpio \
     cpufrequtils \
+    curl \
     di-setup \
+    dosfstools \
     dtbo-setup \
     e2fsprogs \
+    e2fsprogs-mke2fs \
     e2fsprogs-resize2fs \
     file \
     findutils \
@@ -76,18 +79,19 @@ RDEPENDS:packagegroup-sysworxx-base = "\
     psmisc \
     python3 \
     python3-pip \
-    rauc \
     rng-tools \
     rs485-setup \
     sed \
+    sudo \
     systec-version \
     sysworxx-io \
     tar \
     time \
     tzdata \
+    udev-bootsource \
+    usbutils \
     util-linux \
     util-linux-fstrim \
-    usbutils \
     vendor-setup \
 "
 

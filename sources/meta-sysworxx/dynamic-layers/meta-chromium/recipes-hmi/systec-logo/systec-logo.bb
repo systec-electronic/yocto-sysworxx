@@ -1,4 +1,5 @@
-LICENSE = "CLOSED"
+LICENSE = "CC-BY-ND-4.0"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CC-BY-ND-4.0;md5=ab85f6aeae6fce4e9ac8d74990974b86"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 do_configure[noexec] = "1"

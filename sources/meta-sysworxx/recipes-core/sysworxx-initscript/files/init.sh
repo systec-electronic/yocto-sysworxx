@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
 
 DEV_EMMC=mmcblk0
 DEV_SDCARD=mmcblk1
@@ -70,56 +72,61 @@ ROOTFS_DIR="/rootfs"
 mkdir -p ${ROOTFS_DIR}
 
 ROOT_PART_NAME=$(basename "${ROOT_PART}")
-case ${ROOT_PART_NAME} in
-${DEV_SDCARD}*)
-    msg "mounting SD card partitions..."
-    mount /dev/${DEV_SDCARD}p3 "${ROOTFS_DIR}"
+BOOT_DEV=${ROOT_PART_NAME:0:-2}
+
+# If an SD card is inserted when booting from eMMC Kernel may need some time
+# until eMMC partitions are populated
+sleep 2
+
+LAST_PARTITION=$(parted -s /dev/${BOOT_DEV} print | awk '/^[ ]*[0-9]/ {print $1}' | tail -n 1)
+LAST_PARTITION_LAST_SECTOR=$(parted -s /dev/${BOOT_DEV} unit s print | awk "/^ ${LAST_PARTITION}/ {print \$3}" | sed 's/s$//')
+DISK_SIZE_SECTORS=$(parted -s /dev/${BOOT_DEV} unit s print | awk "/^Disk \/dev\/${BOOT_DEV}/ {print \$3}" | sed 's/s$//')
+AVAILABLE_FREE_SECTORS=$((DISK_SIZE_SECTORS - LAST_PARTITION_LAST_SECTOR))
+if [ "${AVAILABLE_FREE_SECTORS}" -gt 1 ]; then
+    msg "resize last partition to maximum size..."
+    # extended partition is always at position 3
+    parted /dev/${BOOT_DEV} -s -a opt "resizepart 3 100%" || /bin/sh
+    parted /dev/${BOOT_DEV} -s -a opt "resizepart ${LAST_PARTITION} 100%" || /bin/sh
+    resize2fs /dev/${BOOT_DEV}p${LAST_PARTITION} || /bin/sh
+    parted /dev/${BOOT_DEV} -s print
+fi
+
+if [ "$(ls /dev/${BOOT_DEV}p* | wc -l)" -ge 5 ]; then
+    msg "mouting RAUC rootfs..."
+    xfsckext4 /dev/${BOOT_DEV}p5 || /bin/sh
+    xfsckext4 /dev/${BOOT_DEV}p6 || /bin/sh
+    mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}"
 
     msg "mounting vendor and u-boot partitions"
-    xfsckfat /dev/${DEV_SDCARD}p1
-    xfsckfat /dev/${DEV_SDCARD}p2
-    mount /dev/${DEV_SDCARD}p1 "${ROOTFS_DIR}/boot/vendor"
-    mount /dev/${DEV_SDCARD}p2 "${ROOTFS_DIR}/boot/u-boot"
-    ;;
-${DEV_EMMC}*)
-    # If an SD card is inserted when booting from eMMC Kernel may need some time
-    # until eMMC partitions are populated
-    sleep 2
+    xfsckfat /dev/${BOOT_DEV}p1
+    xfsckfat /dev/${BOOT_DEV}p2
+    mount -o ro,relatime /dev/${BOOT_DEV}p1 "${ROOTFS_DIR}/boot/vendor"
+    mount -o rw,relatime /dev/${BOOT_DEV}p2 "${ROOTFS_DIR}/boot/u-boot"
 
-    if [ "$(ls /dev/${DEV_EMMC}p* | wc -l)" -eq 5 ]; then
-        msg "mounting eMMC partitions..."
-        xfsckext4 /dev/${DEV_EMMC}p3 || /bin/sh
-        xfsckext4 /dev/${DEV_EMMC}p4 || /bin/sh
-        mount -o ro,relatime "${ROOT_PART}" "${ROOTFS_DIR}" # mount p1 or p2, depending on
+    msg "mounting user partition and overlays..."
+    xfsckext4 /dev/${BOOT_DEV}p7 || /bin/sh
+    mount -o rw,relatime /dev/${BOOT_DEV}p7 "${ROOTFS_DIR}/home"
 
-        msg "mounting vendor and u-boot partitions"
-        xfsckfat /dev/${DEV_EMMC}p1
-        xfsckfat /dev/${DEV_EMMC}p2
-        mount /dev/${DEV_EMMC}p1 "${ROOTFS_DIR}/boot/vendor"
-        mount /dev/${DEV_EMMC}p2 "${ROOTFS_DIR}/boot/u-boot"
+    R="${ROOTFS_DIR}"
+    HO="${R}/home/overlays"
+    mkdir -p "${HO}/etc/upper"
+    mkdir -p "${HO}/etc/workdir"
+    mkdir -p "${HO}/var/upper"
+    mkdir -p "${HO}/var/workdir"
+    mount -t overlay -o rw,relatime,lowerdir=${R}/etc,upperdir=${HO}/etc/upper,workdir=${HO}/etc/workdir overlay ${R}/etc
+    mount -t overlay -o rw,relatime,lowerdir=${R}/var,upperdir=${HO}/var/upper,workdir=${HO}/var/workdir overlay ${R}/var
+else
+    # Fallback in case of non-RAUC image (sdimage-sysworxx.wks)
+    msg "mounting rootfs..."
+    xfsckfat /dev/${BOOT_DEV}p5
+    mount /dev/${BOOT_DEV}p5 "${ROOTFS_DIR}"
 
-        msg "mounting user part and overlays..."
-        xfsckext4 /dev/${DEV_EMMC}p5 || /bin/sh
-        mount -o rw,relatime /dev/${DEV_EMMC}p5 "${ROOTFS_DIR}/home"
-
-        R="${ROOTFS_DIR}"
-        HO="${R}/home/overlays"
-        mkdir -p "${HO}/etc/upper"
-        mkdir -p "${HO}/etc/workdir"
-        mkdir -p "${HO}/var/upper"
-        mkdir -p "${HO}/var/workdir"
-        mount -t overlay -o rw,relatime,lowerdir=${R}/etc,upperdir=${HO}/etc/upper,workdir=${HO}/etc/workdir overlay ${R}/etc
-        mount -t overlay -o rw,relatime,lowerdir=${R}/var,upperdir=${HO}/var/upper,workdir=${HO}/var/workdir overlay ${R}/var
-    else
-        msg "ERROR: unexpected partition layout. root-fs will not be mounted."
-        exec /bin/sh
-    fi
-    ;;
-*)
-    msg "ERROR: invalid root device in kernel command line! (root=${ROOT_PART_NAME})"
-    exec /bin/sh
-    ;;
-esac
+    msg "mounting vendor and u-boot partitions"
+    xfsckfat /dev/${BOOT_DEV}p1
+    xfsckfat /dev/${BOOT_DEV}p2
+    mount -o ro,relatime /dev/${BOOT_DEV}p1 "${ROOTFS_DIR}/boot/vendor"
+    mount -o rw,relatime /dev/${BOOT_DEV}p2 "${ROOTFS_DIR}/boot/u-boot"
+fi
 
 msg "$(grep ext /proc/mounts)"
 msg "$(grep overlay /proc/mounts)"

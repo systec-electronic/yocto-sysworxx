@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	SPDX-License-Identifier: CC-BY-ND-4.0
+	SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
+-->
+
 <!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -6,7 +11,7 @@
 <g>
 	<g id="Fleck_im_Logo_x5F_Pantone645c_x5F_sw.psd_5_">
 		<g id="fingerabdruck_x5F_azurblau_x5F_hell.psd_4_">
-			
+
 				<image overflow="visible" width="745" height="763" id="fingerabdruck_x5F_azurblau_x5F_hell" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAusAAAMBCAYAAABWUfptAAAACXBIWXMAACc3AAAnNwFUBdbyAAAA
 GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAKh3dJREFUeNrsvWnMptd533eus9zb
 s73r7DMcbqIokZJIS4xFiV6qWogcu4aFIHZRGS4MozXQ2E3gAo0+BK77RSmQfkjCIknhpC3i2HFi
@@ -12162,7 +12167,7 @@ R3Z6u8O7sDUkAAAAAAAAAAAAAAAAAAAAAAAAAADATf4jwACUzUlob3nH8AAAAABJRU5ErkJggg==" tr
 		<path fill="#4D4D4F" d="M730.035,319.421l15.451,4.64v20.982c0,6.588-5.152,11.985-11.458,11.985h-78.041
 			c-6.313,0-11.466-5.397-11.466-11.985v-79.067c0-6.559,5.153-11.971,11.466-11.971h78.041c6.306,0,11.458,5.413,11.458,11.971
 			v21.637l-15.451,4.773v-24.225H661.52v75.216h68.516V319.421z"/>
-		<polygon fill="#4D4D4F" points="241.809,254.004 232.797,281.039 223.778,254.004 207.049,254.004 224.417,305.234 
+		<polygon fill="#4D4D4F" points="241.809,254.004 232.797,281.039 223.778,254.004 207.049,254.004 224.417,305.234
 			224.417,357.028 241.162,357.028 241.162,305.264 241.169,305.264 258.553,254.004 		"/>
 	</g>
 </g>
