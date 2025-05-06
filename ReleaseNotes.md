@@ -15,6 +15,8 @@
 - Add `sysworxx-io` with Node-RED nodes and CODESYS connector
 - Cleanup documentation
 - Lots of minor improvements
+- Move Docker `data-root` to `/home/.docker` to make storage driver `overlay2`
+  available
 
 # v0.0.1 (2024-08-19)
 
