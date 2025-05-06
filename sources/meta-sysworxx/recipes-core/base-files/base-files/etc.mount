@@ -6,7 +6,7 @@ ConditionPathIsMountPoint=/home
 What=overlay
 Where=/etc
 Type=overlay
-Options=rw,relatime,lowerdir=/etc,upperdir=/home/overlays/etc/upper,workdir=/home/overlays/etc/workdir
+Options=rw,relatime,lowerdir=/etc,upperdir=/home/.overlays/etc/upper,workdir=/home/.overlays/etc/workdir
 
 [Install]
 WantedBy=local-fs.target
