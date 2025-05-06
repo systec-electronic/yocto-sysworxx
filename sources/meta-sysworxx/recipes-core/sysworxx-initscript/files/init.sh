@@ -108,7 +108,7 @@ if [ "$(ls /dev/${BOOT_DEV}p* | wc -l)" -ge 5 ]; then
     mount -o rw,relatime /dev/${BOOT_DEV}p7 "${ROOTFS_DIR}/home"
 
     R="${ROOTFS_DIR}"
-    HO="${R}/home/overlays"
+    HO="${R}/home/.overlays"
     mkdir -p "${HO}/etc/upper"
     mkdir -p "${HO}/etc/workdir"
     mkdir -p "${HO}/var/upper"

@@ -6,7 +6,7 @@ ConditionPathIsMountPoint=/home
 What=overlay
 Where=/var
 Type=overlay
-Options=rw,relatime,lowerdir=/var,upperdir=/home/overlays/var/upper,workdir=/home/overlays/var/workdir
+Options=rw,relatime,lowerdir=/var,upperdir=/home/.overlays/var/upper,workdir=/home/.overlays/var/workdir
 
 [Install]
 WantedBy=local-fs.target

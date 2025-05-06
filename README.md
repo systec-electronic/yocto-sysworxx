@@ -608,16 +608,16 @@ discoverable on
 
 ## Boot media and partitioning
 
-| Size      | Device    | mountpoint    | usage                                             |
-|-----------|-----------|---------------|---------------------------------------------------|
-| 4 MiB     | mmcblk#p1 | /boot/vendor  | U-Boot bootloader binaries \[\^1\],               |
-|           |           |               | Serial number, license keys, calibration data     |
-| 4 MiB     | mmcblk#p2 | /boot/u-boot  | U-Boot environment                                |
-| \-        | mmcblk#p3 | \-            | Extended MBR partition                            |
-| 2.5 GiB   | mmcblk#p5 | /             | root-fs slot `A` (read-only)                      |
-| 2.5 GiB   | mmcblk#p6 | /             | root-fs slot `B` (read-only)                      |
-| Remaining | mmcblk#p7 | /home \[\^2\] | user data in /home and overlays for /etc and /var |
-|           |           |               | with read-write access.                           |
+| Size      | Device    | mountpoint    | usage                                         |
+|-----------|-----------|---------------|-----------------------------------------------|
+| 4 MiB     | mmcblk#p1 | /boot/vendor  | U-Boot bootloader binaries \[\^1\],           |
+|           |           |               | Serial number, license keys, calibration data |
+| 4 MiB     | mmcblk#p2 | /boot/u-boot  | U-Boot environment                            |
+| \-        | mmcblk#p3 | \-            | Extended MBR partition                        |
+| 2.5 GiB   | mmcblk#p5 | /             | root-fs slot `A` (read-only)                  |
+| 2.5 GiB   | mmcblk#p6 | /             | root-fs slot `B` (read-only)                  |
+| Remaining | mmcblk#p7 | /home \[\^2\] | user data in /home and overlays for           |
+|           |           |               | with read-write access.                       |
 
 Where `#` represents the boot media:
 
