@@ -1,8 +1,0 @@
-# SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: 2025 SYS TEC electronic AG <https://www.systec-electronic.com/>
-
-# Possible values for ADC modes are "voltage" or "current"
-AI0_MODE="voltage"
-AI1_MODE="voltage"
-AI2_MODE="voltage"
-AI3_MODE="voltage"
