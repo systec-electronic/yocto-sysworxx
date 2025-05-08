@@ -60,3 +60,6 @@
 	path = sources/meta-wayland
 	url = https://codeberg.org/flk/meta-wayland
 	branch = scarthgap
+[submodule "sources/meta-sysworxx"]
+	path = sources/meta-sysworxx
+	url = ../meta-sysworxx
