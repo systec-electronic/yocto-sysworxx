@@ -202,6 +202,32 @@ ExecStartPre=sleep 10
 Environment=HMI_URL="http://127.0.0.1:1880/ui"
 ```
 
+#### Keyboard input
+
+By default keyboard inputs works with the (English) QWERTY layout. To setup a
+different keyboard set the following environment variables.
+
+- XKB_DEFAULT_RULES
+- XKB_DEFAULT_MODEL
+- XKB_DEFAULT_LAYOUT
+- XKB_DEFAULT_VARIANT
+- XKB_DEFAULT_OPTIONS
+
+For example using a German keyboard with the `nodeadkeys` variant use:
+
+```sh
+# systemctl edit browser-hmi.service
+[Service]
+Environment=HMI_ARG3=""
+Environment=XKB_DEFAULT_LAYOUT="de"
+Environment=XKB_DEFAULT_VARIANT="nodeadkeys"
+```
+
+To list available options use the `localectl` command with the various `--list-*`
+options.
+
+See also [Documentation: Cage Configuration](https://github.com/cage-kiosk/cage/wiki/Configuration)
+
 ### Modifying Linux kernel source
 
 ```sh
