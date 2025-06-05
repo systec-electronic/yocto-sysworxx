@@ -43,9 +43,6 @@ before_script:
     cd build/
     . conf/setenv
     bitbake sysworxx-image-default
-    cp deploy-ti/images/sysworxx/tiboot3-am62x-gp-evm.bin ../tiboot3.bin
-    cp deploy-ti/images/sysworxx/tispl.bin ..
-    cp deploy-ti/images/sysworxx/u-boot.img ..
     cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz \
        ../E004494-sysworxx-image-default-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
   artifacts:
@@ -55,12 +52,35 @@ before_script:
     paths:
       - "E004494-*.wic.xz"
 
+.sysworxx-image-browser-hmi:
+  stage: build
+  script: |
+    cd build/
+    . conf/setenv
+    bitbake sysworxx-image-browser-hmi
+    cp deploy-ti/images/sysworxx/sysworxx-image-browser-hmi-sysworxx.rootfs.wic.xz \
+       ../E004495-sysworxx-image-browser-hmi-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - "E004495-*.wic.xz"
+
 sysworxx-image-default-dev:
   extends: .sysworxx-image-default
   <<: *rules-dev
 
 sysworxx-image-default-release:
   extends: .sysworxx-image-default
+  <<: *rules-release
+
+sysworxx-image-browser-hmi-dev:
+  extends: .sysworxx-image-browser-hmi
+  <<: *rules-dev
+
+sysworxx-image-browser-hmi-release:
+  extends: .sysworxx-image-browser-hmi
   <<: *rules-release
 
 .sysworxx-bundle-default:
