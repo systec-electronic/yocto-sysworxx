@@ -43,9 +43,6 @@ before_script:
     cd build/
     . conf/setenv
     bitbake sysworxx-image-default
-    cp deploy-ti/images/sysworxx/tiboot3-am62x-gp-evm.bin ../tiboot3.bin
-    cp deploy-ti/images/sysworxx/tispl.bin ..
-    cp deploy-ti/images/sysworxx/u-boot.img ..
     cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz \
        ../E004494-sysworxx-image-default-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
   artifacts:
@@ -61,9 +58,6 @@ before_script:
     cd build/
     . conf/setenv
     bitbake sysworxx-image-browser-hmi
-    cp deploy-ti/images/sysworxx/tiboot3-am62x-gp-evm.bin ../tiboot3.bin
-    cp deploy-ti/images/sysworxx/tispl.bin ..
-    cp deploy-ti/images/sysworxx/u-boot.img ..
     cp deploy-ti/images/sysworxx/sysworxx-image-browser-hmi-sysworxx.rootfs.wic.xz \
        ../E004495-sysworxx-image-browser-hmi-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
   artifacts:
