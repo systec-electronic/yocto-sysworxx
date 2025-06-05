@@ -1,3 +1,7 @@
+# v1.0.1 (2025-06-05)
+
+- Add sysworxx-image-browser-hmi to CI and remove unnecessary commands
+
 # v1.0.0 (2025-04-30)
 
 - Update to Yocto 5.0 scarthgap
