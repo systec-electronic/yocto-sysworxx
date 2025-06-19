@@ -10,6 +10,7 @@
     - [Browser HMI image](#browser-hmi-image)
       - [Browser-HMI example: Show External Web-Site on normal browser mode](#browser-hmi-example-show-external-web-site-on-normal-browser-mode)
       - [Browser-HMI example: Show Local Node-RED Dashboard](#browser-hmi-example-show-local-node-red-dashboard)
+      - [Keyboard input](#keyboard-input)
     - [Modifying Linux kernel source](#modifying-linux-kernel-source)
     - [Modifying Linux kernel configuration](#modifying-linux-kernel-configuration)
     - [Build a specific device-tree from Kernel source](#build-a-specific-device-tree-from-kernel-source)
@@ -37,6 +38,7 @@
     - [Ethernet](#ethernet)
     - [WiFi and Bluetooth](#wifi-and-bluetooth)
       - [WiFi](#wifi)
+      - [Set wireless regulatory domain](#set-wireless-regulatory-domain)
       - [Bluetooth](#bluetooth)
       - [Links for WiFi/Bluetooth driver/firmware](#links-for-wifibluetooth-driverfirmware)
   - [Boot media and partitioning](#boot-media-and-partitioning)
@@ -615,6 +617,15 @@ nmcli device wifi connect SSID_or_BSSID password password
 # WiFi should now be connected
 nmcli device show wlan0
 nmcli connection show
+```
+
+#### Set wireless regulatory domain
+
+The regulatory domain is set via a kernel module parameter for `brcmfmac`.
+
+```txt
+#/etc/modprobe.d/brcmfmac_regd.conf
+options brcmfmac regdomain="ETSI"
 ```
 
 #### Bluetooth
