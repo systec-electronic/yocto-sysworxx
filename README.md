@@ -49,6 +49,7 @@
     - [Test watchdog](#test-watchdog)
     - [Configure Software Watchdog for systemd services](#configure-software-watchdog-for-systemd-services)
     - [Other watchdog peripherals](#other-watchdog-peripherals)
+  - [CVE Check](#cve-check)
 <!--toc:end-->
 
 ## Checking out Yocto project and build images
@@ -797,3 +798,13 @@ echo 1 > /dev/watchdog3
 ```
 
 See also: <https://www.kernel.org/doc/html/v5.9/watchdog/watchdog-api.html>
+
+### CVE Check
+
+To generate a CVE summary, run:
+
+```sh
+ bitbake sysworxx-image-default -r conf/cve_check.conf
+```
+
+The summary will be generated into `build/tmp/log/cve/cve-summary` & `build/tmp/log/cve/cve-summary.json`.
