@@ -550,13 +550,13 @@ This will enable:
 Outputs:
 
 ```sh
-gpioset -t0 DO0=1; sleep 0.2; gpioset -t0 DO0=0
-gpioset -t0 DO1=1; sleep 0.2; gpioset -t0 DO1=0
-gpioset -t0 DO2=1; sleep 0.2; gpioset -t0 DO2=0
-gpioset -t0 DO3=1; sleep 0.2; gpioset -t0 DO3=0
-gpioset -t0 DO4=1; sleep 0.2; gpioset -t0 DO4=0
-gpioset -t0 DO5=1; sleep 0.2; gpioset -t0 DO5=0
-gpioset -t0 DO6=1; sleep 0.2; gpioset -t0 DO6=0
+gpioset -t0 DO_0=1; sleep 0.2; gpioset -t0 DO_0=0  # GPIO0_1
+gpioset -t0 DO_1=1; sleep 0.2; gpioset -t0 DO_1=0  # GPIO0_35
+gpioset -t0 DO_2=1; sleep 0.2; gpioset -t0 DO_2=0  # GPIO0_3
+gpioset -t0 DO_3=1; sleep 0.2; gpioset -t0 DO_3=0  # MCU_GPIO0_13
+gpioset -t0 DO_4=1; sleep 0.2; gpioset -t0 DO_4=0  # GPIO0_40
+gpioset -t0 DO_5=1; sleep 0.2; gpioset -t0 DO_5=0  # GPIO0_41
+gpioset -t0 DO_6=1; sleep 0.2; gpioset -t0 DO_6=0  # GPIO0_4
 ```
 
 Inputs:
