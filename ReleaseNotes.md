@@ -1,3 +1,7 @@
+# v1.0.2 (2025-08-25)
+
+- Fix Ethernet PHY reset in U-Boot after Power-on-Reset
+
 # v1.0.1 (2025-06-05)
 
 - Add sysworxx-image-browser-hmi to CI and remove unnecessary commands
