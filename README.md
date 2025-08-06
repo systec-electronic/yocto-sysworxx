@@ -609,12 +609,20 @@ nmcli con up static-ip ifname eth1
 
 #### WiFi
 
+Connect to AP:
+
 ```sh
 nmcli device wifi list
 nmcli device wifi connect SSID_or_BSSID password password
 # WiFi should now be connected
 nmcli device show wlan0
 nmcli connection show
+```
+
+Create AP:
+
+```sh
+nmcli c add type wifi ifname wlan0 con-name $NM_CON_NAME autoconnect yes ssid $SSID 802-11-wireless.mode ap ipv4.method manual ipv4.addresses 192.168.168.1/24 wifi-sec.key-mgmt sae wifi-sec.psk $WPA_KEY
 ```
 
 #### Bluetooth
