@@ -719,7 +719,7 @@ setenv dev_serial_number 234234
 Not all of the above data are mandatory for all sysWORXX devices.
 
 The device tree name will be derived in the following scheme `${fdt_prefix}-rev${hw_iface_rev}.dtb`.
-If either `fdt_prefix` OR `hw_iface_rev` are not set the `k3-am623-systec-fallback.dptb` will be used.
+If either `fdt_prefix` OR `hw_iface_rev` are not set the `k3-am623-systec-fallback.dtb` will be used.
 
 ## RTI Watchdog
 
