@@ -10,10 +10,6 @@
 	path = sources/meta-arago
 	url = https://git.yoctoproject.org/meta-arago
 	branch = scarthgap
-[submodule "sources/meta-qt5"]
-	path = sources/meta-qt5
-	url = https://github.com/meta-qt5/meta-qt5.git
-	branch = scarthgap
 [submodule "sources/meta-virtualization"]
 	path = sources/meta-virtualization
 	url = https://git.yoctoproject.org/meta-virtualization
@@ -34,9 +30,6 @@
 	path = sources/meta-yocto
 	url = https://git.yoctoproject.org/meta-yocto
 	branch = scarthgap
-[submodule "sources/meta-summit-radio"]
-	path = sources/meta-summit-radio
-	url = https://github.com/LairdCP/meta-summit-radio.git
 [submodule "sources/meta-node-red"]
 	path = sources/meta-node-red
 	url = https://github.com/ChristophHandschuh/meta-node-red/

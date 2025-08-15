@@ -10,6 +10,7 @@
     - [Browser HMI image](#browser-hmi-image)
       - [Browser-HMI example: Show External Web-Site on normal browser mode](#browser-hmi-example-show-external-web-site-on-normal-browser-mode)
       - [Browser-HMI example: Show Local Node-RED Dashboard](#browser-hmi-example-show-local-node-red-dashboard)
+      - [Keyboard input](#keyboard-input)
     - [Modifying Linux kernel source](#modifying-linux-kernel-source)
     - [Modifying Linux kernel configuration](#modifying-linux-kernel-configuration)
     - [Build a specific device-tree from Kernel source](#build-a-specific-device-tree-from-kernel-source)
@@ -37,12 +38,17 @@
     - [Ethernet](#ethernet)
     - [WiFi and Bluetooth](#wifi-and-bluetooth)
       - [WiFi](#wifi)
+      - [Set wireless regulatory domain](#set-wireless-regulatory-domain)
       - [Bluetooth](#bluetooth)
       - [Links for WiFi/Bluetooth driver/firmware](#links-for-wifibluetooth-driverfirmware)
   - [Boot media and partitioning](#boot-media-and-partitioning)
     - [eMMC provisioning](#emmc-provisioning)
   - [Board Information EEPROM](#board-information-eeprom)
     - [Example EEPROM data](#example-eeprom-data)
+  - [RTI Watchdog](#rti-watchdog)
+    - [Test watchdog](#test-watchdog)
+    - [Configure Software Watchdog for systemd services](#configure-software-watchdog-for-systemd-services)
+    - [Other watchdog peripherals](#other-watchdog-peripherals)
 <!--toc:end-->
 
 ## Checking out Yocto project and build images
@@ -544,13 +550,13 @@ This will enable:
 Outputs:
 
 ```sh
-gpioset -t0 DO0=1; sleep 0.2; gpioset -t0 DO0=0
-gpioset -t0 DO1=1; sleep 0.2; gpioset -t0 DO1=0
-gpioset -t0 DO2=1; sleep 0.2; gpioset -t0 DO2=0
-gpioset -t0 DO3=1; sleep 0.2; gpioset -t0 DO3=0
-gpioset -t0 DO4=1; sleep 0.2; gpioset -t0 DO4=0
-gpioset -t0 DO5=1; sleep 0.2; gpioset -t0 DO5=0
-gpioset -t0 DO6=1; sleep 0.2; gpioset -t0 DO6=0
+gpioset -t0 DO_0=1; sleep 0.2; gpioset -t0 DO_0=0  # GPIO0_1
+gpioset -t0 DO_1=1; sleep 0.2; gpioset -t0 DO_1=0  # GPIO0_35
+gpioset -t0 DO_2=1; sleep 0.2; gpioset -t0 DO_2=0  # GPIO0_3
+gpioset -t0 DO_3=1; sleep 0.2; gpioset -t0 DO_3=0  # MCU_GPIO0_13
+gpioset -t0 DO_4=1; sleep 0.2; gpioset -t0 DO_4=0  # GPIO0_40
+gpioset -t0 DO_5=1; sleep 0.2; gpioset -t0 DO_5=0  # GPIO0_41
+gpioset -t0 DO_6=1; sleep 0.2; gpioset -t0 DO_6=0  # GPIO0_4
 ```
 
 Inputs:
@@ -615,6 +621,15 @@ nmcli device wifi connect SSID_or_BSSID password password
 # WiFi should now be connected
 nmcli device show wlan0
 nmcli connection show
+```
+
+#### Set wireless regulatory domain
+
+The regulatory domain is set via a kernel module parameter for `brcmfmac`.
+
+```txt
+#/etc/modprobe.d/brcmfmac_regd.conf
+options brcmfmac regdomain="ETSI"
 ```
 
 #### Bluetooth
@@ -704,4 +719,81 @@ setenv dev_serial_number 234234
 Not all of the above data are mandatory for all sysWORXX devices.
 
 The device tree name will be derived in the following scheme `${fdt_prefix}-rev${hw_iface_rev}.dtb`.
-If either `fdt_prefix` OR `hw_iface_rev` are not set the `k3-am623-systec-fallback.dptb` will be used.
+If either `fdt_prefix` OR `hw_iface_rev` are not set the `k3-am623-systec-fallback.dtb` will be used.
+
+## RTI Watchdog
+
+By default the first RTI watchdog is used as primary watchdog. The timeout is
+configured to 30 seconds.
+
+U-Boot initializes and configures the watchdog. It also passes the heartbeat (aka
+timeout) setting to the Kernel via cmdline.
+
+The Linux Kernel takes over the watchdog after `initramfs` has completed, since
+the Watchdog driver (`rti_wdt`) is compiled to a Kernel Module.
+
+`systemd` is configured to take over triggering of the watchdog when starting.
+
+### Test watchdog
+
+The following command will crash the kernel and after 15-30s the device will
+reset.
+
+```sh
+echo c > /proc/sysrq-trigger
+```
+
+Or kill the init manager (`systemd`).
+
+```sh
+# kill `init` PID 1 (Most signals will not work here. SIGSEGV does work.)
+kill -SEGV 1
+```
+
+### Configure Software Watchdog for systemd services
+
+The following `systemd` service will cause a "hard" reboot since the service will
+never service the configured software watchdog.
+
+```sh
+# /etc/systemd/system/fail.service
+[Unit]
+Description=Fail watchdog
+
+[Service]
+ExecStart=/bin/bash -c 'sleep 99999999'
+Restart=always
+StartLimitInterval=3min
+StartLimitBurst=3
+StartLimitAction=reboot-force
+WatchdogSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+In case the reboot would get stuck the hardware watchdog should still lead to
+reset.
+
+See also:
+
+- <https://www.man7.org/linux/man-pages/man5/systemd-system.conf.5.html#HARDWARE_WATCHDOG>
+- <https://man7.org/linux/man-pages/man3/sd_notify.3.html>
+
+### Other watchdog peripherals
+
+sysWORXX AM62x devices may have more watchdogs available which can be used
+directly from applications. To get a list of available watchdogs use the
+following command.
+
+```sh
+ls -la /dev/watchdog*
+```
+
+To test the functionality and cause a reset run the following command.
+
+```sh
+echo 1 > /dev/watchdog3
+```
+
+See also: <https://www.kernel.org/doc/html/v5.9/watchdog/watchdog-api.html>
