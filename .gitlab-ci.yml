@@ -42,7 +42,8 @@ before_script:
   script: |
     cd build/
     . conf/setenv
-    bitbake sysworxx-image-default
+    bitbake sysworxx-image-default -r conf/cve_check.conf
+    cp -L tmp/log/cve/cve-summary.json ../cve-summary.json
     cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz \
        ../E004494-sysworxx-image-default-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
   artifacts:
@@ -51,13 +52,15 @@ before_script:
     expire_in: 1 week
     paths:
       - "E004494-*.wic.xz"
+      - "cve-summary.json"
 
 .sysworxx-image-browser-hmi:
   stage: build
   script: |
     cd build/
     . conf/setenv
-    bitbake sysworxx-image-browser-hmi
+    bitbake sysworxx-image-browser-hmi -r conf/cve_check.conf
+    cp -L tmp/log/cve/cve-summary.json ../cve-summary.json
     cp deploy-ti/images/sysworxx/sysworxx-image-browser-hmi-sysworxx.rootfs.wic.xz \
        ../E004495-sysworxx-image-browser-hmi-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
   artifacts:
@@ -66,6 +69,7 @@ before_script:
     expire_in: 1 week
     paths:
       - "E004495-*.wic.xz"
+      - "cve-summary.json"
 
 sysworxx-image-default-dev:
   extends: .sysworxx-image-default
