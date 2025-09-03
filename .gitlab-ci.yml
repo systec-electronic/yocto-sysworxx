@@ -14,76 +14,113 @@ stages:
   - build
   - deploy
 
-before_script:
-  - echo 'DL_DIR="/cache/downloads"' >> ./build/conf/local.conf
-  - echo 'SSTATE_DIR="/cache/sstate-cache"' >> ./build/conf/local.conf
-  - cp -v $RAUC_CRT sources/meta-sysworxx/keys/rauc.crt
-  - cp -v $RAUC_KEY sources/meta-sysworxx/keys/rauc.key
-  - export GIT_DESCRIBE=$(git describe --tags)
+.common_before_script_rauc: &common_before_script_rauc
+  before_script:
+    - echo 'DL_DIR="/cache/downloads"' >> ./build/conf/local.conf
+    - echo 'SSTATE_DIR="/cache/sstate-cache"' >> ./build/conf/local.conf
+    - cp -v $RAUC_CRT sources/meta-sysworxx/keys/rauc.crt
+    - cp -v $RAUC_KEY sources/meta-sysworxx/keys/rauc.key
+    - export GIT_DESCRIBE=$(git describe --tags)
+
+.build-image-with-cve-check:
+  extends: .common_before_script_rauc
+  stage: build
+  allow_failure:
+    exit_codes: [42]  # Soft-fail if unpatched CVEs are found
+  script:
+    - cd build/
+    - . conf/setenv
+    - bitbake ${BITBAKE_TARGET} -r conf/cve_check.conf
+
+    # Copy image artifact
+    - |
+      cp deploy-ti/images/sysworxx/${BITBAKE_TARGET}-sysworxx.rootfs.wic.xz \
+      ../${IMAGE_ARTIFACT_PREFIX}-${BITBAKE_TARGET}-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
+
+    - echo "Parsing CVE summary..."
+    - |
+      jq '{
+        version,
+        package: [.package[] |
+          . as $pkg |
+          {
+            name,
+            layer,
+            version,
+            products,
+            issue: ($pkg.issue | map(select(.status != "Patched" and .status != "Ignored")))
+          } | select(.issue | length > 0)
+        ]
+      }' tmp/log/cve/cve-summary.json > ../cve-summary-unpatched.json
+
+    - |
+      UNPATCHED=$(jq '.package | length' ../cve-summary-unpatched.json)
+
+      if [ "$UNPATCHED" -gt 0 ]; then
+        echo "🚨 WARNING: Found $UNPATCHED packages with unpatched CVEs."
+        jq -r '.package[] | "\(.name) \(.version): \(.issue | length) unpatched issue(s)"' ../cve-summary-unpatched.json
+        echo "❗ Treating as warning only (exit 42)"
+        exit 42
+      else
+        echo "✅ No unpatched CVEs found."
+      fi
+  cache:
+    key: "cache-${CI_COMMIT_REF_SLUG}"
+    paths:
+      - tmp/log/cve/cve-summary.json
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    when: always
+    expire_in: 1 week
+    paths:
+      - "${IMAGE_ARTIFACT_PREFIX}-*.wic.xz"
+      - "cve-summary-unpatched.json"
+
 
 .rules-dev: &rules-dev
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-    - if: $CI_PIPELINE_SOURCE == "web"
-  variables:
-    RAUC_CRT: $RAUC_CRT_DEFAULT
-    RAUC_KEY: $RAUC_KEY_DEFAULT
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"'
+      variables:
+        RAUC_CRT: $RAUC_CRT_DEFAULT
+        RAUC_KEY: $RAUC_KEY_DEFAULT
 
 .rules-release: &rules-release
   rules:
     - if: $CI_COMMIT_TAG
-  variables:
-    RAUC_CRT: $RAUC_CRT_RELEASE
-    RAUC_KEY: $RAUC_KEY_RELEASE
-
-.sysworxx-image-default:
-  stage: build
-  script: |
-    cd build/
-    . conf/setenv
-    bitbake sysworxx-image-default
-    cp deploy-ti/images/sysworxx/sysworxx-image-default-sysworxx.rootfs.wic.xz \
-       ../E004494-sysworxx-image-default-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
-  artifacts:
-    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-    when: on_success
-    expire_in: 1 week
-    paths:
-      - "E004494-*.wic.xz"
-
-.sysworxx-image-browser-hmi:
-  stage: build
-  script: |
-    cd build/
-    . conf/setenv
-    bitbake sysworxx-image-browser-hmi
-    cp deploy-ti/images/sysworxx/sysworxx-image-browser-hmi-sysworxx.rootfs.wic.xz \
-       ../E004495-sysworxx-image-browser-hmi-sysworxx-${GIT_DESCRIBE}.rootfs.wic.xz
-  artifacts:
-    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-    when: on_success
-    expire_in: 1 week
-    paths:
-      - "E004495-*.wic.xz"
+      variables:
+        RAUC_CRT: $RAUC_CRT_RELEASE
+        RAUC_KEY: $RAUC_KEY_RELEASE
 
 sysworxx-image-default-dev:
-  extends: .sysworxx-image-default
+  extends: .build-image-with-cve-check
   <<: *rules-dev
+  variables:
+    BITBAKE_TARGET: sysworxx-image-default
+    IMAGE_ARTIFACT_PREFIX: E004494
 
 sysworxx-image-default-release:
-  extends: .sysworxx-image-default
+  extends: .build-image-with-cve-check
   <<: *rules-release
+  variables:
+    BITBAKE_TARGET: sysworxx-image-default
+    IMAGE_ARTIFACT_PREFIX: E004494
 
 sysworxx-image-browser-hmi-dev:
-  extends: .sysworxx-image-browser-hmi
+  extends: .build-image-with-cve-check
   <<: *rules-dev
+  variables:
+    BITBAKE_TARGET: sysworxx-image-browser-hmi
+    IMAGE_ARTIFACT_PREFIX: E004495
 
 sysworxx-image-browser-hmi-release:
-  extends: .sysworxx-image-browser-hmi
+  extends: .build-image-with-cve-check
   <<: *rules-release
+  variables:
+    BITBAKE_TARGET: sysworxx-image-browser-hmi
+    IMAGE_ARTIFACT_PREFIX: E004495
 
 .sysworxx-bundle-default:
+  extends: .common_before_script_rauc
   tags:
     - seccomp_unconfined
   stage: build
@@ -109,6 +146,7 @@ sysworxx-bundle-default-release:
   <<: *rules-release
 
 .emmc-installer:
+  extends: .common_before_script_rauc
   stage: build
   script: |
     cd build/
