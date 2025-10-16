@@ -1,3 +1,12 @@
+# v0.0.0 (XXXXXXXXXX)
+
+- Switch back to meta-summit-radio and use latest version which supports Kernel
+  6.12. This brings back some features which were lost when using the mainline
+  driver.
+- Add device tree overlay for IO simulator HAT
+- Fix: Disable WLAN for CTR-800
+- Fix: bootsource udev rule - keep symlinks after `rauc install`
+
 # v1.1.0 (2025-08-14)
 
 - Update to latest TI SDK 11.01.05.03
